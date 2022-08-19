@@ -1,0 +1,40 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: sans-serif;
+	background: #222;
+	color: white;
+	margin: 1em;
+}
+
+section {
+	margin-top: 1em;
+}
+
+main {
+	margin: auto;
+}
+
+a {
+	color: rgb(79, 203, 245);
+}
+
+a:visited {
+	color: rgb(235, 131, 235);
+}
+
+.center-items {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.pos {
+	color: rgb(0, 210, 0);
+}
+
+.neg {
+	color: rgb(220, 0, 0);
+}

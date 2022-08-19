@@ -1,0 +1,69 @@
+.form-section {
+	flex: 1;
+	min-width: min(40em, 50vw);
+	background: #333;
+	max-width: 100%;
+	border-radius: 8px;
+	padding: 10px 20px;
+}
+
+.form-section h2 {
+	margin: 8px 0;
+}
+
+.form-section h2:first-of-type {
+	margin-top: 0;
+}
+
+.form-top{
+	align-self: flex-end;
+}
+
+.grid {
+	display: grid;
+	align-items: center;
+	row-gap: 8px;
+	column-gap: 6px;
+	max-width: 100%;
+	font-size: 0.85em;
+	overflow: auto;
+	padding: 10px 0;
+}
+
+.mini-col {
+	justify-self: end;
+}
+
+.mini-col:not(:empty):not(.first-col) {
+	margin-left: 1em;
+}
+
+.output {
+	margin: 4px 0;
+}
+
+.form-section button {
+	color: white;
+	background: none;
+	padding: 4px;
+	margin: 0;
+	border: none;
+	cursor: pointer;
+}
+
+.form-section button + button {
+	margin-left: 10px;
+}
+
+.form-section button:hover,
+.form-section button:focus {
+	background: #444;
+}
+
+.form-section button svg {
+	height: 1.4em;
+}
+
+.form-section button * {
+	vertical-align: middle;
+}
