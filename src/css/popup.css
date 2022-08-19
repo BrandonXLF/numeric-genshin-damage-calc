@@ -1,0 +1,11 @@
+.popup-content {
+	background: #555;
+	border: none;
+	font-size: 0.85em;
+	line-height: 1.35;
+}
+
+.popup-arrow {
+	color: #555;
+	stroke: none;
+}

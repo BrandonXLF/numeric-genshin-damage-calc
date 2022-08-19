@@ -1,0 +1,14 @@
+
+input, select {
+	border: none;
+	border-radius: 4px;
+	padding: 4px;
+	min-width: min(10em, 30vw);
+	background: #6f6f6f;
+	color: white;
+}
+
+input:disabled, select:disabled {
+	background: #4a4a4a;
+	color: #4a4a4a;
+}
