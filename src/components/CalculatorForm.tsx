@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DamageCalculator from "../utils/DamageCalculator";
 import Stats from "../utils/Stats";
 import DamageOutputRow from "./DamageOutputRow";
 import StatInputRow from "./StatInputRow";
 import DamageTypeRow from "./DamageTypeRow";
 import HeadingRow from "./HeadingRow";
-import InputDetails from "../types/InputDetails";
+import InputDetails, { StoredInputDetails } from "../types/InputDetails";
 import createInputDetails from "../utils/CreateInputDetails";
 
 import '../css/CalculatorForm.css';
@@ -13,7 +13,13 @@ import TopButtonRow from "./TopButtonRow";
 import RemoveColumnRow from "./RemoveColumnRow";
 
 export default function CalculatorForm() {
-	let [allInputDetails, setAllInputDetails] = React.useState<InputDetails[]>([createInputDetails()]);
+	let [allInputDetails, setAllInputDetails] = React.useState<InputDetails[]>(() => {
+		let storedInputDetails: StoredInputDetails[] = JSON.parse(localStorage.getItem('GIDC-data') || '[]');
+		
+		storedInputDetails[0] = storedInputDetails[0] ?? [];
+		
+		return storedInputDetails.map(storedInputDetail => createInputDetails(storedInputDetail));
+	});
 	
 	let damages = allInputDetails.map(({characterData, enemyData, damageType}) => {
 		let damageCalculator = new DamageCalculator(characterData, enemyData);
@@ -22,6 +28,12 @@ export default function CalculatorForm() {
 	});
 	
 	let headerSpan = allInputDetails.length * 2 + 2;
+	
+	useEffect(() => {
+		let allStoredInputDetails = [...allInputDetails] as StoredInputDetails[];
+		
+		localStorage.setItem('GIDC-data', JSON.stringify(allStoredInputDetails));
+	}, [allInputDetails]);
 
 	return <section className="center-items form-section">
 		<TopButtonRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
