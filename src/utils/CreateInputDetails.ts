@@ -1,30 +1,37 @@
-import InputDetails from "../types/InputDetails";
-import { EnemyData, CharacterData } from "../types/StatData";
+import InputDetails, { StoredInputDetails } from "../types/InputDetails";
+import { CharacterStat, EnemyStat } from "../types/Stat";
+import StatData, { EnemyData, CharacterData } from "../types/StatData";
 import Stats from "./Stats";
 import StatValue from "./StatValue";
 
-export default function createInputDetails(base?: InputDetails): InputDetails {
-	if (base) {
-		return {
-			damageType: base.damageType,
-			characterData: {...base.characterData},
-			enemyData: {...base.enemyData}
+function populateData(data: StatData, baseData: { [prop: string]: number | StatValue; } | undefined, stats: CharacterStat[] | EnemyStat[]) {
+	stats.forEach(stat => {
+		let value = baseData?.[stat.attr];
+		
+		data[stat.attr] = new StatValue(
+			typeof value === 'number' ? value : value?.number ?? stat.default,
+			stat.type
+		);
+	});
+}
+
+export default function createInputDetails(base?: StoredInputDetails): InputDetails {
+	if (!base) {
+		base = {
+			damageType: undefined,
+			characterData: {},
+			enemyData: {}
 		};
 	}
 
-	let out = {
-		damageType: 0,
+	let out: InputDetails = {
+		damageType: base?.damageType ?? 0,
 		characterData: {} as CharacterData,
 		enemyData: {} as EnemyData
 	};
 	
-	Stats.characterStats.forEach(stat => {
-		out.characterData[stat.attr] = new StatValue(stat.default, stat.type);
-	});
-	
-	Stats.enemyStats.forEach(stat => {
-		out.enemyData[stat.attr] = new StatValue(stat.default, stat.type);
-	});
+	populateData(out.characterData, base.characterData, Stats.characterStats);
+	populateData(out.enemyData, base.enemyData, Stats.enemyStats);
 	
 	return out;
 }
