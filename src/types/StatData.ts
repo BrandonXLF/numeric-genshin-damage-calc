@@ -1,10 +1,6 @@
 import StatValue from "../utils/StatValue";
 
 type StatData = {
-	[stat: string]: StatValue;
-}
-
-export type CharacterData = {
 	baseTalentScale: StatValue;
 	additionalBonusTalentScale: StatValue;
 	bonusTalentScale: StatValue;
@@ -14,14 +10,11 @@ export type CharacterData = {
 	flatDamage: StatValue;
 	damageBonus: StatValue;
 	em: StatValue;
-	level: StatValue;
+	characterLevel: StatValue;
 	reactionBonus: StatValue;
 	critDamage: StatValue;
 	critRate: StatValue;
-};
-
-export type EnemyData = {
-	level: StatValue;
+	enemyLevel: StatValue;
 	defenseIgnore: StatValue;
 	defenseDecrease: StatValue;
 	resistanceReduction: StatValue;

@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import DamageCalculator from "../utils/DamageCalculator";
-import Stats from "../utils/Stats";
 import DamageOutputRow from "./DamageOutputRow";
 import StatInputRow from "./StatInputRow";
 import DamageTypeRow from "./DamageTypeRow";
 import HeadingRow from "./HeadingRow";
 import InputDetails, { StoredInputDetails } from "../types/InputDetails";
 import createInputDetails from "../utils/CreateInputDetails";
-
 import '../css/CalculatorForm.css';
 import TopButtonRow from "./TopButtonRow";
 import RemoveColumnRow from "./RemoveColumnRow";
+import stats from "../utils/Stats";
+import { StatSections } from "../types/Stat";
 
 export default function CalculatorForm() {
 	let [allInputDetails, setAllInputDetails] = React.useState<InputDetails[]>(() => {
@@ -21,8 +21,8 @@ export default function CalculatorForm() {
 		return storedInputDetails.map(storedInputDetail => createInputDetails(storedInputDetail));
 	});
 	
-	let damages = allInputDetails.map(({characterData, enemyData, damageType}) => {
-		let damageCalculator = new DamageCalculator(characterData, enemyData);
+	let damages = allInputDetails.map(({statData, damageType}) => {
+		let damageCalculator = new DamageCalculator(statData);
 		
 		return damageCalculator.calculateDamage(damageType);
 	});
@@ -44,12 +44,12 @@ export default function CalculatorForm() {
 			<RemoveColumnRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 			<DamageTypeRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 			<HeadingRow title="Character" span={headerSpan} />
-			{Stats.characterStats.map(stat =>
-				<StatInputRow  key={stat.name} dataType="characterData" stat={stat} allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
+			{stats.filter(stat => stat.section === StatSections.Character).map(stat =>
+				<StatInputRow key={stat.name} stat={stat} allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 			)}
 			<HeadingRow title="Enemy" span={headerSpan} />
-			{Stats.enemyStats.map(stat =>
-				<StatInputRow  key={stat.name} dataType="enemyData" stat={stat} allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
+			{stats.filter(stat => stat.section === StatSections.Enemy).map(stat =>
+				<StatInputRow key={stat.name} stat={stat} allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 			)}
 			<HeadingRow title="Damage" span={headerSpan} />
 			<DamageOutputRow title="Crit Hit Damage" damages={damages} prop="crit" />
