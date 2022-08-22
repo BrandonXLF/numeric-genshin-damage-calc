@@ -14,7 +14,7 @@ export default function DamageOutputRow(props: {
 	return <>
 		<RowLabel label={props.title} />
 		{props.damages.map((damage, i) => {
-			let value = damage[props.prop];
+			let value = damage[props.prop]?.value;
 			
 			if (i === 0) initial = value;
 			
@@ -27,7 +27,7 @@ export default function DamageOutputRow(props: {
 			
 			return <React.Fragment key={i}>
 				<div className="mini-col">{i !== 0 && <DifferenceOutput initial={initial as number} value={value} />}</div>
-				<DamageOutput value={value} />
+				<DamageOutput value={value} calcs={damage[props.prop]?.equations} />
 			</React.Fragment>;
 		})}
 	</>;

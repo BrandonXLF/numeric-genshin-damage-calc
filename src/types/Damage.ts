@@ -1,7 +1,9 @@
+import EquationOutput from "./EquationOutput";
+
 type Damage = {
-	nonCrit?: number;
-	crit?: number;
-	avgDmg: number;
+	nonCrit?: EquationOutput;
+	crit?: EquationOutput;
+	avgDmg: EquationOutput;
 };
 
 export default Damage;

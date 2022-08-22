@@ -21,11 +21,9 @@ export default function CalculatorForm() {
 		return storedInputDetails.map(storedInputDetail => createInputDetails(storedInputDetail));
 	});
 	
-	let damages = allInputDetails.map(({statData, damageType}) => {
-		let damageCalculator = new DamageCalculator(statData);
-		
-		return damageCalculator.calculateDamage(damageType);
-	});
+	let damages = allInputDetails.map(({statData, damageType}) =>
+		new DamageCalculator(statData, damageType).calculateDamage()
+	);
 	
 	let headerSpan = allInputDetails.length * 2 + 2;
 	
