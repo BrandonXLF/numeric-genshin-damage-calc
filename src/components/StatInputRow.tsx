@@ -3,10 +3,9 @@ import DamageCalculator from "../utils/DamageCalculator";
 import InputDetails from "../types/InputDetails";
 import RowLabel from "./RowLabel";
 import Stat from "../types/Stat";
-import StatData from "../types/StatData";
+import React from 'react';
 
 export default function StatInputRow(props: {
-	dataType: 'enemyData' | 'characterData'
 	stat: Stat,
 	allInputDetails: InputDetails[],
 	setAllInputDetails: (value: React.SetStateAction<InputDetails[]>) => void
@@ -22,10 +21,10 @@ export default function StatInputRow(props: {
 		return <StatInput
 			key={i}
 			stat={props.stat}
-			value={(inputDetails[props.dataType] as StatData)[props.stat.attr].number}
+			value={inputDetails.statData[props.stat.attr].number}
 			disabled={!enabled}
 			onChange={value => props.setAllInputDetails(([...newAllInputDetails]) => {
-				(newAllInputDetails[i][props.dataType] as StatData)[props.stat.attr].number = value;
+				newAllInputDetails[i].statData[props.stat.attr].number = value;
 				
 				return newAllInputDetails;
 			})}

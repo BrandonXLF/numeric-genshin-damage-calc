@@ -1,7 +1,7 @@
 import Damage from "../types/Damage";
 import DamageGroup from "../types/DamageGroup";
 import DamageType from "../types/DamageType";
-import { CharacterData, EnemyData } from "../types/StatData";
+import StatData from "../types/StatData";
 
 export default class DamageCalculator {
 	static damageTypes: DamageType[] = [
@@ -68,16 +68,15 @@ export default class DamageCalculator {
 	];
 	
 	constructor(
-		private character: CharacterData,
-		private enemy: EnemyData
+		private statData: StatData
 	) {}
 	
 	private enemyDefense() {
-		return (this.character.level.value + 100) / ((this.character.level.value + 100) + (this.enemy.level.value + 100) * (1 - this.enemy.defenseDecrease.value) * (1 - this.enemy.defenseIgnore.value));
+		return (this.statData.characterLevel.value + 100) / ((this.statData.characterLevel.value + 100) + (this.statData.enemyLevel.value + 100) * (1 - this.statData.defenseDecrease.value) * (1 - this.statData.defenseIgnore.value));
 	}
 	
 	private enemyResistance() {
-		let enemyResistance = this.enemy.resistance.value - this.enemy.resistanceReduction.value;
+		let enemyResistance = this.statData.resistance.value - this.statData.resistanceReduction.value;
 		return enemyResistance < 0
 			? 1 - enemyResistance / 2
 			: enemyResistance < 0.75
@@ -86,34 +85,34 @@ export default class DamageCalculator {
 	}
 
 	private generalDamage() {
-		let talentScale = this.character.baseTalentScale.value * (1 + this.character.additionalBonusTalentScale.value) + this.character.bonusTalentScale.value;
-		let baseDamage = (this.character.talent.value * talentScale * this.character.baseDamageMultiplier.value) + this.character.flatDamage.value;
+		let talentScale = this.statData.baseTalentScale.value * (1 + this.statData.additionalBonusTalentScale.value) + this.statData.bonusTalentScale.value;
+		let baseDamage = (this.statData.talent.value * talentScale * this.statData.baseDamageMultiplier.value) + this.statData.flatDamage.value;
 		
-		return baseDamage * (1 + this.character.damageBonus.value) * this.enemyDefense() * this.enemyResistance();
+		return baseDamage * (1 + this.statData.damageBonus.value) * this.enemyDefense() * this.enemyResistance();
 	}
 	
 	private transformativeReaction(multiplier: number) {
-		let emBonus = (16 * this.character.em.value) / (2000 + this.character.em.value);
-		let levelMultiplier = this.character.level.value < 60
-			? 0.0002325 * Math.pow(this.character.level.value, 3) + 0.05547 * Math.pow(this.character.level.value, 2) - 0.2523 * this.character.level.value + 14.47
-			: 0.00194 * Math.pow(this.character.level.value, 3) - 0.319 * Math.pow(this.character.level.value, 2) + 30.7 * this.character.level.value - 868;
+		let emBonus = (16 * this.statData.em.value) / (2000 + this.statData.em.value);
+		let levelMultiplier = this.statData.characterLevel.value < 60
+			? 0.0002325 * Math.pow(this.statData.characterLevel.value, 3) + 0.05547 * Math.pow(this.statData.characterLevel.value, 2) - 0.2523 * this.statData.characterLevel.value + 14.47
+			: 0.00194 * Math.pow(this.statData.characterLevel.value, 3) - 0.319 * Math.pow(this.statData.characterLevel.value, 2) + 30.7 * this.statData.characterLevel.value - 868;
 		
-		return multiplier * (1 + emBonus + this.character.reactionBonus.value) * levelMultiplier * this.enemyResistance();
+		return multiplier * (1 + emBonus + this.statData.reactionBonus.value) * levelMultiplier * this.enemyResistance();
 	}
 	
 	private amplifyingReaction(multiplier: number) {
-		let emBonus = (2.78 * this.character.em.value) / (1400 + this.character.em.value);
-		let amp = multiplier * (1 + emBonus + this.character.reactionBonus.value);
+		let emBonus = (2.78 * this.statData.em.value) / (1400 + this.statData.em.value);
+		let amp = multiplier * (1 + emBonus + this.statData.reactionBonus.value);
 		
 		return this.generalDamage() * amp;
 	}
 	
 	private crit(nonCrit: number) {
-		return nonCrit * (1 + this.character.critDamage.value);
+		return nonCrit * (1 + this.statData.critDamage.value);
 	}
 	
 	private avgCrit(nonCrit: number) {
-		return nonCrit * (1 + Math.max(0, Math.min(this.character.critRate.value, 1)) * this.character.critDamage.value);
+		return nonCrit * (1 + Math.max(0, Math.min(this.statData.critRate.value, 1)) * this.statData.critDamage.value);
 	}
 	
 	calculateDamage(damageTypeIndex: number): Damage {

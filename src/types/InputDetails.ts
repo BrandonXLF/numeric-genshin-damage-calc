@@ -1,20 +1,16 @@
 import StatValue from "../utils/StatValue";
-import { EnemyData, CharacterData } from "./StatData";
+import StatData from "./StatData";
 
 type InputDetails = {
 	damageType: number;
-	characterData: CharacterData,
-	enemyData: EnemyData
+	statData: StatData;
 };
 
 export type StoredInputDetails = {
 	damageType?: number;
-	characterData?: {
-		[prop: string]: number | StatValue;
-	},
-	enemyData?: {
-		[prop: string]: number | StatValue;
-	},
+	statData?: {
+		[P in keyof StatData]?: number | StatValue;
+	}
 };
 
 export default InputDetails;
