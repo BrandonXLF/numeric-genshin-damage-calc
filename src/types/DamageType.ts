@@ -1,10 +1,11 @@
-import DamageCalculator from "../utils/DamageCalculator";
 import DamageGroup from "./DamageGroup";
+import EquationData from "./EquationData";
 
 type DamageType = {
 	name: string;
 	canCrit: boolean;
-	calc: (calculator: DamageCalculator) => number;
+	equation: keyof EquationData;
+	baseMultiplier?: number;
 	group: DamageGroup;
 };
 

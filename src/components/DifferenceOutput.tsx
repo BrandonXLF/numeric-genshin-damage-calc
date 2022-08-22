@@ -6,9 +6,7 @@ export default function DifferenceOutput(props: {
 }) {
 	if (!props.initial) return null;
 	
-	let value = Math.round(props.value);
-	let initial = Math.round(props.initial);
-	let number = Math.round((value - initial) / initial * 100);
+	let number = Math.round((props.value - props.initial) / props.initial * 100);
 	let className = number > 0 ? 'pos' : number < 0 ? ' neg' : '';
 	
 	return <Popup
