@@ -41,29 +41,3 @@
 .output {
 	margin: 4px 0;
 }
-
-.form-section button {
-	color: white;
-	background: none;
-	padding: 4px;
-	margin: 0;
-	border: none;
-	cursor: pointer;
-}
-
-.form-section button + button {
-	margin-left: 10px;
-}
-
-.form-section button:hover,
-.form-section button:focus {
-	background: #444;
-}
-
-.form-section button svg {
-	height: 1.4em;
-}
-
-.form-section button * {
-	vertical-align: middle;
-}

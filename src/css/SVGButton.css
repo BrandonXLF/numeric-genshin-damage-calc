@@ -1,0 +1,33 @@
+.svg-button {
+	color: white;
+	background: none;
+	padding: 4px;
+	margin: 0;
+	border: none;
+	cursor: pointer;
+}
+
+.svg-button + .svg-button {
+	margin-left: 10px;
+}
+
+.svg-button:hover,
+.svg-button:focus {
+	background: #444;
+}
+
+.svg-button svg {
+	height: 1.4em;
+}
+
+.svg-button * {
+	vertical-align: middle;
+}
+
+.svg-button-mini {
+	padding: 0 4px;;
+}
+
+.svg-button-mini svg {
+	height: 1em;
+}
