@@ -1,8 +1,6 @@
-import { OperationOutput } from "./EquationOutput";
-
 export type EquationInfo = {
 	name: string;
-	expr: () => OperationOutput;
+	expr: string | (() => string);
 };
 
 type EquationData = {

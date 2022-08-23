@@ -1,9 +1,10 @@
 
+import { evaluate } from "mathjs";
 import Damage from "../types/Damage";
 import DamageGroup from "../types/DamageGroup";
 import DamageType from "../types/DamageType";
 import EquationData from "../types/EquationData";
-import EquationOutput, { OperationInput, OperationOutput } from "../types/EquationOutput";
+import EquationOutput, { ComponentOutput, VariableOutput } from "../types/EquationOutput";
 import RecordEntry, { RecordEntryTypes } from "../types/RecordEntry";
 import StatData from "../types/StatData";
 import VariableData from "../types/VariableData";
@@ -83,19 +84,23 @@ export default class DamageCalculator {
 		}
 	];
 	
+	private damageType = DamageCalculator.damageTypes[this.damageTypeNumber];
+	private mainEquation = this.damageType.equation;
+	private variables;
+	
 	// https://library.keqingmains.com/combat-mechanics/damage/damage-formula
-	private equations: EquationData =  {
+	private equations: EquationData = {
 		talentScale: {
 			name: 'Talent Scale',
-			expr: () => this.add(this.mul('baseTalentScale', this.add(1, 'additionalBonusTalentScale')), 'bonusTalentScale')
+			expr: '(baseTalentScale * (1 + additionalBonusTalentScale)) + bonusTalentScale'
 		},
 		baseDamage: {
 			name: 'Base DMG',
-			expr: () => this.add(this.mul('talent', 'talentScale', 'baseDamageMultiplier'), 'flatDamage')
+			expr: '(talent * talentScale * baseDamageMultiplier) + flatDamage'
 		},
 		enemyResistance: {
 			name: 'Enemy RES',
-			expr: () => this.sub('resistance', 'resistanceReduction')
+			expr: 'resistance - resistanceReduction'
 		},
 		enemyResistanceMul: {
 			name: 'Enemy RES Multiplier',
@@ -103,81 +108,74 @@ export default class DamageCalculator {
 				let enemyResistance = this.variable('enemyResistance').value;
 				
 				if (enemyResistance < 0) {
-					return this.sub(1, this.div('enemyResistance', 2))
+					return '1 - enemyResistance / 2'
 				}
 
 				if (enemyResistance < 0.75) {
-					return this.sub(1, 'enemyResistance')
+					return '1 - enemyResistance'
 				}
 
-				return this.div(1, this.add(this.mul(4, 'enemyResistance'), 1))
-			}
+				return '1 / (4 * enemyResistance + 1)';
+			},
 		},
 		enemyDefenseFactor: {
 			name: 'Enemy DEF Enemy Factor',
-			expr: () => this.mul(this.add('enemyLevel', 100), this.sub(1, 'defenseDecrease'), this.sub(1, 'defenseIgnore'))
+			expr: '(enemyLevel + 100) * (1 - defenseDecrease) * (1 - defenseIgnore)'
 		},
 		characterDefenseFactor: {
 			name: 'Enemy DEF Char Factor',
-			expr: () => this.add('characterLevel', 100)
+			expr: 'characterLevel + 100'
 		},
 		enemyDefenseMul: {
 			name: 'Enemy DEF Multiplier',
-			expr: () => this.div('characterDefenseFactor', this.add('characterDefenseFactor', 'enemyDefenseFactor'))
+			expr: 'characterDefenseFactor / (characterDefenseFactor + enemyDefenseFactor)'
 		},
 		generalDamage: {
 			name: 'General DMG',
-			expr: () => this.mul('baseDamage', this.add(1, 'damageBonus'), 'enemyDefenseMul', 'enemyResistanceMul')
+			expr: 'baseDamage * (1 + damageBonus) * enemyDefenseMul * enemyResistanceMul'
 		},
 		transformativeEMBonus: {
 			name: 'EM Bonus',
-			expr: () => this.div(this.mul(16, 'em'), this.add(2000, 'em'))
+			expr: '(16 * em) / (2000 + em)'
 		},
 		baseTransformativeDamage: {
 			name: 'Base Reaction DMG',
-			expr: () => this.mul('baseMultiplier', 'transformativeLevelMultiplier')
+			expr: `baseMultiplier * transformativeLevelMultiplier`
 		},
 		transformativeReaction: {
-			name: 'DMG',
-			expr: () => this.mul('baseTransformativeDamage', this.add(1, 'transformativeEMBonus', 'reactionBonus'), 'enemyResistanceMul')
+			name: 'Transformative Reaction DMG',
+			expr: `baseTransformativeDamage * (1 + transformativeEMBonus + reactionBonus) * enemyResistanceMul`
 		},
 		amplifyingEMBonus: {
 			name: 'EM Bonus',
-			expr: () => this.div(this.mul(2.78, 'em'), this.add(1400, 'em'))
+			expr: '(2.78 * em) / (1400 + em)'
 		},
 		amplifyingMul: {
 			name: 'Reaction Multiplier',
-			expr: () => this.mul('baseMultiplier', this.add(1, 'amplifyingEMBonus', 'reactionBonus'))
+			expr: `baseMultiplier * (1 + amplifyingEMBonus + reactionBonus)`
 		},
 		amplifyingReaction: {
 			name: 'Non CRIT',
-			expr: () => this.mul('generalDamage', 'amplifyingMul')
+			expr: 'generalDamage * amplifyingMul'
 		},
 		realCritRate: {
 			name: 'Real CRIT Rate',
-			expr: () => this.max(0, this.min('critRate', 1))
+			expr: 'max(0, min(critRate, 1))'
 		},
 		critHit: {
 			name: 'CRIT Hit',
-			expr: () => this.mul(this.mainEquation, this.add(1, 'critDamage'))
+			expr: `${this.mainEquation} * (1 + critDamage)`
 		},
 		avgDamage: {
 			name: 'Avg DMG',
-			expr: () => this.mul(this.mainEquation, this.add(1, this.mul('realCritRate', 'critDamage'))),
+			expr: `${this.mainEquation} * (1 + realCritRate * critDamage)`
 		}
-	}
-	
-	private mainEquation;
-	private variables;
-	private damageType;
+	};
 	
 	constructor(
 		private statData: StatData,
-		damageType: number
+		private damageTypeNumber: number
 	) {
-		this.damageType = DamageCalculator.damageTypes[damageType];
-		this.mainEquation = this.damageType.equation;
-
 		this.variables = {
 			baseMultiplier: {
 				name: 'Reaction Multiplier',
@@ -195,83 +193,7 @@ export default class DamageCalculator {
 				value: this.statData[stat.attr].value
 			};
 		});
-		
 	}
-	
-	private resolve(value: OperationInput): OperationOutput {
-		if (typeof value === 'object') {
-			return value.shouldEnclose
-				? {
-					...value,
-					equation: [
-						this.record('(', RecordEntryTypes.Symbols),
-						...value.equation,
-						this.record(')', RecordEntryTypes.Symbols)
-					]
-				}
-				: value;
-		}
-		
-		if (typeof value === 'string') {
-			return this.variable(value);
-		}
-		
-		return {
-			value: value,
-			equation: [
-				this.recordNumber(value)
-			],
-			prevEquations: {}
-		};
-	}
-	
-	private createOperation(
-		func: (x: number, y: number) => number,
-		separator: string,
-		wrap?: [string, string]
-	) {
-		return (...values: OperationInput[]) => {
-			let prevEquations: Record<string, RecordEntry[]> = {};
-		
-			let resolvedValues = values.map(value => {
-				let resolved = this.resolve(value);
-				
-				Object.assign(prevEquations, resolved.prevEquations);
-				
-				return {
-					value: resolved.value,
-					equation: resolved.equation,
-				}
-			});
-			
-			let combinedValues = resolvedValues.reduce((prev, cur) => ({
-				value: func(prev.value, cur.value),
-				equation: [
-					...prev.equation,
-					this.record(separator, RecordEntryTypes.Symbols),
-					...cur.equation
-				]
-			}));
-			
-			if (wrap) {
-				combinedValues.equation.unshift(this.record(wrap[0], RecordEntryTypes.Symbols))
-				combinedValues.equation.push(this.record(wrap[1], RecordEntryTypes.Symbols));
-			}
-			
-			return {
-				shouldEnclose: !wrap,
-				prevEquations: prevEquations,
-				...combinedValues
-			};
-		}
-	}
-	
-	private mul = this.createOperation((x, y) => x * y, ' * ');
-	private div = this.createOperation((x, y) => x / y, ' / ');
-	private add = this.createOperation((x, y) => x + y, ' + ');
-	private sub = this.createOperation((x, y) => x - y, ' - ');
-	private max = this.createOperation(Math.max, ', ', ['max(', ')']);
-	private min = this.createOperation(Math.min, ', ', ['min(', ')']);
 	
 	private record(value: string, type: RecordEntryTypes) {
 		return {
@@ -287,48 +209,82 @@ export default class DamageCalculator {
 		};
 	}
 	
-	private variable(left: keyof VariableData | keyof EquationData): OperationOutput {
-		let val: number,
-			name: string,
-			prev: Record<string, RecordEntry[]>;
+	private variable(name: keyof VariableData | keyof EquationData): VariableOutput
+	private variable(name: string): VariableOutput | null
+	private variable(name: string): VariableOutput | null {
+		if (name in this.variables) {
+			return {
+				value: this.variables[name as keyof VariableData].value,
+				name: this.variables[name as keyof VariableData].name,
+				equations: {}
+			}
+		}
 		
-		if (left in this.variables) {
-			val = this.variables[left as keyof VariableData].value;
-			name = this.variables[left as keyof VariableData].name;
-			prev = {};
-		} else {
-			let equationOutput = this.equation(left as keyof EquationData);
-			
-			val = equationOutput.value;
-			name = this.equations[left as keyof EquationData].name;
-			prev = equationOutput.equations;
+		if (name in this.equations) {
+			let equationOutput = this.equation(name as keyof EquationData);
+
+			return {
+				value: equationOutput.value,
+				name: this.equations[name as keyof EquationData].name,
+				equations: equationOutput.equations
+			}
+		}
+		
+		return null;
+	}
+	
+	processComponent(component: string): ComponentOutput {
+		let variable;
+		
+		if (/^[A-Za-z]+$/.test(component) && (variable = this.variable(component))) {
+			return {
+				value: variable.value.toString(),
+				equationComponent: [
+					this.record(`${variable.name} `, RecordEntryTypes.Note),
+					this.recordNumber(variable.value)
+				],
+				equations: variable.equations
+			}
 		}
 		
 		return {
-			value: val,
-			equation: [
-				this.record(`${name} `, RecordEntryTypes.Note),
-				this.recordNumber(val)
+			value: component,
+			equationComponent: [
+				this.record(component, /^\d+$/.test(component) ? RecordEntryTypes.Number : RecordEntryTypes.Symbols)
 			],
-			prevEquations: prev
-		}
+			equations: {}
+		};
 	}
 	
-	equation(left: keyof EquationData): EquationOutput {
-		let res = this.equations[left].expr();
+	equation(name: keyof EquationData): EquationOutput {
+		let exprOrFunc = this.equations[name].expr;
+		let expr = typeof exprOrFunc === 'function' ? exprOrFunc() : exprOrFunc;
+		let equation: RecordEntry[] = [];
+		let prevEquations: Record<string, RecordEntry[]> = {};
 		
-		if (!(left in res.prevEquations)) {
-			res.prevEquations[left] = [
-				this.record(`${this.equations[left].name} `, RecordEntryTypes.Note),
-				this.recordNumber(res.value),
+		expr = expr.split(/([A-Za-z]+|\d+)+/g).map(component => {
+			let res = this.processComponent(component);
+			
+			equation.push(...res.equationComponent);
+			Object.assign(prevEquations, res.equations);
+			
+			return res.value;
+		}).join('');
+		
+		let value = evaluate(expr);
+		
+		if (!(name in prevEquations)) {
+			prevEquations[name] = [
+				this.record(`${this.equations[name].name} `, RecordEntryTypes.Note),
+				this.recordNumber(value),
 				this.record(' = ', RecordEntryTypes.Symbols),
-				...res.equation
+				...equation
 			];
 		}
 		
 		return {
-			value: res.value,
-			equations: res.prevEquations
+			value: value,
+			equations: prevEquations
 		};
 	}
 	

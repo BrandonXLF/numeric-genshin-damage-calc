@@ -1,13 +1,22 @@
+import { evaluate } from "mathjs";
 import { StatTypes } from "../types/Stat";
 
 export default class StatValue {
 	constructor(
-		public number: number,
+		public number: string,
 		private type: StatTypes
 	) {}
 
 	get value() {
-		return this.type === StatTypes.Percent ? this.number / 100 : this.number;
+		let value;
+		
+		try {
+			value = evaluate(this.number);
+		} catch {
+			return NaN;
+		}
+		
+		return this.type === StatTypes.Percent ? value / 100 : value;
 	}
 	
 	toJSON() {

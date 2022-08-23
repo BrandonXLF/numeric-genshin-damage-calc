@@ -9,7 +9,7 @@ type InputDetails = {
 export type StoredInputDetails = {
 	damageType?: number;
 	statData?: {
-		[P in keyof StatData]?: number | StatValue;
+		[P in keyof StatData]?: string | StatValue;
 	}
 };
 

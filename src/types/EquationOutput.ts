@@ -1,15 +1,16 @@
-import EquationData from "./EquationData";
 import RecordEntry from "./RecordEntry";
-import VariableData from "./VariableData";
 
-export type OperationOutput = {
+export type VariableOutput = {
 	value: number;
-	equation: RecordEntry[];
-	prevEquations: Record<string, RecordEntry[]>;
-	shouldEnclose?: boolean;
+	name: string;
+	equations: Record<string, RecordEntry[]>;
 };
 
-export type OperationInput = OperationOutput | number | keyof VariableData | keyof EquationData;
+export type ComponentOutput = {
+	value: string;
+	equationComponent: RecordEntry[];
+	equations: Record<string, RecordEntry[]>;
+};
 
 type EquationOutput = {
 	value: number;
