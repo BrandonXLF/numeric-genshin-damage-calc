@@ -20,7 +20,7 @@ export default function createInputDetails(base?: StoredInputDetails): InputDeta
 		let value = base?.statData?.[stat.attr];
 		
 		out.statData[stat.attr] = new StatValue(
-			typeof value === 'number' ? value : value?.number ?? stat.default,
+			typeof value === 'string' ? value : value?.number ?? stat.default.toString(),
 			stat.type
 		);
 	});
