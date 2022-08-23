@@ -11,9 +11,9 @@ export default function DifferenceOutput(props: {
 	
 	return <Popup
 		trigger={
-			<div className={className}>
+			<span className={className}>
 				{(number <= 0 ? '' : '+') + number + '%'}
-			</div>
+			</span>
 		}
 		position={['top center', 'bottom center', 'top right']}
 		on={'hover'}

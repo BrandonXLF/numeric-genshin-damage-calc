@@ -1,7 +1,6 @@
 import React from "react";
 import Damage from "../types/Damage";
 import DamageOutput from "./DamageOutput";
-import DifferenceOutput from "./DifferenceOutput";
 import RowLabel from "./RowLabel";
 
 export default function DamageOutputRow(props: {
@@ -26,8 +25,7 @@ export default function DamageOutputRow(props: {
 			}
 			
 			return <React.Fragment key={i}>
-				<div className="mini-col">{i !== 0 && <DifferenceOutput initial={initial as number} value={value} />}</div>
-				<DamageOutput value={value} calcs={damage[props.prop]?.equations} />
+				<DamageOutput initial={i !== 0 ? initial : undefined} value={value} calcs={damage[props.prop]?.equations} />
 			</React.Fragment>;
 		})}
 	</>;
