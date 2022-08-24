@@ -1,5 +1,5 @@
-import { evaluate } from "mathjs";
 import { StatTypes } from "../types/Stat";
+import evaluateExpression from "./evalulateExpression";
 
 export default class StatValue {
 	constructor(
@@ -8,13 +8,7 @@ export default class StatValue {
 	) {}
 
 	get value() {
-		let value;
-		
-		try {
-			value = evaluate(this.number);
-		} catch {
-			return NaN;
-		}
+		let value = evaluateExpression(this.number);
 		
 		return this.type === StatTypes.Percent ? value / 100 : value;
 	}
