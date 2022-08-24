@@ -5,11 +5,11 @@ import StatInputRow from "./StatInputRow";
 import DamageTypeRow from "./DamageTypeRow";
 import HeadingRow from "./HeadingRow";
 import InputDetails, { StoredInputDetails } from "../types/InputDetails";
-import createInputDetails from "../utils/CreateInputDetails";
+import createInputDetails from "../utils/createInputDetails";
 import '../css/CalculatorForm.css';
 import TopButtonRow from "./TopButtonRow";
 import RemoveColumnRow from "./RemoveColumnRow";
-import stats from "../utils/Stats";
+import stats from "../utils/stats";
 import { StatSections } from "../types/Stat";
 
 export default function CalculatorForm() {

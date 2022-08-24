@@ -7,8 +7,8 @@ import RecordEntry, { RecordEntryTypes } from "../types/RecordEntry";
 import StatData from "../types/StatData";
 import VariableData from "../types/VariableData";
 import evaluateExpression from "./evalulateExpression";
-import stats from "./Stats";
-import transformativeLevelMultipliers from "./TransformativeLevelMultipliers";
+import stats from "./stats";
+import transformativeLevelMultipliers from "./transformativeLevelMultipliers";
 
 export default class DamageCalculator {
 	static damageTypes: DamageType[] = [

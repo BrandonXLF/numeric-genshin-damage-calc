@@ -1,5 +1,5 @@
 import InputDetails from "../types/InputDetails";
-import createInputDetails from "../utils/CreateInputDetails";
+import createInputDetails from "../utils/createInputDetails";
 import React from 'react';
 import SVGButton from "./SVGButton";
 import ResetSVG from "../svgs/ResetSVG";

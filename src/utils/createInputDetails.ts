@@ -1,6 +1,6 @@
 import InputDetails, { StoredInputDetails } from "../types/InputDetails";
 import StatData from "../types/StatData";
-import stats from "./Stats";
+import stats from "./stats";
 import StatValue from "./StatValue";
 
 export default function createInputDetails(base?: StoredInputDetails): InputDetails {
