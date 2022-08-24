@@ -38,7 +38,7 @@ export default function CalculatorForm() {
 		<form className="grid" style={{
 			gridTemplateColumns: `max-content repeat(${allInputDetails.length}, 1fr)`
 		}}>
-			<HeadingRow title="General" span={2} />
+			<HeadingRow title="General" span={1} />
 			<RemoveColumnRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 			<DamageTypeRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 			<HeadingRow title="Character" span={headerSpan} />

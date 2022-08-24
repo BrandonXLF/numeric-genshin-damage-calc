@@ -7,10 +7,13 @@ export default function RemoveColumnRow(props: {
 	allInputDetails: InputDetails[];
 	setAllInputDetails: React.Dispatch<React.SetStateAction<InputDetails[]>>;
 }) {
+	if (props.allInputDetails.length < 2) {
+		return <div></div>;
+	}
+	
 	return <>
-		{props.allInputDetails.map((_, i) => i === 0
-			? null
-			: <div key={i} style={{textAlign: 'center'}}>
+		{props.allInputDetails.map((_, i) =>
+			<div key={i} style={{textAlign: 'center'}}>
 				<SVGButton
 					svg={<CloseSVG className="neg" />}
 					label="Remove Column"
