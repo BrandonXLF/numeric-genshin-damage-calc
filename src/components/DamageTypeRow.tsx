@@ -2,6 +2,7 @@ import React from "react";
 import DamageCalculator from "../utils/DamageCalculator";
 import InputDetails from "../types/InputDetails";
 import RowLabel from "./RowLabel";
+import FormInput from "./FormInput";
 
 export default function DamageTypeRow(props: {
 	allInputDetails: InputDetails[];
@@ -9,9 +10,8 @@ export default function DamageTypeRow(props: {
 }) {
 	return <>
 		<RowLabel label="Reaction" />
-		{props.allInputDetails.map((inputDetails, i) => {
-			return <React.Fragment key={i}>
-				<div></div>
+		{props.allInputDetails.map((inputDetails, i) =>
+			<FormInput key={i}>
 				<select value={inputDetails.damageType} onChange={e => {
 					let selected = +e.target.value;
 					
@@ -25,7 +25,7 @@ export default function DamageTypeRow(props: {
 						return <option value={i} key={i}>{damageType.name}</option>;
 					})}
 				</select>
-			</React.Fragment>;
-		})}
+			</FormInput>
+		)}
 	</>;
 }

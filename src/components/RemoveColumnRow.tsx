@@ -10,21 +10,18 @@ export default function RemoveColumnRow(props: {
 	return <>
 		{props.allInputDetails.map((_, i) => i === 0
 			? null
-			: <React.Fragment key={i}>
-				<div></div>
-				<div style={{textAlign: 'center'}}>
-					<SVGButton
-						svg={<CloseSVG className="neg" />}
-						label="Remove Column"
-						hideLabel={true}
-						onClick={() => props.setAllInputDetails(([...value]) => {
-							value.splice(i, 1);
-							
-							return value;
-						})}
-					/>
-				</div>
-			</React.Fragment>
+			: <div key={i} style={{textAlign: 'center'}}>
+				<SVGButton
+					svg={<CloseSVG className="neg" />}
+					label="Remove Column"
+					hideLabel={true}
+					onClick={() => props.setAllInputDetails(([...value]) => {
+						value.splice(i, 1);
+						
+						return value;
+					})}
+				/>
+			</div>
 		)}
 	</>;
 }

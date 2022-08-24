@@ -8,11 +8,9 @@ export default function DamageOutput(props: {
 	initial?: number;
 	calcs?: Record<string, RecordEntry[]>;
 }) {
-	return <>
-		<div className="mini-col">{props.calcs && <> <CalculationPopup calcs={props.calcs} /></>}</div>
-		<div className="output">
-			<output>{parseFloat(props.value.toFixed(2)).toString()}</output>
-			{props.initial && <> <DifferenceOutput initial={props.initial} value={props.value} /></>}
-		</div>
-	</>
+	return <div className="output vertical-align">
+		{props.calcs && <><CalculationPopup calcs={props.calcs} /> </>}
+		<output>{parseFloat(props.value.toFixed(2)).toString()}</output>
+		{props.initial && <> <DifferenceOutput initial={props.initial} value={props.value} /></>}
+	</div>
 }

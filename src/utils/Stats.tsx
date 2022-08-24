@@ -21,9 +21,9 @@ const stats: Stat[] = [
 		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
 	},
 	{
-		name: 'Base Talent Scale',
-		label: <span>Base <em>Talent Scale</em></span>,
-		desc: 'The thing the talent scales off of, e.g. base attack or base HP, from character and weapon flat stat only',
+		name: 'Base Talent Attr',
+		label: <span>Base <em>Talent Attr</em></span>,
+		desc: 'The attribute the talent scales off of, e.g. base attack or base HP, from character and weapon flat stat only',
 		attr: 'baseTalentScale',
 		default: 500,
 		type: StatTypes.Number,
@@ -31,22 +31,22 @@ const stats: Stat[] = [
 		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
 	},
 	{
-		name: 'Bonus Talent Scale',
-		label: <span>Bonus <em>Talent Scale</em></span>,
-		desc: 'The green number next to the talent scale in game, add extra flat attack etc. e.g. from Bennett\'s ult here',
-		attr: 'bonusTalentScale',
-		default: 500,
-		type: StatTypes.Number,
+		name: 'Extra Bonus Talent Attr',
+		label: <span>Extra <em>Talent Attr %</em></span>,
+		desc: <span>Extra ATK percent, HP percent, etc., in-game ATK percent etc. is integrated into Bonus <em>Talent Scale</em></span>,
+		attr: 'additionalBonusTalentScale',
+		default: 0,
+		type: StatTypes.Percent,
 		section: StatSections.Character,
 		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
 	},
 	{
-		name: 'Extra Talent Scale',
-		label: <span>Extra <em>Talent Scale</em></span>,
-		desc: 'Extra attack percent, hp percent, etc., in-game attack percent etc. is integrated into Bonus Talent Scale',
-		attr: 'additionalBonusTalentScale',
-		default: 0,
-		type: StatTypes.Percent,
+		name: 'Flat Bonus Talent Attr',
+		label: <span>Bonus <em>Talent Attr</em></span>,
+		desc: 'The green number next to the attribute the talent scales with in game, add extra flat attack etc. e.g. from Bennett\'s ult here',
+		attr: 'bonusTalentScale',
+		default: 500,
+		type: StatTypes.Number,
 		section: StatSections.Character,
 		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
 	},

@@ -1,0 +1,50 @@
+.form-input {
+	width: 12em;
+	max-width: 35vw;
+	display: flex;
+}
+
+.form-input > * {
+	padding: 4px;
+}
+
+.form-input > :first-child {
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+ }
+ 
+.form-input > :last-child {
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+ }
+
+.form-input input,
+.form-input select {
+	border: none;
+	background: #6f6f6f;
+	color: white;
+	flex: 1;
+	width: 0;
+}
+
+.form-input input:disabled,
+.form-input select:disabled {
+	background: #4a4a4a;
+	color: #4a4a4a;
+}
+
+.input-icon {
+	display: flex;
+	background: #4a4a4a;
+	align-items: center;
+	font-weight: bold;
+	user-select: none;
+}
+
+.input-icon-math {
+	display: grid;
+	line-height: 0.7;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 3px;
+	font-size: 0.8em;
+}

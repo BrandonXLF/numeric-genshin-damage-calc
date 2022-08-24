@@ -18,15 +18,10 @@ export default function DamageOutputRow(props: {
 			if (i === 0) initial = value;
 			
 			if (value === undefined) {
-				return <React.Fragment key={i}>
-					<div className="mini-col"></div>
-					<div>&mdash;</div>
-				</React.Fragment>;
+				return <div key={i}>&mdash;</div>;
 			}
 			
-			return <React.Fragment key={i}>
-				<DamageOutput initial={i !== 0 ? initial : undefined} value={value} calcs={damage[props.prop]?.equations} />
-			</React.Fragment>;
+			return <DamageOutput key={i} initial={i !== 0 ? initial : undefined} value={value} calcs={damage[props.prop]?.equations} />;
 		})}
 	</>;
 }
