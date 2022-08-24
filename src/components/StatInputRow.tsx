@@ -13,8 +13,8 @@ export default function StatInputRow(props: {
 	let anyEnabled = false;
 	
 	let statInputs = props.allInputDetails.map((inputDetails, i) => {
-		let damageGroup = DamageCalculator.damageTypes[inputDetails.damageType].group;
-		let enabled = !!(props.stat.groups & damageGroup);
+		let damageGroups = DamageCalculator.damageTypes[inputDetails.damageType].groups;
+		let enabled = !!(props.stat.groups & damageGroups);
 		
 		anyEnabled = anyEnabled || enabled;
 		

@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import DamageGroup from "./DamageGroup";
+import DamageGroups from "./DamageGroups";
 import StatData from "./StatData";
 
 type Stat = {
@@ -10,7 +10,7 @@ type Stat = {
 	default: number;
 	type: StatTypes;
 	section: StatSections;
-	groups: DamageGroup;
+	groups: DamageGroups;
 };
 
 export enum StatTypes {
