@@ -50,9 +50,9 @@ export default function CalculatorForm() {
 				<StatInputRow key={stat.name} stat={stat} allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 			)}
 			<HeadingRow title="Damage" span={headerSpan} />
-			<DamageOutputRow title="Crit Hit Damage" damages={damages} prop="crit" />
-			<DamageOutputRow title="Non-Crit Damage" damages={damages} prop="nonCrit" />
-			<DamageOutputRow title="Average Damage" damages={damages} prop="avgDmg" />
+			<DamageOutputRow title="Crit Hit" damages={damages} prop="crit" />
+			<DamageOutputRow title="Non-Crit" damages={damages} prop="nonCrit" />
+			<DamageOutputRow title="Average" damages={damages} prop="avgDmg" />
 		</form>
 	</section>;
 }
