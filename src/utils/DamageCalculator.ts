@@ -1,5 +1,3 @@
-
-import { evaluate } from "mathjs";
 import Damage from "../types/Damage";
 import DamageGroup from "../types/DamageGroup";
 import DamageType from "../types/DamageType";
@@ -8,6 +6,7 @@ import EquationOutput, { ComponentOutput, VariableOutput } from "../types/Equati
 import RecordEntry, { RecordEntryTypes } from "../types/RecordEntry";
 import StatData from "../types/StatData";
 import VariableData from "../types/VariableData";
+import evaluateExpression from "./evalulateExpression";
 import stats from "./Stats";
 import transformativeLevelMultipliers from "./TransformativeLevelMultipliers";
 
@@ -271,7 +270,7 @@ export default class DamageCalculator {
 			return res.value;
 		}).join('');
 		
-		let value = evaluate(expr);
+		let value = evaluateExpression(expr);
 		
 		if (!(name in prevEquations)) {
 			prevEquations[name] = [
