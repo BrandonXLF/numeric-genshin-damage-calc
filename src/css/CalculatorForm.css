@@ -4,15 +4,11 @@
 	background: #333;
 	max-width: 100%;
 	border-radius: 8px;
-	padding: 10px 20px;
+	padding: 1em;
 }
 
 .form-section h2 {
 	margin: 8px 0;
-}
-
-.form-section h2:first-of-type {
-	margin-top: 0;
 }
 
 .form-top {
@@ -22,12 +18,11 @@
 .grid {
 	display: grid;
 	align-items: center;
-	row-gap: 8px;
-	column-gap: 6px;
+	row-gap: 1em;
+	column-gap: 1em;
 	max-width: 100%;
 	font-size: 0.85em;
 	overflow: auto;
-	padding: 10px 0;
 }
 
 .mini-col {

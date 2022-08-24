@@ -25,7 +25,7 @@ export default function CalculatorForm() {
 		new DamageCalculator(statData, damageType).calculateDamage()
 	);
 	
-	let headerSpan = allInputDetails.length * 2 + 2;
+	let headerSpan = allInputDetails.length + 1;
 	
 	useEffect(() => {
 		let allStoredInputDetails = [...allInputDetails] as StoredInputDetails[];
@@ -36,9 +36,9 @@ export default function CalculatorForm() {
 	return <section className="center-items form-section">
 		<TopButtonRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 		<form className="grid" style={{
-			gridTemplateColumns: `max-content max-content repeat(${allInputDetails.length}, max-content 1fr)`
+			gridTemplateColumns: `max-content repeat(${allInputDetails.length}, 1fr)`
 		}}>
-			<HeadingRow title="General" span={4} />
+			<HeadingRow title="General" span={2} />
 			<RemoveColumnRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 			<DamageTypeRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
 			<HeadingRow title="Character" span={headerSpan} />

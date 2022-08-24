@@ -5,12 +5,12 @@
 body {
 	font-family: sans-serif;
 	background: #222;
-	color: white;
-	margin: 1em;
+	color: #ffffff;
+	margin: 8px;
 }
 
 section {
-	margin-top: 1em;
+	margin-top: 8px;
 }
 
 main {
@@ -29,6 +29,10 @@ a:visited {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+.vertical-align > * {
+	vertical-align: middle;
 }
 
 .pos {
