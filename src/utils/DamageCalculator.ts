@@ -1,5 +1,5 @@
 import Damage from "../types/Damage";
-import DamageGroup from "../types/DamageGroup";
+import DamageGroups from "../types/DamageGroups";
 import DamageType from "../types/DamageType";
 import EquationData from "../types/EquationData";
 import EquationOutput, { ComponentOutput, VariableOutput } from "../types/EquationOutput";
@@ -16,70 +16,112 @@ export default class DamageCalculator {
 			name: 'No Reaction',
 			canCrit: true,
 			equation: 'generalDamage',
-			group: DamageGroup.NoReaction
+			groups: DamageGroups.General
 		},
 		{
 			name: 'Melt (Pyro on Cyro)',
 			canCrit: true,
 			equation: 'amplifyingReaction',
 			baseMultiplier: 2,
-			group: DamageGroup.Amplifying
+			groups: DamageGroups.General | DamageGroups.Reaction
 		},
 		{
 			name: 'Melt (Cyro on Pyro)',
 			canCrit: true,
 			equation: 'amplifyingReaction',
 			baseMultiplier: 1.5,
-			group: DamageGroup.Amplifying
+			groups: DamageGroups.General | DamageGroups.Reaction
 		},
 		{
 			name: 'Vaporize (Pyro on Hydro)',
 			canCrit: true,
 			equation: 'amplifyingReaction',
 			baseMultiplier: 1.5,
-			group: DamageGroup.Amplifying
+			groups: DamageGroups.General | DamageGroups.Reaction
 		},
 		{
 			name: 'Vaporize (Hydro on Pyro)',
 			canCrit: true,
 			equation: 'amplifyingReaction',
 			baseMultiplier: 2,
-			group: DamageGroup.Amplifying
+			groups: DamageGroups.General | DamageGroups.Reaction
+		},
+		{
+			name: 'Burgeon',
+			canCrit: false,
+			equation: 'transformativeReaction',
+			baseMultiplier: 3,
+			groups: DamageGroups.Reaction
+		},
+		{
+			name: 'Hyperbloom',
+			canCrit: false,
+			equation: 'transformativeReaction',
+			baseMultiplier: 3,
+			groups: DamageGroups.Reaction
 		},
 		{
 			name: 'Overloaded',
 			canCrit: false,
 			equation: 'transformativeReaction',
 			baseMultiplier: 2,
-			group: DamageGroup.Transformative
+			groups: DamageGroups.Reaction
+		},
+		{
+			name: 'Bloom',
+			canCrit: false,
+			equation: 'transformativeReaction',
+			baseMultiplier: 2,
+			groups: DamageGroups.Reaction
 		},
 		{
 			name: 'Shattered',
 			canCrit: false,
 			equation: 'transformativeReaction',
 			baseMultiplier: 1.5,
-			group: DamageGroup.Transformative
+			groups: DamageGroups.Reaction
 		},
 		{
 			name: 'Electro-Charged',
 			canCrit: false,
 			equation: 'transformativeReaction',
 			baseMultiplier: 1.2,
-			group: DamageGroup.Transformative
+			groups: DamageGroups.Reaction
 		},
 		{
 			name: 'Swirl',
 			canCrit: false,
 			equation: 'transformativeReaction',
 			baseMultiplier: 0.6,
-			group: DamageGroup.Transformative
+			groups: DamageGroups.Reaction
 		},
 		{
 			name: 'Superconduct',
 			canCrit: false,
 			equation: 'transformativeReaction',
 			baseMultiplier: 0.5,
-			group: DamageGroup.Transformative
+			groups: DamageGroups.Reaction
+		},
+		{
+			name: 'Burning',
+			canCrit: false,
+			equation: 'transformativeReaction',
+			baseMultiplier: 0.25,
+			groups: DamageGroups.Reaction
+		},
+		{
+			name: 'Spread',
+			canCrit: true,
+			equation: 'flatDamageReaction',
+			baseMultiplier: 1.25,
+			groups: DamageGroups.General | DamageGroups.Reaction
+		},
+		{
+			name: 'Aggravate',
+			canCrit: true,
+			equation: 'flatDamageReaction',
+			baseMultiplier: 1.15,
+			groups: DamageGroups.General | DamageGroups.Reaction
 		}
 	];
 	
@@ -93,9 +135,13 @@ export default class DamageCalculator {
 			name: 'Talent Scale',
 			expr: '(baseTalentScale * (1 + additionalBonusTalentScale)) + bonusTalentScale'
 		},
+		talentDamage: {
+			name: 'Talent DMG',
+			expr: 'talent * baseDamageMultiplier * talentScale'
+		},
 		baseDamage: {
 			name: 'Base DMG',
-			expr: '(talent * talentScale * baseDamageMultiplier) + flatDamage'
+			expr: 'talentDamage + flatDamage'
 		},
 		enemyResistance: {
 			name: 'Enemy RES',
@@ -133,6 +179,7 @@ export default class DamageCalculator {
 			name: 'General DMG',
 			expr: 'baseDamage * (1 + damageBonus) * enemyDefenseMul * enemyResistanceMul'
 		},
+	
 		transformativeEMBonus: {
 			name: 'EM Bonus',
 			expr: '(16 * em) / (2000 + em)'
@@ -145,6 +192,7 @@ export default class DamageCalculator {
 			name: 'Transformative Reaction DMG',
 			expr: `baseTransformativeDamage * (1 + transformativeEMBonus + reactionBonus) * enemyResistanceMul`
 		},
+	
 		amplifyingEMBonus: {
 			name: 'EM Bonus',
 			expr: '(2.78 * em) / (1400 + em)'
@@ -154,9 +202,27 @@ export default class DamageCalculator {
 			expr: `baseMultiplier * (1 + amplifyingEMBonus + reactionBonus)`
 		},
 		amplifyingReaction: {
-			name: 'Non CRIT',
+			name: 'Amplified DMG',
 			expr: 'generalDamage * amplifyingMul'
 		},
+	
+		flatDamageReactionEMBonus: {
+			name: 'EM Bonus',
+			expr: '(5 * em) / (1200 + em)'
+		},
+		flatDamageReactionBonus: {
+			name: 'Reaction Bonus',
+			expr: 'baseTransformativeDamage * (1 + flatDamageReactionEMBonus + reactionBonus)'
+		},
+		baseDamageFlatDamageReaction: {
+			name: 'Base DMG',
+			expr: 'talentDamage + flatDamage + flatDamageReactionBonus'
+		},
+		flatDamageReaction: {
+			name: 'General DMG',
+			expr: 'baseDamageFlatDamageReaction * (1 + damageBonus) * enemyDefenseMul * enemyResistanceMul'
+		},
+		
 		realCritRate: {
 			name: 'Real CRIT Rate',
 			expr: 'max(0, min(critRate, 1))'

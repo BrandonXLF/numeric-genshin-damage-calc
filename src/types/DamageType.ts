@@ -1,4 +1,4 @@
-import DamageGroup from "./DamageGroup";
+import DamageGroups from "./DamageGroups";
 import EquationData from "./EquationData";
 
 type DamageType = {
@@ -6,7 +6,7 @@ type DamageType = {
 	canCrit: boolean;
 	equation: keyof EquationData;
 	baseMultiplier?: number;
-	group: DamageGroup;
+	groups: DamageGroups;
 };
 
 export default DamageType;

@@ -1,4 +1,4 @@
-import DamageGroup from "../types/DamageGroup";
+import DamageGroups from "../types/DamageGroups";
 import Stat, { StatSections, StatTypes } from "../types/Stat";
 
 const stats: Stat[] = [
@@ -9,7 +9,7 @@ const stats: Stat[] = [
 		default: 1,
 		type: StatTypes.Number,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.Transformative | DamageGroup.NoReaction
+		groups: DamageGroups.General | DamageGroups.Reaction
 	},
 	{
 		name: 'Talent Multiplier',
@@ -18,7 +18,7 @@ const stats: Stat[] = [
 		default: 100,
 		type: StatTypes.Percent,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'Base Talent Attr',
@@ -28,7 +28,7 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'Extra Bonus Talent Attr',
@@ -38,7 +38,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'Flat Bonus Talent Attr',
@@ -48,7 +48,7 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'Elemental Mastery',
@@ -56,7 +56,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Number,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.Transformative
+		groups: DamageGroups.Reaction
 	},
 	{
 		name: 'CRIT Rate',
@@ -64,7 +64,7 @@ const stats: Stat[] = [
 		default: 5,
 		type: StatTypes.Percent,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'CRIT DMG',
@@ -72,7 +72,7 @@ const stats: Stat[] = [
 		default: 50,
 		type: StatTypes.Percent,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'DMG Bonus',
@@ -81,7 +81,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'Reaction Bonus',
@@ -90,7 +90,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.Transformative
+		groups: DamageGroups.Reaction
 	},
 	{
 		name: 'Flat DMG',
@@ -99,16 +99,16 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Number,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
-		name: 'Base DMG Scale',
+		name: 'Talent DMG Scale',
 		desc: 'Special multiplier that applies to base damage, increased by Xingqui\'s C4 and Yoimiya\'s skill for example',
 		attr: 'baseDamageMultiplier',
 		default: 100,
 		type: StatTypes.Percent,
 		section: StatSections.Character,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'Enemy Level',
@@ -117,7 +117,7 @@ const stats: Stat[] = [
 		default: 1,
 		type: StatTypes.Number,
 		section: StatSections.Enemy,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'DEF Decrease',
@@ -126,7 +126,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'DEF Ignore',
@@ -135,7 +135,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
-		groups: DamageGroup.Amplifying | DamageGroup.NoReaction
+		groups: DamageGroups.General
 	},
 	{
 		name: 'Base RES',
@@ -144,7 +144,7 @@ const stats: Stat[] = [
 		default: 10,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
-		groups: DamageGroup.Amplifying | DamageGroup.Transformative | DamageGroup.NoReaction
+		groups: DamageGroups.General | DamageGroups.Reaction
 	},
 	{
 		name: 'RES Reduction',
@@ -153,7 +153,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
-		groups: DamageGroup.Amplifying | DamageGroup.Transformative | DamageGroup.NoReaction
+		groups:  DamageGroups.General | DamageGroups.Reaction
 	}
 ];
 
