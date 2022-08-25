@@ -248,7 +248,7 @@ export default class DamageCalculator {
 			},
 			transformativeLevelMultiplier: {
 				name: 'Level Multiplier',
-				value: transformativeLevelMultipliers[this.statData.characterLevel.value]
+				value: transformativeLevelMultipliers[this.statData.characterLevel.value] ?? NaN
 			}
 		} as VariableData;
 		
