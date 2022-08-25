@@ -11,6 +11,6 @@ export default function DamageOutput(props: {
 	return <div className="output vertical-align">
 		{props.calcs && <><CalculationPopup calcs={props.calcs} /> </>}
 		<output>{parseFloat(props.value.toFixed(2)).toString()}</output>
-		{props.initial && <> <DifferenceOutput initial={props.initial} value={props.value} /></>}
+		<> <DifferenceOutput initial={props.initial} value={props.value} /></>
 	</div>
 }
