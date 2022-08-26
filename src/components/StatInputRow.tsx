@@ -34,7 +34,7 @@ export default function StatInputRow(props: {
 	if (!anyEnabled) return null;
 	
 	return <>
-		<RowLabel label={props.stat.label || props.stat.name} desc={props.stat.desc} />
+		<RowLabel label={props.stat.name} desc={props.stat.desc} />
 		{statInputs}
 	</>;
 }

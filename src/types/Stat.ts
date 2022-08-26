@@ -4,7 +4,6 @@ import StatData from "./StatData";
 
 type Stat = {
 	name: string;
-	label?: ReactElement;
 	desc?: string | ReactElement;
 	attr: keyof StatData;
 	default: number;
