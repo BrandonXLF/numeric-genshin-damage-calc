@@ -1,0 +1,12 @@
+.calc {
+	padding-top: 0.8em;
+}
+
+.calc .calc {
+	border-left: 1px solid white;
+	padding-left: 1em;
+}
+
+.calc-note {
+	color: #6dd0fc;
+}
