@@ -2,7 +2,7 @@ import Damage from "../types/Damage";
 import DamageGroups from "../types/DamageGroups";
 import DamageType from "../types/DamageType";
 import EquationData from "../types/EquationData";
-import EquationOutput, { ComponentOutput, VariableOutput } from "../types/EquationOutput";
+import VariableOutput, { ComponentOutput, EquationRecord } from "../types/VariableOutput";
 import RecordEntry, { RecordEntryTypes } from "../types/RecordEntry";
 import StatData from "../types/StatData";
 import VariableData from "../types/VariableData";
@@ -112,14 +112,16 @@ export default class DamageCalculator {
 		{
 			name: 'Spread',
 			canCrit: true,
-			equation: 'flatDamageReaction',
+			equation: 'generalDamage',
+			flatDamage: 'flatDamageAdded',
 			baseMultiplier: 1.25,
 			groups: DamageGroups.General | DamageGroups.Reaction
 		},
 		{
 			name: 'Aggravate',
 			canCrit: true,
-			equation: 'flatDamageReaction',
+			equation: 'generalDamage',
+			flatDamage: 'flatDamageAdded',
 			baseMultiplier: 1.15,
 			groups: DamageGroups.General | DamageGroups.Reaction
 		}
@@ -127,21 +129,22 @@ export default class DamageCalculator {
 	
 	private damageType = DamageCalculator.damageTypes[this.damageTypeNumber];
 	private mainEquation = this.damageType.equation;
+	private flatDamage = this.damageType.flatDamage || 'flatDamage';
 	private variables;
 	
 	// https://library.keqingmains.com/combat-mechanics/damage/damage-formula
 	private equations: EquationData = {
 		talentScale: {
-			name: 'Talent Scale',
+			name: '[Stat]',
 			expr: '(baseTalentScale * (1 + additionalBonusTalentScale)) + bonusTalentScale'
-		},
-		talentDamage: {
-			name: 'Talent DMG',
-			expr: 'talent * baseDamageMultiplier * talentScale'
 		},
 		baseDamage: {
 			name: 'Base DMG',
-			expr: 'talentDamage + flatDamage'
+			expr: 'talentScale * talent * baseDamageMultiplier'
+		},
+		trueDamage: {
+			name: 'True DMG',
+			expr: `(baseDamage + ${this.flatDamage}) * (1 + damageBonus)`
 		},
 		enemyResistance: {
 			name: 'Enemy RES',
@@ -160,7 +163,7 @@ export default class DamageCalculator {
 					return '1 - enemyResistance'
 				}
 
-				return '1 / (4 * enemyResistance + 1)';
+				return '1 / (1 + (4 * enemyResistance))';
 			},
 		},
 		enemyDefenseFactor: {
@@ -177,9 +180,8 @@ export default class DamageCalculator {
 		},
 		generalDamage: {
 			name: 'General DMG',
-			expr: 'baseDamage * (1 + damageBonus) * enemyDefenseMul * enemyResistanceMul'
+			expr: 'trueDamage * enemyDefenseMul * enemyResistanceMul'
 		},
-	
 		transformativeEMBonus: {
 			name: 'EM Bonus',
 			expr: '(16 * em) / (2000 + em)'
@@ -192,7 +194,6 @@ export default class DamageCalculator {
 			name: 'Transformative Reaction DMG',
 			expr: `baseTransformativeDamage * (1 + transformativeEMBonus + reactionBonus) * enemyResistanceMul`
 		},
-	
 		amplifyingEMBonus: {
 			name: 'EM Bonus',
 			expr: '(2.78 * em) / (1400 + em)'
@@ -205,35 +206,33 @@ export default class DamageCalculator {
 			name: 'Amplified DMG',
 			expr: 'generalDamage * amplifyingMul'
 		},
-	
+		flatDamageAdded: {
+			name: 'Flat DMG',
+			expr: 'flatDamage + flatDamageReactionBonus'
+		},
 		flatDamageReactionEMBonus: {
 			name: 'EM Bonus',
 			expr: '(5 * em) / (1200 + em)'
 		},
 		flatDamageReactionBonus: {
-			name: 'Reaction Bonus',
+			name: 'Reaction DMG Bonus',
 			expr: 'baseTransformativeDamage * (1 + flatDamageReactionEMBonus + reactionBonus)'
 		},
-		baseDamageFlatDamageReaction: {
-			name: 'Base DMG',
-			expr: 'talentDamage + flatDamage + flatDamageReactionBonus'
-		},
-		flatDamageReaction: {
-			name: 'General DMG',
-			expr: 'baseDamageFlatDamageReaction * (1 + damageBonus) * enemyDefenseMul * enemyResistanceMul'
-		},
-		
 		realCritRate: {
 			name: 'Real CRIT Rate',
 			expr: 'max(0, min(critRate, 1))'
+		},
+		critBonus: {
+			name: 'Effective CRIT Bonus',
+			expr: 'max(0, min(critRate, 1)) * critDamage'
 		},
 		critHit: {
 			name: 'CRIT Hit',
 			expr: `${this.mainEquation} * (1 + critDamage)`
 		},
 		avgDamage: {
-			name: 'Avg DMG',
-			expr: `${this.mainEquation} * (1 + realCritRate * critDamage)`
+			name: 'Average DMG',
+			expr: `${this.mainEquation} * (1 + critBonus)`
 		}
 	};
 	
@@ -280,19 +279,12 @@ export default class DamageCalculator {
 		if (name in this.variables) {
 			return {
 				value: this.variables[name as keyof VariableData].value,
-				name: this.variables[name as keyof VariableData].name,
-				equations: {}
+				name: this.variables[name as keyof VariableData].name
 			}
 		}
 		
 		if (name in this.equations) {
-			let equationOutput = this.equation(name as keyof EquationData);
-
-			return {
-				value: equationOutput.value,
-				name: this.equations[name as keyof EquationData].name,
-				equations: equationOutput.equations
-			}
+			return this.equation(name as keyof EquationData);
 		}
 		
 		return null;
@@ -303,53 +295,57 @@ export default class DamageCalculator {
 		
 		if (/^[A-Za-z]+$/.test(component) && (variable = this.variable(component))) {
 			return {
-				value: variable.value.toString(),
+				mathComponent: variable.value.toString(),
 				equationComponent: [
 					this.record(`${variable.name} `, RecordEntryTypes.Note),
 					this.recordNumber(variable.value)
 				],
-				equations: variable.equations
+				record: variable.record
 			}
 		}
 		
 		return {
-			value: component,
+			mathComponent: component,
 			equationComponent: [
 				this.record(component, /^\d+$/.test(component) ? RecordEntryTypes.Number : RecordEntryTypes.Symbols)
-			],
-			equations: {}
+			]
 		};
 	}
 	
-	equation(name: keyof EquationData): EquationOutput {
-		let exprOrFunc = this.equations[name].expr;
+	equation(name: keyof EquationData): VariableOutput {
+		let equationInfo = this.equations[name];
+		let exprOrFunc = equationInfo.expr;
 		let expr = typeof exprOrFunc === 'function' ? exprOrFunc() : exprOrFunc;
 		let equation: RecordEntry[] = [];
-		let prevEquations: Record<string, RecordEntry[]> = {};
+		let parameters: Record<string, EquationRecord> = {};
 		
 		expr = expr.split(/([A-Za-z]+|\d+)+/g).map(component => {
 			let res = this.processComponent(component);
 			
 			equation.push(...res.equationComponent);
-			Object.assign(prevEquations, res.equations);
 			
-			return res.value;
+			if (res.record) {
+				parameters[component] = res.record;
+			}
+			
+			return res.mathComponent;
 		}).join('');
 		
 		let value = evaluateExpression(expr);
 		
-		if (!(name in prevEquations)) {
-			prevEquations[name] = [
-				this.record(`${this.equations[name].name} `, RecordEntryTypes.Note),
-				this.recordNumber(value),
-				this.record(' = ', RecordEntryTypes.Symbols),
-				...equation
-			];
-		}
+		equation.unshift(
+			this.record(`${equationInfo.name} `, RecordEntryTypes.Note),
+			this.recordNumber(value),
+			this.record(' = ', RecordEntryTypes.Symbols)
+		);
 		
 		return {
 			value: value,
-			equations: prevEquations
+			name: equationInfo.name,
+			record: {
+				equation: equation,
+				parameters: parameters
+			}
 		};
 	}
 	

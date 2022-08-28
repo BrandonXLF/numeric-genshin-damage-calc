@@ -6,14 +6,12 @@ export type EquationInfo = {
 type EquationData = {
 	talentScale: EquationInfo;
 	baseDamage: EquationInfo;
-	baseDamageFlatDamageReaction: EquationInfo;
 	enemyResistance: EquationInfo;
 	enemyResistanceMul: EquationInfo;
 	enemyDefenseFactor: EquationInfo;
 	characterDefenseFactor: EquationInfo;
 	enemyDefenseMul: EquationInfo;
 	generalDamage: EquationInfo;
-	flatDamageReaction: EquationInfo;
 	transformativeEMBonus: EquationInfo;
 	baseTransformativeDamage: EquationInfo;
 	transformativeReaction: EquationInfo;
@@ -24,8 +22,10 @@ type EquationData = {
 	critHit: EquationInfo;
 	avgDamage: EquationInfo;
 	flatDamageReactionEMBonus: EquationInfo;
-	talentDamage: EquationInfo;
+	trueDamage: EquationInfo;
 	flatDamageReactionBonus: EquationInfo;
+	critBonus: EquationInfo;
+	flatDamageAdded: EquationInfo;
 };
 
 export default EquationData;

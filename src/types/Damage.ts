@@ -1,4 +1,4 @@
-import EquationOutput from "./EquationOutput";
+import EquationOutput from "./VariableOutput";
 
 type Damage = {
 	nonCrit?: EquationOutput;

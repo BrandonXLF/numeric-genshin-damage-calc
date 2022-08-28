@@ -3,12 +3,13 @@ import Popup from "reactjs-popup";
 import { PopupActions } from "reactjs-popup/dist/types";
 import CalculatorSVG from "../svgs/CalculatorSVG";
 import CloseSVG from "../svgs/CloseSVG";
-import RecordEntry from "../types/RecordEntry";
 import SVGButton from "./SVGButton";
 import '../css/CalculationPopup.css';
+import { EquationRecord } from "../types/VariableOutput";
+import EquationLine from "./EquationLine";
 
 export default function CalculationPopup(props: {
-	calcs: Record<string, RecordEntry[]>;
+	calcs: EquationRecord;
 }) {
 	const ref = React.useRef<PopupActions>(null);
 	
@@ -25,13 +26,7 @@ export default function CalculationPopup(props: {
 					onClick={() => ref.current?.close()}
 				/>
 			</div>
-			{Object.entries(props.calcs).map(([key, row]) =>
-				<div className="calc" key={key}>
-					{row.map((entry, i) =>
-						<span key={i} className={`calc-${entry.type}`}>{entry.value}</span>
-					)}
-				</div>
-			)}
+			<EquationLine record={props.calcs} />
 		</div>
 	</Popup>
 }
