@@ -1,6 +1,6 @@
 import Damage from "../types/Damage";
 import DamageGroups from "../types/DamageGroups";
-import DamageType from "../types/DamageType";
+import ReactionType from "../types/ReactionType";
 import EquationData from "../types/EquationData";
 import VariableOutput, { ComponentOutput, EquationRecord } from "../types/VariableOutput";
 import RecordEntry, { RecordEntryTypes } from "../types/RecordEntry";
@@ -11,126 +11,73 @@ import stats from "./stats";
 import transformativeLevelMultipliers from "./transformativeLevelMultipliers";
 
 export default class DamageCalculator {
-	static damageTypes: DamageType[] = [
+	static reactionTypes: ReactionType[] = [
 		{
 			name: 'No Reaction',
 			canCrit: true,
 			equation: 'generalDamage',
-			groups: DamageGroups.General
+			groups: DamageGroups.General,
+			reactions: [
+				['No Reaction']
+			]
 		},
 		{
-			name: 'Melt (Pyro on Cyro)',
+			name: 'Amplifying',
 			canCrit: true,
 			equation: 'amplifyingReaction',
-			baseMultiplier: 2,
-			groups: DamageGroups.General | DamageGroups.Reaction
+			groups: DamageGroups.Reaction | DamageGroups.General,
+			reactions: [
+				['Melt (Pyro on Cyro)', 2],
+				['Melt (Cyro on Pyro)', 1.5],
+				['Vaporize (Pyro on Hydro)', 1.5],
+				['Vaporize (Hydro on Pyro)', 2]
+			]
 		},
 		{
-			name: 'Melt (Cyro on Pyro)',
-			canCrit: true,
-			equation: 'amplifyingReaction',
-			baseMultiplier: 1.5,
-			groups: DamageGroups.General | DamageGroups.Reaction
-		},
-		{
-			name: 'Vaporize (Pyro on Hydro)',
-			canCrit: true,
-			equation: 'amplifyingReaction',
-			baseMultiplier: 1.5,
-			groups: DamageGroups.General | DamageGroups.Reaction
-		},
-		{
-			name: 'Vaporize (Hydro on Pyro)',
-			canCrit: true,
-			equation: 'amplifyingReaction',
-			baseMultiplier: 2,
-			groups: DamageGroups.General | DamageGroups.Reaction
-		},
-		{
-			name: 'Burgeon',
+			name: 'Transformative',
 			canCrit: false,
 			equation: 'transformativeReaction',
-			baseMultiplier: 3,
-			groups: DamageGroups.Reaction
+			groups: DamageGroups.Reaction,
+			reactions: [
+				['Burgeon', 3],
+				['Hyperbloom', 3],
+				['Overloaded', 2],
+				['Bloom', 2],
+				['Shattered', 1.5],
+				['Electro-Charged', 1.2],
+				['Swirl', 0.6],
+				['Superconduct', 0.5],
+				['Burning', 0.25]
+			]
 		},
 		{
-			name: 'Hyperbloom',
-			canCrit: false,
-			equation: 'transformativeReaction',
-			baseMultiplier: 3,
-			groups: DamageGroups.Reaction
-		},
-		{
-			name: 'Overloaded',
-			canCrit: false,
-			equation: 'transformativeReaction',
-			baseMultiplier: 2,
-			groups: DamageGroups.Reaction
-		},
-		{
-			name: 'Bloom',
-			canCrit: false,
-			equation: 'transformativeReaction',
-			baseMultiplier: 2,
-			groups: DamageGroups.Reaction
-		},
-		{
-			name: 'Shattered',
-			canCrit: false,
-			equation: 'transformativeReaction',
-			baseMultiplier: 1.5,
-			groups: DamageGroups.Reaction
-		},
-		{
-			name: 'Electro-Charged',
-			canCrit: false,
-			equation: 'transformativeReaction',
-			baseMultiplier: 1.2,
-			groups: DamageGroups.Reaction
-		},
-		{
-			name: 'Swirl',
-			canCrit: false,
-			equation: 'transformativeReaction',
-			baseMultiplier: 0.6,
-			groups: DamageGroups.Reaction
-		},
-		{
-			name: 'Superconduct',
-			canCrit: false,
-			equation: 'transformativeReaction',
-			baseMultiplier: 0.5,
-			groups: DamageGroups.Reaction
-		},
-		{
-			name: 'Burning',
-			canCrit: false,
-			equation: 'transformativeReaction',
-			baseMultiplier: 0.25,
-			groups: DamageGroups.Reaction
-		},
-		{
-			name: 'Spread',
+			name: 'Additive',
 			canCrit: true,
 			equation: 'generalDamage',
 			flatDamage: 'flatDamageAdded',
-			baseMultiplier: 1.25,
-			groups: DamageGroups.General | DamageGroups.Reaction
-		},
-		{
-			name: 'Aggravate',
-			canCrit: true,
-			equation: 'generalDamage',
-			flatDamage: 'flatDamageAdded',
-			baseMultiplier: 1.15,
-			groups: DamageGroups.General | DamageGroups.Reaction
+			groups: DamageGroups.General | DamageGroups.Reaction,
+			reactions: [
+				['Spread', 1.25],
+				['Aggravate', 1.15]
+			]
 		}
 	];
 	
-	private damageType = DamageCalculator.damageTypes[this.damageTypeNumber];
-	private mainEquation = this.damageType.equation;
-	private flatDamage = this.damageType.flatDamage || 'flatDamage';
-	private variables;
+	private reactionType = DamageCalculator.reactionTypes[this.reactionTypeIndex];
+	private reaction = this.reactionType.reactions[this.reactionIndex];
+	private mainEquation = this.reactionType.equation;
+	private flatDamage = this.reactionType.flatDamage || 'flatDamage';
+
+	private variables = {
+		baseMultiplier: {
+			name: 'Reaction Multiplier',
+			value: this.reaction[1] || 1
+		},
+		transformativeLevelMultiplier: {
+			name: 'Level Multiplier',
+			value: transformativeLevelMultipliers[this.statData.characterLevel.value] ?? NaN
+		}
+	} as VariableData;
 	
 	// https://library.keqingmains.com/combat-mechanics/damage/damage-formula
 	private equations: EquationData = {
@@ -238,24 +185,12 @@ export default class DamageCalculator {
 	
 	constructor(
 		private statData: StatData,
-		private damageTypeNumber: number
+		private reactionTypeIndex: number,
+		private reactionIndex: number
 	) {
-		this.variables = {
-			baseMultiplier: {
-				name: 'Reaction Multiplier',
-				value: this.damageType.baseMultiplier || 1
-			},
-			transformativeLevelMultiplier: {
-				name: 'Level Multiplier',
-				value: transformativeLevelMultipliers[this.statData.characterLevel.value] ?? NaN
-			}
-		} as VariableData;
-		
-		stats.forEach(stat => {
-			this.variables[stat.attr] = {
-				name: stat.name,
-				value: this.statData[stat.attr].value
-			};
+		stats.forEach(stat => this.variables[stat.attr] = {
+			name: stat.name,
+			value: this.statData[stat.attr].value
 		});
 	}
 	
@@ -350,16 +285,16 @@ export default class DamageCalculator {
 	}
 	
 	calculateDamage(): Damage {
-		if (this.damageType.canCrit) {
+		if (this.reactionType.canCrit) {
 			return {
-				nonCrit: this.equation(this.damageType.equation),
+				nonCrit: this.equation(this.reactionType.equation),
 				crit: this.equation('critHit'),
 				avgDmg: this.equation('avgDamage')
 			};
 		}
 		
 		return {
-			avgDmg: this.equation(this.damageType.equation)
+			avgDmg: this.equation(this.reactionType.equation)
 		};
 	}
 }
