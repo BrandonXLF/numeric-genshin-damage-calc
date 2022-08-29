@@ -4,7 +4,8 @@
 
 .calc .calc {
 	border-left: 1px solid white;
-	padding-left: 1em;
+	margin-left: 0.15ch;
+	padding-left: calc(1em - 0.15ch);
 }
 
 .calc-note {
