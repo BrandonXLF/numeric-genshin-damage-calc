@@ -137,9 +137,13 @@ export default class DamageCalculator {
 			name: 'Base Reaction DMG',
 			expr: `baseMultiplier * transformativeLevelMultiplier`
 		},
+		trueTransformativeReation: {
+			name: 'True DMG',
+			expr: `baseTransformativeDamage * (1 + transformativeEMBonus + reactionBonus)`
+		},
 		transformativeReaction: {
-			name: 'Transformative Reaction DMG',
-			expr: `baseTransformativeDamage * (1 + transformativeEMBonus + reactionBonus) * enemyResistanceMul`
+			name: 'Transformative DMG',
+			expr: `trueTransformativeReation * enemyResistanceMul`
 		},
 		amplifyingEMBonus: {
 			name: 'EM Bonus',
