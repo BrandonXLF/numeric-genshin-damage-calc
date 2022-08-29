@@ -12,17 +12,22 @@ export default function DamageTypeRow(props: {
 		<RowLabel label="Reaction" />
 		{props.allInputDetails.map((inputDetails, i) =>
 			<FormInput key={i}>
-				<select value={inputDetails.damageType} onChange={e => {
-					let selected = +e.target.value;
-					
+				<select value={`${inputDetails.reactionType},${inputDetails.reaction}`} onChange={e => {
 					props.setAllInputDetails(([...newAllInputDetails]) => {
-						newAllInputDetails[i].damageType = selected;
+						[
+							newAllInputDetails[i].reactionType,
+							newAllInputDetails[i].reaction
+						] = e.target.value.split(',').map(Number);
 						
 						return newAllInputDetails;
 					});
 				}}>
-					{DamageCalculator.damageTypes.map((damageType, i) => {
-						return <option value={i} key={i}>{damageType.name}</option>;
+					{DamageCalculator.reactionTypes.map((damageType, i) => {
+						return <optgroup key={i} label={damageType.name}>
+							{damageType.reactions.map((damageSubType, j) => {
+								return <option value={`${i},${j}`} key={j}>{damageSubType[0]}</option>;
+							})}
+						</optgroup>;
 					})}
 				</select>
 			</FormInput>

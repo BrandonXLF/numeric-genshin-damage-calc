@@ -6,13 +6,15 @@ import StatValue from "./StatValue";
 export default function createInputDetails(base?: StoredInputDetails): InputDetails {
 	if (!base) {
 		base = {
-			damageType: undefined,
+			reaction: undefined,
+			reactionType: undefined,
 			statData: {}
 		};
 	}
 
 	let out: InputDetails = {
-		damageType: base?.damageType ?? 0,
+		reaction: base?.reaction ?? 0,
+		reactionType: base?.reactionType ?? 0,
 		statData: {} as StatData
 	};
 	
