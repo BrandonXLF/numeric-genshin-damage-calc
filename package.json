@@ -1,5 +1,5 @@
 {
-	"name": "numeric-genshin-damage-calculator",
+	"name": "numeric-genshin-damage-calc",
 	"version": "1.0.0",
 	"private": true,
 	"dependencies": {
