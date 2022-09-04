@@ -9,12 +9,18 @@ body {
 	margin: 8px;
 }
 
-section {
-	margin-top: 8px;
-}
-
 main {
 	margin: auto;
+}
+
+main > * {
+	margin: 2rem 0 0 0;
+	text-align: center;
+}
+
+footer > :not(:first-child) {
+	margin-top: 1em;
+	text-align: center;
 }
 
 a {
