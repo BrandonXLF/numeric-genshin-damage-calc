@@ -1,6 +1,6 @@
 {
-	"name": "genshin-impact-damage-calculator",
-	"version": "0.1.0",
+	"name": "numeric-genshin-damage-calculator",
+	"version": "1.0.0",
 	"private": true,
 	"dependencies": {
 		"fparser": "^2.0.2",
