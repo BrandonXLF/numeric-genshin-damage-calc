@@ -6,7 +6,7 @@ import '../css/popup.css';
 
 export default function App() {
 	return <main className='center-items'>
-		<h1>Genshin Impact Damage Calculator</h1>
+		<h1>Numeric Genshin Damage Calculator</h1>
 		<CalculatorForm />
 		<footer>
 			<div>
