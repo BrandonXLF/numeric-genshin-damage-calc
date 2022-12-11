@@ -12,39 +12,21 @@ const stats: Stat[] = [
 		groups: DamageGroups.General | DamageGroups.Reaction
 	},
 	{
-		name: 'Talent Multiplier',
-		desc: 'The percent multiplier of the talent',
+		name: 'ATK/HP/DEF Multiplier',
+		desc: 'The percent multiplier of the talent that scales with ATK/HP/DEF',
 		attr: 'talent',
 		default: 100,
 		type: StatTypes.Percent,
-		section: StatSections.Character,
+		section: StatSections.CharacterTalent,
 		groups: DamageGroups.General
 	},
 	{
-		name: 'Base [Stat]',
-		desc: 'The stat the talent scales off of, e.g. base ATK or base HP, from character and weapon flat stat only',
-		attr: 'baseTalentScale',
-		default: 500,
-		type: StatTypes.Number,
-		section: StatSections.Character,
-		groups: DamageGroups.General
-	},
-	{
-		name: 'Extra [Stat] %',
-		desc: 'Extra ATK percent, HP percent, etc., in-game ATK percent etc. is integrated into Bonus [Talent Scale]',
-		attr: 'additionalBonusTalentScale',
+		name: 'EM Multiplier',
+		desc: 'THe percent multiplier of the talent that scales with EM if applicable',
+		attr: 'talentEM',
 		default: 0,
 		type: StatTypes.Percent,
-		section: StatSections.Character,
-		groups: DamageGroups.General
-	},
-	{
-		name: 'Bonus [Stat]',
-		desc: 'The green number next to the stat the talent scales off of, includes in-game ATK percent etc.,  add extra flat ATK etc. like from Bennett\'s ult here',
-		attr: 'bonusTalentScale',
-		default: 500,
-		type: StatTypes.Number,
-		section: StatSections.Character,
+		section: StatSections.CharacterTalent,
 		groups: DamageGroups.General
 	},
 	{
@@ -53,17 +35,53 @@ const stats: Stat[] = [
 		attr: 'baseDamageMultiplier',
 		default: 100,
 		type: StatTypes.Percent,
-		section: StatSections.Character,
+		section: StatSections.CharacterTalent,
 		groups: DamageGroups.General
 	},
 	{
-		name: 'Flat DMG Bonus',
+		name: 'Talent DMG Increase',
 		desc: 'Flat damage increases that are added to the talent damage, e.g. Yunjin\'s skill, Zhongli\'s A4, and Kokomi\'s burst',
 		attr: 'flatDamage',
 		default: 0,
 		type: StatTypes.Number,
-		section: StatSections.Character,
+		section: StatSections.CharacterTalent,
 		groups: DamageGroups.General
+	},
+	{
+		name: 'Base ATK/HP/DEF',
+		desc: 'The stat the talent scales off of, e.g. base ATK or base HP, from character and weapon flat stat only',
+		attr: 'baseTalentScale',
+		default: 500,
+		type: StatTypes.Number,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General
+	},
+	{
+		name: 'Extra ATK/HP/DEF %',
+		desc: 'Extra ATK percent, HP percent, etc., in-game ATK percent etc. is integrated into Bonus ATK/HP/DEF',
+		attr: 'additionalBonusTalentScale',
+		default: 0,
+		type: StatTypes.Percent,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General
+	},
+	{
+		name: 'Bonus ATK/HP/DEF',
+		desc: 'The green number next to the stat the talent scales off of, includes in-game ATK percent etc., add extra flat ATK etc. like from Bennett\'s ult here',
+		attr: 'bonusTalentScale',
+		default: 500,
+		type: StatTypes.Number,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General
+	},
+	{
+		name: 'Elemental Mastery',
+		desc: 'Used to calculate damage caused by Talent EM Multiplier and the Reaction Bonus, not needed otherwise',
+		attr: 'em',
+		default: 0,
+		type: StatTypes.Number,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General | DamageGroups.Reaction
 	},
 	{
 		name: 'DMG Bonus',
@@ -71,16 +89,8 @@ const stats: Stat[] = [
 		attr: 'damageBonus',
 		default: 0,
 		type: StatTypes.Percent,
-		section: StatSections.Character,
+		section: StatSections.CharacterStats,
 		groups: DamageGroups.General
-	},
-	{
-		name: 'Elemental Mastery',
-		attr: 'em',
-		default: 0,
-		type: StatTypes.Number,
-		section: StatSections.Character,
-		groups: DamageGroups.Reaction
 	},
 	{
 		name: 'Reaction Bonus',
@@ -88,7 +98,7 @@ const stats: Stat[] = [
 		attr: 'reactionBonus',
 		default: 0,
 		type: StatTypes.Percent,
-		section: StatSections.Character,
+		section: StatSections.CharacterStats,
 		groups: DamageGroups.Reaction
 	},
 	{
@@ -96,7 +106,7 @@ const stats: Stat[] = [
 		attr: 'critRate',
 		default: 5,
 		type: StatTypes.Percent,
-		section: StatSections.Character,
+		section: StatSections.CharacterStats,
 		groups: DamageGroups.General
 	},
 	{
@@ -104,7 +114,7 @@ const stats: Stat[] = [
 		attr: 'critDamage',
 		default: 50,
 		type: StatTypes.Percent,
-		section: StatSections.Character,
+		section: StatSections.CharacterStats,
 		groups: DamageGroups.General
 	},
 	{
