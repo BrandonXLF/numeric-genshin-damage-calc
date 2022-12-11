@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import DamageGroups from "./DamageGroups";
 import StatData from "./StatData";
+import { StatSections } from "./StatSection";
 
 type Stat = {
 	name: string;
@@ -15,11 +16,6 @@ type Stat = {
 export enum StatTypes {
 	Number,
 	Percent
-}
-
-export enum StatSections {
-	Character,
-	Enemy
 }
 
 export default Stat;

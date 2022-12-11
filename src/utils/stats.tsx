@@ -1,5 +1,6 @@
 import DamageGroups from "../types/DamageGroups";
-import Stat, { StatSections, StatTypes } from "../types/Stat";
+import Stat, { StatTypes } from "../types/Stat";
+import { StatSections } from "../types/StatSection";
 
 const stats: Stat[] = [
 	{
