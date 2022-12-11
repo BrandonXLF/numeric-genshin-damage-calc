@@ -82,12 +82,12 @@ export default class DamageCalculator {
 	// https://library.keqingmains.com/combat-mechanics/damage/damage-formula
 	private equations: EquationData = {
 		talentScale: {
-			name: '[Stat]',
+			name: 'ATK/HP/DEF',
 			expr: '(baseTalentScale * (1 + additionalBonusTalentScale)) + bonusTalentScale'
 		},
 		baseDamage: {
 			name: 'Base DMG',
-			expr: 'talentScale * talent * baseDamageMultiplier'
+			expr: () => '(talentScale * talent)' + (this.variable('talentEM').value ? ' + (em * talentEM)' : '') + ' * baseDamageMultiplier'
 		},
 		trueDamage: {
 			name: 'True DMG',

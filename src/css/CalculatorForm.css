@@ -8,8 +8,17 @@
 	text-align: left;
 }
 
-.form-section h2 {
+.form-section h2,
+.form-section h3 {
 	margin: 8px 0;
+}
+
+.form-section h2 {
+	font-size: 1.5em;
+}
+
+.form-section h3 {
+	font-size: 1.25em;
 }
 
 .form-top {

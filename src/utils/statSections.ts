@@ -6,6 +6,16 @@ const statSections: StatSection[] = [
 		value: StatSections.Character
 	},
 	{
+		name: 'Talent',
+		sub: true,
+		value: StatSections.CharacterTalent
+	},
+	{
+		name: 'Stats',
+		sub: true,
+		value: StatSections.CharacterStats
+	},
+	{
 		name: 'Enemy',
 		value: StatSections.Enemy
 	}

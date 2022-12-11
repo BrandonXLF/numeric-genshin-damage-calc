@@ -5,6 +5,7 @@ type StatData = {
 	additionalBonusTalentScale: StatValue;
 	bonusTalentScale: StatValue;
 	talent: StatValue;
+	talentEM: StatValue;
 	talentScale: StatValue;
 	baseDamageMultiplier: StatValue;
 	flatDamage: StatValue;
