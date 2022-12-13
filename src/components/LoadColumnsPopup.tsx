@@ -41,7 +41,7 @@ export default function LoadColumnsPopup(props: {
 				{props.columns.map((inputDetails, i) =>
 					!inputDetails.shown && <div key={i}>
 						<SVGButton
-							label={`${i} - ${inputDetails.label || 'Unnamed'}`}
+							label={`${i + 1} - ${inputDetails.label || 'Unnamed'}`}
 							onClick={() => {
 								let newColumns = [...props.columns];
 								
