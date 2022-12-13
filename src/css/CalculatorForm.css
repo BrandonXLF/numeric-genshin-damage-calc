@@ -3,7 +3,9 @@
 }
 
 .form-top {
-	text-align: right;
+	display: flex;
+	justify-content: right;
+	gap: 6px;
 	padding: 0 1em;
 	margin-bottom: 0.2em;
 }
@@ -25,6 +27,12 @@
 	column-gap: 1em;
 	max-width: 100%;
 	overflow: auto;
+}
+
+.column-top {
+	display: flex;
+	justify-content: center;
+	gap: 4px;
 }
 
 .grid h2,

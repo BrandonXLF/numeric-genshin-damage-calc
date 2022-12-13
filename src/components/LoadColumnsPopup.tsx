@@ -27,32 +27,30 @@ export default function LoadColumnsPopup(props: {
 			disabled={allEnabled}
 		/>
 	} ref={ref} modal>
-		<div>
-			<div className="load-columns-popup-top">
-				<h2>Load Columns</h2>
-				<SVGButton
-					svg={<CloseSVG className="neg" />}
-					label="Close"
-					hideLabel={true}
-					onClick={() => ref.current?.close()}
-				/>
-			</div>
-			<div className="load-columns-popup-body">
-				{props.columns.map((inputDetails, i) =>
-					!inputDetails.shown && <div key={i}>
-						<SVGButton
-							label={`${i + 1} - ${inputDetails.label || 'Unnamed'}`}
-							onClick={() => {
-								let newColumns = [...props.columns];
-								
-								newColumns[i].shown = true;
-								
-								props.setColumns(newColumns);
-							}}
-						/>
-					</div>
-				)}
-			</div>
+		<div className="load-columns-popup-top">
+			<h2>Load Columns</h2>
+			<SVGButton
+				svg={<CloseSVG className="neg" />}
+				label="Close"
+				hideLabel={true}
+				onClick={() => ref.current?.close()}
+			/>
+		</div>
+		<div className="load-columns-popup-body">
+			{props.columns.map((inputDetails, i) =>
+				!inputDetails.shown && <div key={i}>
+					<SVGButton
+						label={`${i + 1} - ${inputDetails.label || 'Unnamed'}`}
+						onClick={() => {
+							let newColumns = [...props.columns];
+							
+							newColumns[i].shown = true;
+							
+							props.setColumns(newColumns);
+						}}
+					/>
+				</div>
+			)}
 		</div>
 	</Popup>
 }

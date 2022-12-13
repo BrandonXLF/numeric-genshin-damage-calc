@@ -16,17 +16,15 @@ export default function CalculationPopup(props: {
 	return <Popup trigger={
 		<SVGButton svg={<CalculatorSVG />} label="Show Calculations" hideLabel={true} mini={true} />
 	} ref={ref} modal>
-		<div>
-			<div className="calculation-popup-top">
-				<h2>Calculations</h2>
-				<SVGButton
-					svg={<CloseSVG className="neg" />}
-					label="Close"
-					hideLabel={true}
-					onClick={() => ref.current?.close()}
-				/>
-			</div>
-			<EquationLine record={props.calcs} />
+		<div className="calculation-popup-top">
+			<h2>Calculations</h2>
+			<SVGButton
+				svg={<CloseSVG className="neg" />}
+				label="Close"
+				hideLabel={true}
+				onClick={() => ref.current?.close()}
+			/>
 		</div>
+		<EquationLine record={props.calcs} />
 	</Popup>
 }

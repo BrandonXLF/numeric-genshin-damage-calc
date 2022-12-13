@@ -21,6 +21,7 @@ a {
 
 button {
 	font-size: unset;
+	border-radius: 4px;
 }
 
 a:visited {
