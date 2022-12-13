@@ -3,7 +3,6 @@ import createInputDetails from "../utils/createInputDetails";
 import React from 'react';
 import SVGButton from "./SVGButton";
 import AddSVG from "../svgs/AddSVG";
-import { PopupActions } from "reactjs-popup/dist/types";
 import LoadColumnsPopup from "./LoadColumnsPopup";
 import '../css/LoadColumnsPopup.css';
 
