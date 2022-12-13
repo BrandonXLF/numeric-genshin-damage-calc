@@ -10,13 +10,13 @@ import InputDetails from "../types/InputDetails";
 export default function LoadColumnsPopup(props: {
 	columns: InputDetails[];
 	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	closedColumns: InputDetails[];
+	setClosedColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
 }) {
 	const ref = React.useRef<PopupActions>(null);
 	
-	let allEnabled = !props.columns.some(inputDetails => !inputDetails.shown);
-	
 	useEffect(() => {
-		if (ref.current && allEnabled)
+		if (ref.current && !props.closedColumns.length)
 			ref.current.close();
 	});
 	
@@ -24,7 +24,7 @@ export default function LoadColumnsPopup(props: {
 		<SVGButton
 			svg={<LoadSVG />}
 			label="Load Column"
-			disabled={allEnabled}
+			disabled={!props.closedColumns.length}
 		/>
 	} ref={ref} modal>
 		<div className="load-columns-popup-top">
@@ -37,16 +37,18 @@ export default function LoadColumnsPopup(props: {
 			/>
 		</div>
 		<div className="load-columns-popup-body">
-			{props.columns.map((inputDetails, i) =>
-				!inputDetails.shown && <div key={i}>
+			{props.closedColumns.map((inputDetails, i) =>
+				<div key={i}>
 					<SVGButton
-						label={`${i + 1} - ${inputDetails.label || 'Unnamed'}`}
+						label={inputDetails.label || `Saved Column ${i + 1}`}
 						onClick={() => {
 							let newColumns = [...props.columns];
+							let newClosedColumns = [...props.closedColumns];
 							
-							newColumns[i].shown = true;
+							newColumns.push(newClosedColumns.splice(i, 1)[0]);
 							
 							props.setColumns(newColumns);
+							props.setClosedColumns(newClosedColumns);
 						}}
 					/>
 				</div>

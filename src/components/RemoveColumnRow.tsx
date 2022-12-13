@@ -8,24 +8,25 @@ import SVGButton from "./SVGButton";
 export default function RemoveColumnRow(props: {
 	columns: InputDetails[];
 	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	closedColumns: InputDetails[];
+	setClosedColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
 }) {
 	return <>
-		{props.columns.map((inputDetails, i) =>
-			inputDetails.shown && <div key={i} className="column-top">
+		{props.columns.map((_, i) =>
+			<div key={i} className="column-top">
 				<SVGButton
 					svg={<SaveSVG />}
 					label="Save and Close Column"
 					hideLabel={true}
 					onClick={() => {
 						let newColumns = [...props.columns];
+						let newClosedColumns = [...props.closedColumns];
 						
-						newColumns[i].shown = false;
-						
-						if (!newColumns.some(inputDetails => inputDetails.shown)) {
-							newColumns.push(createInputDetails());
-						}
+						newClosedColumns.push(newColumns.splice(i, 1)[0]);
+						if (!newColumns.length) newColumns.push(createInputDetails());
 						
 						props.setColumns(newColumns);
+						props.setClosedColumns(newClosedColumns);
 					}}
 				/>
 				<SVGButton
@@ -36,10 +37,7 @@ export default function RemoveColumnRow(props: {
 						let newColumns = [...props.columns];
 						
 						newColumns.splice(i, 1);
-						
-						if (!newColumns.some(inputDetails => inputDetails.shown)) {
-							newColumns.push(createInputDetails());
-						}
+						if (!newColumns.length) newColumns.push(createInputDetails());
 						
 						props.setColumns(newColumns);
 					}}

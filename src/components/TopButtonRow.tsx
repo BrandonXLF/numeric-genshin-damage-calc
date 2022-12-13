@@ -9,14 +9,21 @@ import '../css/LoadColumnsPopup.css';
 export default function TopButtonRow(props: {
 	columns: InputDetails[];
 	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	closedColumns: InputDetails[];
+	setClosedColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
 }) {
 	return <div className="form-top">
-		<LoadColumnsPopup columns={props.columns} setColumns={props.setColumns} />
+		<LoadColumnsPopup
+			columns={props.columns}
+			setColumns={props.setColumns}
+			closedColumns={props.closedColumns}
+			setClosedColumns={props.setClosedColumns}
+		/>
 		<SVGButton
 			svg={<AddSVG className="pos" />}
 			label="Add Column"
 			onClick={() => props.setColumns(
-				[...props.columns, createInputDetails(props.columns.find(inputDetails => inputDetails.shown))]
+				[...props.columns, createInputDetails(props.columns[0])]
 			)}
 		/>
 	</div>;
