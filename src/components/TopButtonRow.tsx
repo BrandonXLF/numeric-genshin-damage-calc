@@ -6,20 +6,20 @@ import ResetSVG from "../svgs/ResetSVG";
 import AddSVG from "../svgs/AddSVG";
 
 export default function TopButtonRow(props: {
-	allInputDetails: InputDetails[];
-	setAllInputDetails: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	columns: InputDetails[];
+	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
 }) {
 	return <div className="form-top">
 		<SVGButton
 			svg={<ResetSVG />}
 			label="Reset"
-			onClick={() => props.setAllInputDetails([createInputDetails()])}
+			onClick={() => props.setColumns([createInputDetails()])}
 		/>
 		<SVGButton
 			svg={<AddSVG className="pos" />}
 			label="Add Column"
 			onClick={() =>
-				props.setAllInputDetails(prevAllInputDetails => [...prevAllInputDetails, createInputDetails(props.allInputDetails[0])])
+				props.setColumns([...props.columns, createInputDetails(props.columns[0])])
 			}
 		/>
 	</div>;

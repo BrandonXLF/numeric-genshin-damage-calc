@@ -4,25 +4,27 @@ import InputDetails from "../types/InputDetails";
 import SVGButton from "./SVGButton";
 
 export default function RemoveColumnRow(props: {
-	allInputDetails: InputDetails[];
-	setAllInputDetails: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	columns: InputDetails[];
+	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
 }) {
-	if (props.allInputDetails.length < 2) {
+	if (props.columns.length < 2) {
 		return <div></div>;
 	}
 	
 	return <>
-		{props.allInputDetails.map((_, i) =>
+		{props.columns.map((_, i) =>
 			<div key={i} style={{textAlign: 'center'}}>
 				<SVGButton
 					svg={<CloseSVG className="neg" />}
 					label="Remove Column"
 					hideLabel={true}
-					onClick={() => props.setAllInputDetails(([...value]) => {
-						value.splice(i, 1);
+					onClick={() => {
+						let newColumns = [...props.columns];
 						
-						return value;
-					})}
+						newColumns.splice(i, 1);
+						
+						props.setColumns(newColumns);
+					}}
 				/>
 			</div>
 		)}

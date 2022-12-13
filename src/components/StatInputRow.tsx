@@ -7,12 +7,12 @@ import React from 'react';
 
 export default function StatInputRow(props: {
 	stat: Stat,
-	allInputDetails: InputDetails[],
-	setAllInputDetails: (value: React.SetStateAction<InputDetails[]>) => void
+	columns: InputDetails[],
+	setColumns: (value: React.SetStateAction<InputDetails[]>) => void
 }) {
 	let anyEnabled = false;
 	
-	let statInputs = props.allInputDetails.map((inputDetails, i) => {
+	let statInputs = props.columns.map((inputDetails, i) => {
 		let damageGroups = DamageCalculator.reactionTypes[inputDetails.reactionType].groups;
 		let enabled = !!(props.stat.groups & damageGroups);
 		
@@ -23,11 +23,13 @@ export default function StatInputRow(props: {
 			stat={props.stat}
 			value={inputDetails.statData[props.stat.attr].number}
 			disabled={!enabled}
-			onChange={value => props.setAllInputDetails(([...newAllInputDetails]) => {
-				newAllInputDetails[i].statData[props.stat.attr].number = value;
+			onChange={value => {
+				let newColumns = [...props.columns];
 				
-				return newAllInputDetails;
-			})}
+				newColumns[i].statData[props.stat.attr].number = value;
+				
+				props.setColumns(newColumns);
+			}}
 		/>
 	});
 	

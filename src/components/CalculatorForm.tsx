@@ -12,38 +12,32 @@ import statSections from "../utils/statSections";
 import CalculatorSection from "./CalculatorSection";
 
 export default function CalculatorForm() {
-	let [allInputDetails, setAllInputDetails] = React.useState<InputDetails[]>(() => {
-		let storedInputDetails: StoredInputDetails[] = JSON.parse(localStorage.getItem('GIDC-data') || '[]');
+	let [columns, setColumns] = React.useState<InputDetails[]>(() => {
+		let storedColumns: StoredInputDetails[] = JSON.parse(localStorage.getItem('GIDC-data') || '[]');
 		
-		storedInputDetails[0] = storedInputDetails[0] ?? [];
+		storedColumns[0] = storedColumns[0] ?? [];
 		
-		return storedInputDetails.map(storedInputDetail => createInputDetails(storedInputDetail));
+		return storedColumns.map(storedInputDetails => createInputDetails(storedInputDetails));
 	});
 	
-	let damages = allInputDetails.map(({statData, reactionType, reaction}) =>
+	let damages = columns.map(({statData, reactionType, reaction}) =>
 		new DamageCalculator(statData, reactionType, reaction).calculateDamage()
 	);
 	
-	let headerSpan = allInputDetails.length + 1;
-	
-	useEffect(() => {
-		let allStoredInputDetails = [...allInputDetails] as StoredInputDetails[];
-		
-		localStorage.setItem('GIDC-data', JSON.stringify(allStoredInputDetails));
-	}, [allInputDetails]);
+	useEffect(() => localStorage.setItem('GIDC-data', JSON.stringify(columns)), [columns]);
 
 	return <section className="center-items form-section">
-		<TopButtonRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
+		<TopButtonRow columns={columns} setColumns={setColumns} />
 		<form className="grid" style={{
-			gridTemplateColumns: `max-content repeat(${allInputDetails.length}, 1fr)`
+			gridTemplateColumns: `max-content repeat(${columns.length}, 1fr)`
 		}}>
 			<HeadingRow title="General" span={1} />
-			<RemoveColumnRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
-			<DamageTypeRow allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
+			<RemoveColumnRow columns={columns} setColumns={setColumns} />
+			<DamageTypeRow columns={columns} setColumns={setColumns} />
 			{statSections.map(statSection =>
-				<CalculatorSection key={statSection.value} section={statSection} headerSpan={headerSpan} allInputDetails={allInputDetails} setAllInputDetails={setAllInputDetails} />
+				<CalculatorSection key={statSection.value} section={statSection} headerSpan={columns.length + 1} columns={columns} setColumns={setColumns} />
 			)}
-			<HeadingRow title="Damage" span={headerSpan} />
+			<HeadingRow title="Damage" span={columns.length + 1} />
 			<DamageOutputRow title="CRIT Hit" damages={damages} prop="crit" />
 			<DamageOutputRow title="Non-CRIT" damages={damages} prop="nonCrit" />
 			<DamageOutputRow title="Average" damages={damages} prop="avgDmg" />
