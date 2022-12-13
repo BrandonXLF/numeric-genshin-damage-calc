@@ -7,10 +7,6 @@
 	cursor: pointer;
 }
 
-.svg-button + .svg-button {
-	margin-left: 10px;
-}
-
 .svg-button:hover,
 .svg-button:focus {
 	background: #444;
