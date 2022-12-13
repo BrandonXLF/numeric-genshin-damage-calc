@@ -14,35 +14,52 @@ import LabelRow from "./LabelRow";
 
 export default function CalculatorForm() {
 	let [columns, setColumns] = React.useState<InputDetails[]>(() => {
-		let storedColumns: StoredInputDetails[] = JSON.parse(localStorage.getItem('GIDC-data') || '[]');
+		let storedColumns = (JSON.parse(localStorage.getItem('GIDC-data') || '[]') as StoredInputDetails[])
+			.filter(storedInputDetails => storedInputDetails.shown);
 		
 		storedColumns[0] = storedColumns[0] ?? [];
 		
-		return storedColumns.map(storedInputDetails => createInputDetails(storedInputDetails));
+		return storedColumns.map(createInputDetails);
 	});
 	
-	let shownColumns = columns.filter(inputDetails => inputDetails.shown);
+	let [closedColumns, setClosedColumns] = React.useState<InputDetails[]>(() => {
+		let storedClosedColumns = (JSON.parse(localStorage.getItem('GIDC-data') || '[]') as StoredInputDetails[])
+			.filter(storedInputDetails => !storedInputDetails.shown);
+		
+		return storedClosedColumns.map(createInputDetails);
+	});
 	
-	let damages = shownColumns.map(({statData, reactionType, reaction}) =>
+	let damages = columns.map(({statData, reactionType, reaction}) =>
 		new DamageCalculator(statData, reactionType, reaction).calculateDamage()
 	);
 	
-	useEffect(() => localStorage.setItem('GIDC-data', JSON.stringify(columns)), [columns]);
+	useEffect(() => {
+		localStorage.setItem('GIDC-data', JSON.stringify([
+			...(columns as StoredInputDetails[]).map(inputDetails => {
+				inputDetails.shown = true;
+				return inputDetails;
+			}),
+			...(closedColumns as StoredInputDetails[]).map(inputDetails => {
+				inputDetails.shown = false;
+				return inputDetails;
+			})
+		]));
+	}, [columns, closedColumns]);
 
 	return <section className="form-section">
-		<TopButtonRow columns={columns} setColumns={setColumns} />
+		<TopButtonRow columns={columns} setColumns={setColumns} closedColumns={closedColumns} setClosedColumns={setClosedColumns} />
 		<div className="center-items grid-container">
 			<form className="grid" style={{
-				gridTemplateColumns: `max-content repeat(${shownColumns.length}, 1fr)`
+				gridTemplateColumns: `max-content repeat(${columns.length}, 1fr)`
 			}}>
 				<HeadingRow title="General" span={1} />
-				<RemoveColumnRow columns={columns} setColumns={setColumns} />
+				<RemoveColumnRow columns={columns} setColumns={setColumns} closedColumns={closedColumns} setClosedColumns={setClosedColumns} />
 				<LabelRow columns={columns} setColumns={setColumns} />
 				<DamageTypeRow columns={columns} setColumns={setColumns} />
 				{statSections.map(statSection =>
-					<CalculatorSection key={statSection.value} section={statSection} headerSpan={shownColumns.length + 1} columns={columns} setColumns={setColumns} />
+					<CalculatorSection key={statSection.value} section={statSection} headerSpan={columns.length + 1} columns={columns} setColumns={setColumns} />
 				)}
-				<HeadingRow title="Damage" span={shownColumns.length + 1} />
+				<HeadingRow title="Damage" span={columns.length + 1} />
 				<DamageOutputRow title="CRIT Hit" damages={damages} prop="crit" />
 				<DamageOutputRow title="Non-CRIT" damages={damages} prop="nonCrit" />
 				<DamageOutputRow title="Average" damages={damages} prop="avgDmg" />

@@ -5,7 +5,6 @@ type InputDetails = {
 	reactionType: number;
 	reaction: number
 	label: string
-	shown: boolean
 	statData: StatData;
 };
 

@@ -10,7 +10,7 @@ export default function LabelRow(props: {
 	return <>
 		<RowLabel label="Label" />
 		{props.columns.map((inputDetails, i) =>
-			inputDetails.shown && <FormInput key={i}>
+			<FormInput key={i}>
 				<input type="text" value={inputDetails.label} onChange={e => {
 					let newColumns = [...props.columns];
 					

@@ -8,7 +8,6 @@ export default function createInputDetails(base: StoredInputDetails = {}): Input
 		reaction: base?.reaction ?? 0,
 		reactionType: base?.reactionType ?? 0,
 		label: base?.label ?? '',
-		shown: base?.shown ?? true,
 		statData: {} as StatData
 	};
 	

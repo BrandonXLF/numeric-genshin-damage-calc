@@ -18,7 +18,7 @@ export default function StatInputRow(props: {
 		
 		anyEnabled = anyEnabled || enabled;
 		
-		return inputDetails.shown && <StatInput
+		return <StatInput
 			key={i}
 			stat={props.stat}
 			value={inputDetails.statData[props.stat.attr].number}
