@@ -87,7 +87,13 @@ export default class DamageCalculator {
 		},
 		baseDamage: {
 			name: 'Base DMG',
-			expr: () => '(talentScale * talent)' + (this.variable('talentEM').value ? ' + (em * talentEM)' : '') + ' * baseDamageMultiplier'
+			expr: () => {
+				if (this.variable('talentEM').value) {
+					return '((talentScale * talent) + (em * talentEM)) * baseDamageMultiplier'
+				}
+				
+				return 'talentScale * talent * baseDamageMultiplier'
+			}
 		},
 		trueDamage: {
 			name: 'True DMG',
