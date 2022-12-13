@@ -1,0 +1,14 @@
+.load-columns-popup-top {
+	display: flex;
+	gap: 1em;
+	align-items: center;
+}
+
+.load-columns-popup-body * {
+	margin-top: 0.2em;
+}
+
+.load-columns-popup-top h2 {
+	flex: 1;
+	margin: 0;
+}

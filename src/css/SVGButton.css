@@ -31,3 +31,7 @@
 .svg-button-mini svg {
 	height: 1em;
 }
+
+.svg-button-disabled {
+	opacity: 0.75;
+}

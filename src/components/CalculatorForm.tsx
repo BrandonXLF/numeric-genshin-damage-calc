@@ -10,6 +10,7 @@ import TopButtonRow from "./TopButtonRow";
 import RemoveColumnRow from "./RemoveColumnRow";
 import statSections from "../utils/statSections";
 import CalculatorSection from "./CalculatorSection";
+import LabelRow from "./LabelRow";
 
 export default function CalculatorForm() {
 	let [columns, setColumns] = React.useState<InputDetails[]>(() => {
@@ -20,7 +21,9 @@ export default function CalculatorForm() {
 		return storedColumns.map(storedInputDetails => createInputDetails(storedInputDetails));
 	});
 	
-	let damages = columns.map(({statData, reactionType, reaction}) =>
+	let shownColumns = columns.filter(inputDetails => inputDetails.shown);
+	
+	let damages = shownColumns.map(({statData, reactionType, reaction}) =>
 		new DamageCalculator(statData, reactionType, reaction).calculateDamage()
 	);
 	
@@ -29,15 +32,16 @@ export default function CalculatorForm() {
 	return <section className="center-items form-section">
 		<TopButtonRow columns={columns} setColumns={setColumns} />
 		<form className="grid" style={{
-			gridTemplateColumns: `max-content repeat(${columns.length}, 1fr)`
+			gridTemplateColumns: `max-content repeat(${shownColumns.length}, 1fr)`
 		}}>
 			<HeadingRow title="General" span={1} />
 			<RemoveColumnRow columns={columns} setColumns={setColumns} />
+			<LabelRow columns={columns} setColumns={setColumns} />
 			<DamageTypeRow columns={columns} setColumns={setColumns} />
 			{statSections.map(statSection =>
-				<CalculatorSection key={statSection.value} section={statSection} headerSpan={columns.length + 1} columns={columns} setColumns={setColumns} />
+				<CalculatorSection key={statSection.value} section={statSection} headerSpan={shownColumns.length + 1} columns={columns} setColumns={setColumns} />
 			)}
-			<HeadingRow title="Damage" span={columns.length + 1} />
+			<HeadingRow title="Damage" span={shownColumns.length + 1} />
 			<DamageOutputRow title="CRIT Hit" damages={damages} prop="crit" />
 			<DamageOutputRow title="Non-CRIT" damages={damages} prop="nonCrit" />
 			<DamageOutputRow title="Average" damages={damages} prop="avgDmg" />
