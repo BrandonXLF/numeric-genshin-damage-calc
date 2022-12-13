@@ -11,7 +11,7 @@ export default function DamageTypeRow(props: {
 	return <>
 		<RowLabel label="Reaction" />
 		{props.columns.map((inputDetails, i) =>
-			<FormInput key={i}>
+			inputDetails.shown && <FormInput key={i}>
 				<select value={`${inputDetails.reactionType},${inputDetails.reaction}`} onChange={e => {
 					let newColumns = [...props.columns];
 					

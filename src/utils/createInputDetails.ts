@@ -3,18 +3,12 @@ import StatData from "../types/StatData";
 import stats from "./stats";
 import StatValue from "./StatValue";
 
-export default function createInputDetails(base?: StoredInputDetails): InputDetails {
-	if (!base) {
-		base = {
-			reaction: undefined,
-			reactionType: undefined,
-			statData: {}
-		};
-	}
-
+export default function createInputDetails(base: StoredInputDetails = {}): InputDetails {
 	let out: InputDetails = {
 		reaction: base?.reaction ?? 0,
 		reactionType: base?.reactionType ?? 0,
+		label: base?.label ?? '',
+		shown: base?.shown ?? true,
 		statData: {} as StatData
 	};
 	
