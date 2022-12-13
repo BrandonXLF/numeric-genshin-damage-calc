@@ -23,7 +23,7 @@ export default function RemoveColumnRow(props: {
 							newColumns[i].shown = false;
 							
 							if (!newColumns.some(inputDetails => inputDetails.shown)) {
-								newColumns.unshift(createInputDetails());
+								newColumns.push(createInputDetails());
 							}
 							
 							props.setColumns(newColumns);
@@ -41,7 +41,7 @@ export default function RemoveColumnRow(props: {
 							newColumns.splice(i, 1);
 							
 							if (!newColumns.some(inputDetails => inputDetails.shown)) {
-								newColumns.unshift(createInputDetails());
+								newColumns.push(createInputDetails());
 							}
 							
 							props.setColumns(newColumns);
