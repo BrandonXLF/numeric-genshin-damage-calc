@@ -11,20 +11,16 @@ body {
 
 main {
 	margin: auto;
-}
-
-main > * {
-	margin: 1rem 0 !important;
-	text-align: center;
-}
-
-footer > :not(:first-child) {
-	margin-top: 1em;
+	font-size: 0.9em;
 	text-align: center;
 }
 
 a {
 	color: rgb(79, 203, 245);
+}
+
+button {
+	font-size: unset;
 }
 
 a:visited {

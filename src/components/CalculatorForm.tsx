@@ -29,22 +29,24 @@ export default function CalculatorForm() {
 	
 	useEffect(() => localStorage.setItem('GIDC-data', JSON.stringify(columns)), [columns]);
 
-	return <section className="center-items form-section">
+	return <section className="form-section">
 		<TopButtonRow columns={columns} setColumns={setColumns} />
-		<form className="grid" style={{
-			gridTemplateColumns: `max-content repeat(${shownColumns.length}, 1fr)`
-		}}>
-			<HeadingRow title="General" span={1} />
-			<RemoveColumnRow columns={columns} setColumns={setColumns} />
-			<LabelRow columns={columns} setColumns={setColumns} />
-			<DamageTypeRow columns={columns} setColumns={setColumns} />
-			{statSections.map(statSection =>
-				<CalculatorSection key={statSection.value} section={statSection} headerSpan={shownColumns.length + 1} columns={columns} setColumns={setColumns} />
-			)}
-			<HeadingRow title="Damage" span={shownColumns.length + 1} />
-			<DamageOutputRow title="CRIT Hit" damages={damages} prop="crit" />
-			<DamageOutputRow title="Non-CRIT" damages={damages} prop="nonCrit" />
-			<DamageOutputRow title="Average" damages={damages} prop="avgDmg" />
-		</form>
+		<div className="center-items grid-container">
+			<form className="grid" style={{
+				gridTemplateColumns: `max-content repeat(${shownColumns.length}, 1fr)`
+			}}>
+				<HeadingRow title="General" span={1} />
+				<RemoveColumnRow columns={columns} setColumns={setColumns} />
+				<LabelRow columns={columns} setColumns={setColumns} />
+				<DamageTypeRow columns={columns} setColumns={setColumns} />
+				{statSections.map(statSection =>
+					<CalculatorSection key={statSection.value} section={statSection} headerSpan={shownColumns.length + 1} columns={columns} setColumns={setColumns} />
+				)}
+				<HeadingRow title="Damage" span={shownColumns.length + 1} />
+				<DamageOutputRow title="CRIT Hit" damages={damages} prop="crit" />
+				<DamageOutputRow title="Non-CRIT" damages={damages} prop="nonCrit" />
+				<DamageOutputRow title="Average" damages={damages} prop="avgDmg" />
+			</form>
+		</div>
 	</section>;
 }
