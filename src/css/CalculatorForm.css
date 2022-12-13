@@ -1,4 +1,14 @@
 .form-section {
+	max-width: 100%;
+}
+
+.form-top {
+	text-align: right;
+	padding: 0 1em;
+	margin-bottom: 0.2em;
+}
+
+.grid-container {
 	flex: 1;
 	min-width: min(40em, 50vw);
 	background: #333;
@@ -8,31 +18,26 @@
 	text-align: left;
 }
 
-.form-section h2,
-.form-section h3 {
-	margin: 8px 0;
-}
-
-.form-section h2 {
-	font-size: 1.5em;
-}
-
-.form-section h3 {
-	font-size: 1.25em;
-}
-
-.form-top {
-	align-self: flex-end;
-}
-
 .grid {
 	display: grid;
 	align-items: center;
-	row-gap: 1em;
+	row-gap: 0.65em;
 	column-gap: 1em;
 	max-width: 100%;
-	font-size: 0.85em;
 	overflow: auto;
+}
+
+.grid h2,
+.grid h3 {
+	margin: 8px 0;
+}
+
+.grid h2 {
+	font-size: 1.5em;
+}
+
+.grid h3 {
+	font-size: 1.25em;
 }
 
 .mini-col {

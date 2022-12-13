@@ -1,0 +1,8 @@
+footer {
+	margin: 1em 0;
+}
+
+footer > :not(:first-child) {
+	margin-top: 1em;
+	text-align: center;
+}
