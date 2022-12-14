@@ -26,7 +26,7 @@ type EquationData = {
 	flatDamageReactionBonus: EquationInfo;
 	critBonus: EquationInfo;
 	flatDamageAdded: EquationInfo;
-	trueTransformativeReation: EquationInfo;
+	trueTransformativeReaction: EquationInfo;
 };
 
 export default EquationData;
