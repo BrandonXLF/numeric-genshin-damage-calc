@@ -23,7 +23,7 @@ export default function TopButtonRow(props: {
 			svg={<AddSVG className="pos" />}
 			label="Add Column"
 			onClick={() => props.setColumns(
-				[...props.columns, createInputDetails(props.columns[0])]
+				[...props.columns, createInputDetails(props.columns[props.columns.length - 1])]
 			)}
 		/>
 	</div>;
