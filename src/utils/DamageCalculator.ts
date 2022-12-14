@@ -109,7 +109,7 @@ export default class DamageCalculator {
 				let enemyResistance = this.variable('enemyResistance').value;
 				
 				if (enemyResistance < 0) {
-					return '1 - enemyResistance / 2'
+					return '1 - (enemyResistance / 2)'
 				}
 
 				if (enemyResistance < 0.75) {
@@ -143,13 +143,13 @@ export default class DamageCalculator {
 			name: 'Base Reaction DMG',
 			expr: `baseMultiplier * transformativeLevelMultiplier`
 		},
-		trueTransformativeReation: {
+		trueTransformativeReaction: {
 			name: 'True DMG',
 			expr: `baseTransformativeDamage * (1 + transformativeEMBonus + reactionBonus)`
 		},
 		transformativeReaction: {
 			name: 'Transformative DMG',
-			expr: `trueTransformativeReation * enemyResistanceMul`
+			expr: `trueTransformativeReaction * enemyResistanceMul`
 		},
 		amplifyingEMBonus: {
 			name: 'EM Bonus',
@@ -252,7 +252,7 @@ export default class DamageCalculator {
 		return {
 			mathComponent: component,
 			equationComponent: [
-				this.record(component, /^\d+$/.test(component) ? RecordEntryTypes.Number : RecordEntryTypes.Symbols)
+				this.record(component.replace(/\*/g, '\u00D7'), /^\d+$/.test(component) ? RecordEntryTypes.Number : RecordEntryTypes.Symbols)
 			]
 		};
 	}
