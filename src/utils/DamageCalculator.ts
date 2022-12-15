@@ -181,7 +181,7 @@ export default class DamageCalculator {
 		},
 		critBonus: {
 			name: 'Effective CRIT Bonus',
-			expr: 'max(0, min(critRate, 1)) * critDamage'
+			expr: 'realCritRate * critDamage'
 		},
 		critHit: {
 			name: 'CRIT Hit',
