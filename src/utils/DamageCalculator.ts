@@ -164,7 +164,7 @@ export default class DamageCalculator {
 			expr: 'generalDamage * amplifyingMul'
 		},
 		flatDamageAdded: {
-			name: 'Flat DMG',
+			name: 'Total Flat DMG Increase',
 			expr: 'flatDamage + flatDamageReactionBonus'
 		},
 		flatDamageReactionEMBonus: {
@@ -172,7 +172,7 @@ export default class DamageCalculator {
 			expr: '(5 * em) / (1200 + em)'
 		},
 		flatDamageReactionBonus: {
-			name: 'Reaction DMG Bonus',
+			name: 'Additive Reaction DMG',
 			expr: 'baseTransformativeDamage * (1 + flatDamageReactionEMBonus + reactionBonus)'
 		},
 		realCritRate: {
