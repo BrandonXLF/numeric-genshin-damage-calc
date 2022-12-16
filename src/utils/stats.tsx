@@ -39,7 +39,7 @@ const stats: Stat[] = [
 		groups: DamageGroups.General
 	},
 	{
-		name: 'Talent DMG Increase',
+		name: 'Flat DMG Increase',
 		desc: 'Flat damage increases that are added to the talent damage, e.g. Yunjin\'s skill, Zhongli\'s A4, and Kokomi\'s burst',
 		attr: 'flatDamage',
 		default: 0,
