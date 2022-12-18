@@ -30,8 +30,8 @@ const stats: Stat[] = [
 		groups: DamageGroups.General
 	},
 	{
-		name: 'Talent DMG Scale',
-		desc: 'Special multiplier that applies to talent damage, increased by Xingqui\'s C4 and Yoimiya\'s skill for example',
+		name: 'Talent DMG Multiplier',
+		desc: 'Multiplier that applies to the talent multipliers, increased by Xingqui\'s C4 and Yoimiya\'s skill for example',
 		attr: 'baseDamageMultiplier',
 		default: 100,
 		type: StatTypes.Percent,
@@ -57,20 +57,20 @@ const stats: Stat[] = [
 		groups: DamageGroups.General
 	},
 	{
-		name: 'Extra ATK/HP/DEF %',
-		desc: 'Extra ATK percent, HP percent, etc., in-game ATK percent etc. is integrated into Bonus ATK/HP/DEF',
-		attr: 'additionalBonusTalentScale',
-		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterStats,
-		groups: DamageGroups.General
-	},
-	{
 		name: 'Bonus ATK/HP/DEF',
 		desc: 'The green number next to the stat the talent scales off of, includes in-game ATK percent etc., add extra flat ATK etc. like from Bennett\'s ult here',
 		attr: 'bonusTalentScale',
 		default: 500,
 		type: StatTypes.Number,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General
+	},
+	{
+		name: 'Extra ATK/HP/DEF %',
+		desc: 'Extra ATK percent, HP percent, etc., in-game ATK percent etc. is integrated into Bonus ATK/HP/DEF',
+		attr: 'additionalBonusTalentScale',
+		default: 0,
+		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.General
 	},
