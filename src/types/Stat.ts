@@ -1,12 +1,9 @@
-import { ReactElement } from "react";
 import DamageGroups from "./DamageGroups";
+import DisplayedProp from "./DisplayedProp";
 import StatData from "./StatData";
 import { StatSections } from "./StatSection";
 
-type Stat = {
-	name: string;
-	desc?: string | ReactElement;
-	attr: keyof StatData;
+type Stat = DisplayedProp<StatData> & {
 	default: number;
 	type: StatTypes;
 	section: StatSections;
