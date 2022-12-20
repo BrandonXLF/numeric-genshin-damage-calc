@@ -59,3 +59,8 @@
 .output {
 	margin: 4px 0;
 }
+
+.has-desc {
+	text-decoration: underline dotted;
+	cursor: help;
+}
