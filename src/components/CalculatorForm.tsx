@@ -62,7 +62,7 @@ export default function CalculatorForm() {
 				)}
 				<HeadingRow title="Damage" span={columns.length + 1} />
 				{damageTypes.map(damageType =>
-					<DamageOutputRow damageType={damageType} damages={damages} />
+					<DamageOutputRow key={damageType.prop} damageType={damageType} damages={damages} />
 				)}
 			</form>
 		</div>
