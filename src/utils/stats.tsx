@@ -5,7 +5,7 @@ import { StatSections } from "../types/StatSection";
 const stats: Stat[] = [
 	{
 		name: 'Character Level',
-		attr: 'characterLevel',
+		prop: 'characterLevel',
 		default: 1,
 		type: StatTypes.Number,
 		section: StatSections.Character,
@@ -14,7 +14,7 @@ const stats: Stat[] = [
 	{
 		name: 'ATK/HP/DEF Multiplier',
 		desc: 'The percent multiplier of the talent that scales with ATK/HP/DEF',
-		attr: 'talent',
+		prop: 'talent',
 		default: 100,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
@@ -23,7 +23,7 @@ const stats: Stat[] = [
 	{
 		name: 'EM Multiplier',
 		desc: 'THe percent multiplier of the talent that scales with EM if applicable',
-		attr: 'talentEM',
+		prop: 'talentEM',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
@@ -32,7 +32,7 @@ const stats: Stat[] = [
 	{
 		name: 'Talent DMG Multiplier',
 		desc: 'Multiplier that applies to the talent multipliers, increased by Xingqui\'s C4 and Yoimiya\'s skill for example',
-		attr: 'baseDamageMultiplier',
+		prop: 'baseDamageMultiplier',
 		default: 100,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
@@ -41,7 +41,7 @@ const stats: Stat[] = [
 	{
 		name: 'Flat DMG Increase',
 		desc: 'Flat damage increases that are added to the talent damage, e.g. Yunjin\'s skill, Zhongli\'s A4, and Kokomi\'s burst',
-		attr: 'flatDamage',
+		prop: 'flatDamage',
 		default: 0,
 		type: StatTypes.Number,
 		section: StatSections.CharacterTalent,
@@ -50,7 +50,7 @@ const stats: Stat[] = [
 	{
 		name: 'Base ATK/HP/DEF',
 		desc: 'The stat the talent scales off of, e.g. base ATK or base HP, from character and weapon flat stat only',
-		attr: 'baseTalentScale',
+		prop: 'baseTalentScale',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
@@ -59,16 +59,16 @@ const stats: Stat[] = [
 	{
 		name: 'Bonus ATK/HP/DEF',
 		desc: 'The green number next to the stat the talent scales off of, includes in-game ATK percent etc., add extra flat ATK etc. like from Bennett\'s ult here',
-		attr: 'bonusTalentScale',
+		prop: 'bonusTalentScale',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.General
 	},
 	{
-		name: 'Extra ATK/HP/DEF %',
+		name: 'Extra ATK/HP/DEF%',
 		desc: 'Extra ATK percent, HP percent, etc., in-game ATK percent etc. is integrated into Bonus ATK/HP/DEF',
-		attr: 'additionalBonusTalentScale',
+		prop: 'additionalBonusTalentScale',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
@@ -77,7 +77,7 @@ const stats: Stat[] = [
 	{
 		name: 'Elemental Mastery',
 		desc: 'Used to calculate damage caused by Talent EM Multiplier and the Reaction Bonus, not needed otherwise',
-		attr: 'em',
+		prop: 'em',
 		default: 0,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
@@ -86,7 +86,7 @@ const stats: Stat[] = [
 	{
 		name: 'DMG Bonus',
 		desc: 'All damage bonuses added together, e.g. Goblet of Eonothem\'s main stat and Rust bow\'s passive',
-		attr: 'damageBonus',
+		prop: 'damageBonus',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
@@ -95,7 +95,7 @@ const stats: Stat[] = [
 	{
 		name: 'Reaction Bonus',
 		desc: 'All reaction damage bonuses added together besides the reaction bonus from EM, e.g. Crimson Witch 4-piece and Dragon\'s Bane\'s passive',
-		attr: 'reactionBonus',
+		prop: 'reactionBonus',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
@@ -103,7 +103,7 @@ const stats: Stat[] = [
 	},
 	{
 		name: 'CRIT Rate',
-		attr: 'critRate',
+		prop: 'critRate',
 		default: 5,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
@@ -111,7 +111,7 @@ const stats: Stat[] = [
 	},
 	{
 		name: 'CRIT DMG',
-		attr: 'critDamage',
+		prop: 'critDamage',
 		default: 50,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
@@ -119,7 +119,7 @@ const stats: Stat[] = [
 	},
 	{
 		name: 'Enemy Level',
-		attr: 'enemyLevel',
+		prop: 'enemyLevel',
 		default: 1,
 		type: StatTypes.Number,
 		section: StatSections.Enemy,
@@ -128,7 +128,7 @@ const stats: Stat[] = [
 	{
 		name: 'DEF Decrease',
 		desc: 'Defense decreasing effects, e.g. Razor\'s C4 or Klee\'s C2, use the word "decrease"',
-		attr: 'defenseDecrease',
+		prop: 'defenseDecrease',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
@@ -137,7 +137,7 @@ const stats: Stat[] = [
 	{
 		name: 'DEF Ignore',
 		desc: 'Defense ignore effects, e.g. Raiden\'s C2 and Yae Miko\'s C6, use the word "ignore"',
-		attr: 'defenseIgnore',
+		prop: 'defenseIgnore',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
@@ -146,7 +146,7 @@ const stats: Stat[] = [
 	{
 		name: 'Base RES',
 		desc: <span>The resistance the enemy has for the element of the attack before any reductions, see <a href="https://genshin-impact.fandom.com/wiki/Resistance#Enemy_Resistances">the wiki</a></span>,
-		attr: 'resistance',
+		prop: 'resistance',
 		default: 10,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
@@ -155,7 +155,7 @@ const stats: Stat[] = [
 	{
 		name: 'RES Reduction',
 		desc: 'The total resistance reduction for the element of the attack, e.g. Superconduct and Viridescent Venerer',
-		attr: 'resistanceReduction',
+		prop: 'resistanceReduction',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,

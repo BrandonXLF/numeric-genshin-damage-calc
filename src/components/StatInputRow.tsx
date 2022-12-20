@@ -21,12 +21,12 @@ export default function StatInputRow(props: {
 		return <StatInput
 			key={i}
 			stat={props.stat}
-			value={inputDetails.statData[props.stat.attr].number}
+			value={inputDetails.statData[props.stat.prop].number}
 			disabled={!enabled}
 			onChange={value => {
 				let newColumns = [...props.columns];
 				
-				newColumns[i].statData[props.stat.attr].number = value;
+				newColumns[i].statData[props.stat.prop].number = value;
 				
 				props.setColumns(newColumns);
 			}}

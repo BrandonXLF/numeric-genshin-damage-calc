@@ -11,6 +11,7 @@ import RemoveColumnRow from "./RemoveColumnRow";
 import statSections from "../utils/statSections";
 import CalculatorSection from "./CalculatorSection";
 import LabelRow from "./LabelRow";
+import damageTypes from "../utils/damageTypes";
 
 export default function CalculatorForm() {
 	let [columns, setColumns] = React.useState<InputDetails[]>(() => {
@@ -60,9 +61,9 @@ export default function CalculatorForm() {
 					<CalculatorSection key={statSection.value} section={statSection} headerSpan={columns.length + 1} columns={columns} setColumns={setColumns} />
 				)}
 				<HeadingRow title="Damage" span={columns.length + 1} />
-				<DamageOutputRow title="CRIT Hit" damages={damages} prop="crit" />
-				<DamageOutputRow title="Non-CRIT" damages={damages} prop="nonCrit" />
-				<DamageOutputRow title="Average" damages={damages} prop="avgDmg" />
+				{damageTypes.map(damageType =>
+					<DamageOutputRow damageType={damageType} damages={damages} />
+				)}
 			</form>
 		</div>
 	</section>;

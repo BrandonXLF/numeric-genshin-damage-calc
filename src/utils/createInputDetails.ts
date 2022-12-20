@@ -12,9 +12,9 @@ export default function createInputDetails(base: StoredInputDetails = {}): Input
 	};
 	
 	stats.forEach(stat => {
-		let value = base?.statData?.[stat.attr];
+		let value = base?.statData?.[stat.prop];
 		
-		out.statData[stat.attr] = new StatValue(
+		out.statData[stat.prop] = new StatValue(
 			typeof value === 'string' ? value : value?.number ?? stat.default.toString(),
 			stat.type
 		);

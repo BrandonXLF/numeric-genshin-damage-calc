@@ -1,17 +1,17 @@
 import Damage from "../types/Damage";
+import DisplayedProp from "../types/DisplayedProp";
 import DamageOutput from "./DamageOutput";
 import RowLabel from "./RowLabel";
 
 export default function DamageOutputRow(props: {
-	title: string;
+	damageType: DisplayedProp<Damage>;
 	damages: Damage[];
-	prop: 'nonCrit' | 'avgDmg' | 'crit';
 }) {
 	let initial: number | undefined;
 	let hasValues = false;
 	
 	let damageOutputs = props.damages.map((damage, i) => {
-		let value = damage[props.prop]?.value;
+		let value = damage[props.damageType.prop]?.value;
 		
 		if (i === 0) initial = value;
 		
@@ -21,7 +21,7 @@ export default function DamageOutputRow(props: {
 		
 		hasValues = true;
 		
-		return <DamageOutput key={i} initial={i !== 0 ? initial : undefined} value={value} calcs={damage[props.prop]?.record} />;
+		return <DamageOutput key={i} initial={i !== 0 ? initial : undefined} value={value} calcs={damage[props.damageType.prop]?.record} />;
 	});
 	
 	if (!hasValues) {
@@ -29,7 +29,7 @@ export default function DamageOutputRow(props: {
 	}
 	
 	return <>
-		<RowLabel label={props.title} />
+		<RowLabel label={props.damageType.name} desc={props.damageType.desc} />
 		{damageOutputs}
 	</>;
 }

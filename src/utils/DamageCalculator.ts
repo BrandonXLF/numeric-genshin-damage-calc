@@ -198,9 +198,9 @@ export default class DamageCalculator {
 		private reactionTypeIndex: number,
 		private reactionIndex: number
 	) {
-		stats.forEach(stat => this.variables[stat.attr] = {
+		stats.forEach(stat => this.variables[stat.prop] = {
 			name: stat.name,
-			value: this.statData[stat.attr].value
+			value: this.statData[stat.prop].value
 		});
 	}
 	
