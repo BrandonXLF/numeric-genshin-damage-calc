@@ -7,7 +7,7 @@ export default function DamageOutput(props: {
 	initial?: number;
 	calcs?: EquationRecord;
 }) {
-	return <div className="output vertical-align">
+	return <div className="output">
 		{props.calcs && <><CalculationPopup calcs={props.calcs} /> </>}
 		<output>{parseFloat(props.value.toFixed(2)).toString()}</output>
 		<> </><DifferenceOutput initial={props.initial} value={props.value} />

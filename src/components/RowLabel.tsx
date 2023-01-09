@@ -1,11 +1,14 @@
 import { ReactElement } from "react";
 import Popup from "reactjs-popup";
+import '../css/RowLabel.css';
 
 export default function RowLabel(props: {
 	label: string | ReactElement;
 	desc?: string | ReactElement;
+	icon?: ReactElement;
 }) {
-	return <div className="vertical-align">
+	return <div className="row-label">
+		<span className="label-icon">{props.icon}</span>
 		{props.desc
 			? <><Popup
 				trigger={<span className="has-desc">{props.label}</span>}
