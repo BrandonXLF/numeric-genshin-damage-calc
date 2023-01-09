@@ -7,3 +7,8 @@
 	text-decoration: underline dotted;
 	cursor: help;
 }
+
+.label-icon svg {
+	width: 1.15em;
+	margin-right: 0.35em;
+}

@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import DamageGroups from "./DamageGroups";
 import DisplayedProp from "./DisplayedProp";
 import StatData from "./StatData";
@@ -8,6 +9,7 @@ type Stat = DisplayedProp<StatData> & {
 	type: StatTypes;
 	section: StatSections;
 	groups: DamageGroups;
+	icon: ReactElement;
 };
 
 export enum StatTypes {
