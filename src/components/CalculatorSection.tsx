@@ -20,7 +20,7 @@ export default function CalculatorSection(props: {
 	return <>
 		<HeadingRow title={props.section.name} span={props.headerSpan} level={props.section.sub ? 3 : 2} />
 		{validStats.map(stat =>
-			<StatInputRow key={stat.name} stat={stat} columns={props.columns} setColumns={props.setColumns} />
+			<StatInputRow key={stat.prop} stat={stat} columns={props.columns} setColumns={props.setColumns} />
 		)}
 	</>;
 }
