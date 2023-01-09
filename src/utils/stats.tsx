@@ -1,6 +1,7 @@
 import DamageGroups from "../types/DamageGroups";
 import Stat, { StatTypes } from "../types/Stat";
 import { StatSections } from "../types/StatSection";
+import StatIcon from "../components/StatIcon";
 
 const stats: Stat[] = [
 	{
@@ -9,7 +10,8 @@ const stats: Stat[] = [
 		default: 1,
 		type: StatTypes.Number,
 		section: StatSections.Character,
-		groups: DamageGroups.General | DamageGroups.Reaction
+		groups: DamageGroups.General | DamageGroups.Reaction,
+		icon: <StatIcon base="character" />
 	},
 	{
 		name: 'ATK/HP/DEF Multiplier',
@@ -18,7 +20,8 @@ const stats: Stat[] = [
 		default: 100,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="stats" indicator="percent" />
 	},
 	{
 		name: 'EM Multiplier',
@@ -27,7 +30,8 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="em" indicator="percent" />
 	},
 	{
 		name: 'Talent DMG Multiplier',
@@ -36,7 +40,8 @@ const stats: Stat[] = [
 		default: 100,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="percent" indicator="percent" />
 	},
 	{
 		name: 'Flat DMG Increase',
@@ -45,7 +50,8 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Number,
 		section: StatSections.CharacterTalent,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
 		name: 'Base ATK/HP/DEF',
@@ -54,7 +60,8 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="stats" />
 	},
 	{
 		name: 'Bonus ATK/HP/DEF',
@@ -63,7 +70,8 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="stats" indicator="increase" />
 	},
 	{
 		name: 'Extra ATK/HP/DEF%',
@@ -72,7 +80,8 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="stats" indicator="increase" />
 	},
 	{
 		name: 'Elemental Mastery',
@@ -81,7 +90,8 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General | DamageGroups.Reaction
+		groups: DamageGroups.General | DamageGroups.Reaction,
+		icon: <StatIcon base="em" />
 	},
 	{
 		name: 'DMG Bonus',
@@ -90,7 +100,8 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
 		name: 'Reaction Bonus',
@@ -99,7 +110,8 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.Reaction
+		groups: DamageGroups.Reaction,
+		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
 		name: 'CRIT Rate',
@@ -107,7 +119,8 @@ const stats: Stat[] = [
 		default: 5,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="critRate" />
 	},
 	{
 		name: 'CRIT DMG',
@@ -115,7 +128,8 @@ const stats: Stat[] = [
 		default: 50,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="critDmg" />
 	},
 	{
 		name: 'Enemy Level',
@@ -123,7 +137,8 @@ const stats: Stat[] = [
 		default: 1,
 		type: StatTypes.Number,
 		section: StatSections.Enemy,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="enemy" />
 	},
 	{
 		name: 'DEF Decrease',
@@ -132,7 +147,9 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		// icon: <EnemyShredIcon />
+		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	},
 	{
 		name: 'DEF Ignore',
@@ -141,7 +158,8 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
-		groups: DamageGroups.General
+		groups: DamageGroups.General,
+		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	},
 	{
 		name: 'Base RES',
@@ -150,7 +168,8 @@ const stats: Stat[] = [
 		default: 10,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
-		groups: DamageGroups.General | DamageGroups.Reaction
+		groups: DamageGroups.General | DamageGroups.Reaction,
+		icon: <StatIcon base="shield" mask="enemySmall" />
 	},
 	{
 		name: 'RES Reduction',
@@ -159,7 +178,8 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
-		groups:  DamageGroups.General | DamageGroups.Reaction
+		groups:  DamageGroups.General | DamageGroups.Reaction,
+		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	}
 ];
 
