@@ -1,7 +1,7 @@
 import DamageGroups from "../types/DamageGroups";
 import Stat, { StatTypes } from "../types/Stat";
 import { StatSections } from "../types/StatSection";
-import StatIcon from "../components/StatIcon";
+import StatIcon from "../svgs/StatIcon";
 
 const stats: Stat[] = [
 	{

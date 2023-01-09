@@ -10,17 +10,17 @@ const bases = {
 	character: (props?: SVGProps<SVGPathElement>) => <path {...props} d="M 7.5 8 c 2.21 0 4 -1.79 4 -4 S 9.71 0 7.5 0 S 3.5 1.79 3.5 4 s 1.79 4 4 4 z m -1.43 1.5 C 3 9.5 0.5 12 0.5 15.07 C 0.5 15.58 0.92 16 1.43 16 H 13.57 c 0.51 0 0.93 -0.42 0.93 -0.93 C 14.5 12 12 9.5 8.93 9.5 H 6.07 z" />,
 	critRate: (props?: SVGProps<SVGPathElement>) => <path {...props} d="m 16 0 l -7.71 4 l -6.04 -2.33 l 1.75 5.46 l -4 8.87 l 8.29 -4 l 5.46 1.75 l -1.75 -5.46 z m -3.7 3.7 l -2.15 4.46 l 0.94 2.93 l -2.93 -0.94 l -4.46 2.15 l 2.15 -4.77 l -0.94 -2.93 l 3.25 1.25 z" />,
 	critDmg: (props?: SVGProps<SVGPathElement>) => <path {...props} d="m 0 16 l 4 -8.87 l -1.75 -5.45 l 6.04 2.33 l 7.71 -4 l -4 8.29 l 1.75 5.45 l -5.45 -1.75 l -8.29 4" />
-}
+};
 
 const indicators = {
 	decrease: (props?: SVGProps<SVGPathElement>) => <path {...props} d="m 11.99 15.97 l -3.98 -2.66 v -2.83 l 3.98 2.66 l 3.98 -2.66 v 2.83 z m 0 -3.89 l -3.99 -2.66 v -2.83 l 3.98 2.66 l 3.98 -2.66 v 2.83 z"/>,
 	increase: (props?: SVGProps<SVGPathElement>) => <path {...props} d="m 11.99 6.59 l -3.98 2.66 v 2.83 l 3.98 -2.66 l 3.98 2.66 v -2.83 z m 0 3.89 l -3.98 2.66 v 2.83 l 3.98 -2.66 l 3.98 2.66 v -2.83 z" />,
 	percent: (props?: SVGProps<SVGPathElement>) => <path {...props} d="m 12.67 6.64 h 2.29 q 0.14 0.05 0.1 0.17 q -5.57 7.76 -6.59 9.02 q -0.06 0.13 -0.25 0.1 h -1.47 q -0.26 0 -0.31 -0.14 q 5.75 -7.7 6.16 -8.47 q 0.07 -0.09 0.07 -0.21 q 0 -0.13 -0.16 -0.37 q 0.03 -0.1 0.16 -0.1 z m -4.49 -0.16 a 0.75 0.68 90 0 0 0 4.66 v -0.72 a 0.75 0.4 90 0 1 0 -3.21 z a 0.71 0.68 90 0 1 0 4.66 v -0.72 a 0.72 0.4 90 0 0 0 -3.21 z m 5.62 4.45 a 0.75 0.68 90 0 0 0 4.66 v -0.72 a 0.72 0.4 90 0 1 0 -3.21 z a 0.75 0.68 90 0 1 0 4.66 v -0.72 a 0.72 0.4 90 0 0 0 -3.21" />
-}
+};
 
 const masks = {
 	enemySmall: (props?: SVGProps<SVGGElement>) => <g {...props}><path fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M 8 9.14 c 8 -2.29 4.57 -5.71 4 -6.86 M 8 9.14 c -8 -2.29 -4.57 -5.71 -4 -6.86" /><path strokeWidth="2" stroke="currentColor" d="M 5.14 9.14 a 4 2.86 90 1 1 0 0.0001" /></g>
-}
+};
 
 export default function StatIcon(props: {
 	base: keyof typeof bases;
