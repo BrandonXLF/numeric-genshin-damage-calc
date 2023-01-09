@@ -16,7 +16,7 @@ import damageTypes from "../utils/damageTypes";
 export default function CalculatorForm() {
 	let [columns, setColumns] = React.useState<InputDetails[]>(() => {
 		let storedColumns = (JSON.parse(localStorage.getItem('GIDC-data') || '[]') as StoredInputDetails[])
-			.filter(storedInputDetails => storedInputDetails.shown);
+			.filter(storedInputDetails => storedInputDetails.shown !== false);
 		
 		storedColumns[0] = storedColumns[0] ?? [];
 		
@@ -25,7 +25,7 @@ export default function CalculatorForm() {
 	
 	let [closedColumns, setClosedColumns] = React.useState<InputDetails[]>(() => {
 		let storedClosedColumns = (JSON.parse(localStorage.getItem('GIDC-data') || '[]') as StoredInputDetails[])
-			.filter(storedInputDetails => !storedInputDetails.shown);
+			.filter(storedInputDetails => storedInputDetails.shown === false);
 		
 		return storedClosedColumns.map(createInputDetails);
 	});
