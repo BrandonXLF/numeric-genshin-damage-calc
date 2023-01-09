@@ -1,0 +1,9 @@
+.row-label {
+	display: flex;
+	align-items: center;
+}
+
+.has-desc {
+	text-decoration: underline dotted;
+	cursor: help;
+}
