@@ -7,27 +7,32 @@
 	cursor: pointer;
 }
 
+.svg-button-mini {
+	padding: 0;
+}
+
+.svg-button:disabled {
+	opacity: 0.75;
+}
+
 .svg-button:hover,
 .svg-button:focus {
 	background: #444;
+}
+
+.svg-button:disabled:hover,
+.svg-button:disabled:focus {
+	background: none;
 }
 
 .svg-button svg {
 	height: 1.4em;
 }
 
-.svg-button * {
-	vertical-align: middle;
-}
-
-.svg-button-mini {
-	padding: 0;
-}
-
 .svg-button-mini svg {
 	height: 1em;
 }
 
-.svg-button-disabled {
-	opacity: 0.75;
+.svg-button * {
+	vertical-align: middle;
 }

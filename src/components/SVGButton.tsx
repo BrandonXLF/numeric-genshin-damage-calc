@@ -12,7 +12,8 @@ type SVGButtonProps = {
 
 const SVGButton = React.forwardRef<HTMLButtonElement, SVGButtonProps>((props, ref) =>
 	<button
-		className={`svg-button ${props.mini ? 'svg-button-mini' : ''} ${props.disabled ? 'svg-button-disabled' : ''}`}
+		className={`svg-button${props.mini ? ' svg-button-mini' : ''}`}
+		disabled={props.disabled}
 		type="button"
 		onClick={() => !props.disabled && props.onClick?.()}
 		aria-label={props.label}
