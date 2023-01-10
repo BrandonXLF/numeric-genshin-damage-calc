@@ -8,7 +8,11 @@ type ReactionType = {
 	equation: keyof EquationData;
 	flatDamage?: keyof EquationData | keyof VariableData;
 	groups: DamageGroups;
-	reactions: [string, number?][];
+	reactions: {
+		name: string;
+		var?: number;
+		color?: string;
+	}[];
 };
 
 export default ReactionType;

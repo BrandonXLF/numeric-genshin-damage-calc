@@ -21,7 +21,7 @@
 .form-input input,
 .form-input select {
 	border: none;
-	background: #6f6f6f;
+	background: #4a4a4a;
 	color: white;
 	flex: 1;
 	width: 0;
@@ -30,13 +30,17 @@
 
 .form-input input:disabled,
 .form-input select:disabled {
-	background: #4a4a4a;
-	color: #4a4a4a;
+	background: #3a3a3a;
+	color: #3a3a3a;
+}
+
+optgroup {
+	color: white;
 }
 
 .input-icon {
 	display: flex;
-	background: #4a4a4a;
+	background: #3a3a3a;
 	align-items: center;
 	font-weight: bold;
 	user-select: none;
