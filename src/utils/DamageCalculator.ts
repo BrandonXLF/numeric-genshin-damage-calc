@@ -27,10 +27,10 @@ export default class DamageCalculator {
 			equation: 'amplifyingReaction',
 			groups: DamageGroups.Reaction | DamageGroups.General,
 			reactions: [
-				['Melt (Pyro on Cyro)', 2],
-				['Melt (Cyro on Pyro)', 1.5],
-				['Vaporize (Pyro on Hydro)', 1.5],
-				['Vaporize (Hydro on Pyro)', 2]
+				['Pyro Melt', 2],
+				['Cyro Melt', 1.5],
+				['Pyro Vaporize', 1.5],
+				['Hydro Vaporize', 2]
 			]
 		},
 		{
