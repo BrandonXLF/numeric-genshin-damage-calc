@@ -11,7 +11,7 @@ export default function DifferenceOutput(props: {
 	}
 
 	let number = Math.round((props.value - props.initial) / props.initial * 100);
-	let className = number > 0 ? 'pos' : number < 0 ? ' neg' : '';
+	let className = number > 0 ? 'pos' : number < 0 ? 'neg' : '';
 	
 	return <Popup
 		trigger={
