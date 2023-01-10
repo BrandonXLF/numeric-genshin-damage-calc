@@ -3,7 +3,7 @@
 }
 
 .calc .calc {
-	border-left: 1px solid white;
+	border-left: 1px solid #fff;
 	margin-left: 0.15ch;
 	padding-left: calc(1em - 0.15ch);
 }

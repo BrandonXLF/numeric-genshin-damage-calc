@@ -18,7 +18,7 @@ export default class DamageCalculator {
 			equation: 'generalDamage',
 			groups: DamageGroups.General,
 			reactions: [
-				['No Reaction']
+				{ name: 'No Reaction' }
 			]
 		},
 		{
@@ -27,10 +27,10 @@ export default class DamageCalculator {
 			equation: 'amplifyingReaction',
 			groups: DamageGroups.Reaction | DamageGroups.General,
 			reactions: [
-				['Pyro Melt', 2],
-				['Cyro Melt', 1.5],
-				['Pyro Vaporize', 1.5],
-				['Hydro Vaporize', 2]
+				{ name: 'Pyro Melt', var: 2, color: '#ffcc66' },
+				{ name: 'Cyro Melt', var: 1.5, color: '#99ffff' },
+				{ name: 'Pyro Vaporize', var: 1.5, color: '#ffcc66' },
+				{ name: 'Hydro Vaporize', var: 2, color: '#33ccff' }
 			]
 		},
 		{
@@ -39,15 +39,15 @@ export default class DamageCalculator {
 			equation: 'transformativeReaction',
 			groups: DamageGroups.Reaction,
 			reactions: [
-				['Burgeon', 3],
-				['Hyperbloom', 3],
-				['Overloaded', 2],
-				['Bloom', 2],
-				['Shattered', 1.5],
-				['Electro-Charged', 1.2],
-				['Swirl', 0.6],
-				['Superconduct', 0.5],
-				['Burning', 0.25]
+				{ name: 'Burgeon', var: 3, color: '#ff9b00' },
+				{ name: 'Hyperbloom', var: 3, color: '#e19bff' },
+				{ name: 'Overloaded', var: 2, color: '#ff809b' },
+				{ name: 'Bloom', var: 2, color: '#00ea53' },
+				{ name: 'Shattered', var: 1.5 },
+				{ name: 'Electro-Charged', var: 1.2, color: '#e19bff' },
+				{ name: 'Swirl', var: 0.6, color: '#66ffcc' },
+				{ name: 'Superconduct', var: 0.5, color: '#b4b4ff' },
+				{ name: 'Burning', var: 0.25, color: '#ff9b00' }
 			]
 		},
 		{
@@ -57,8 +57,8 @@ export default class DamageCalculator {
 			flatDamage: 'flatDamageAdded',
 			groups: DamageGroups.General | DamageGroups.Reaction,
 			reactions: [
-				['Spread', 1.25],
-				['Aggravate', 1.15]
+				{ name: 'Spread', var: 1.25, color: '#00ea53' },
+				{ name: 'Aggravate', var: 1.15, color: '#e19bff' }
 			]
 		}
 	];
@@ -71,7 +71,7 @@ export default class DamageCalculator {
 	private variables = {
 		baseMultiplier: {
 			name: 'Reaction Multiplier',
-			value: this.reaction[1] || 1
+			value: this.reaction.var || 1
 		},
 		transformativeLevelMultiplier: {
 			name: 'Level Multiplier',
