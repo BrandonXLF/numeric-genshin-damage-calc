@@ -19,13 +19,13 @@ a {
 	color: #4fcbf5;
 }
 
+a:visited {
+	color: #eb83eb;
+}
+
 button {
 	font-size: unset;
 	border-radius: 4px;
-}
-
-a:visited {
-	color: #eb83eb;
 }
 
 .center-items {
