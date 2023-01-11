@@ -25,7 +25,7 @@ const stats: Stat[] = [
 	},
 	{
 		name: 'EM Multiplier',
-		desc: 'THe percent multiplier of the talent that scales with EM if applicable',
+		desc: 'The percent multiplier of the talent that scales with EM if applicable',
 		prop: 'talentEM',
 		default: 0,
 		type: StatTypes.Percent,
