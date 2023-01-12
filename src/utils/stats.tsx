@@ -148,7 +148,6 @@ const stats: Stat[] = [
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
 		groups: DamageGroups.General,
-		// icon: <EnemyShredIcon />
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	},
 	{
