@@ -52,7 +52,7 @@ export default function StatInputRow(props: {
 		return <StatInput
 			key={i}
 			stat={props.stat}
-			value={inputDetails.statData[props.stat.prop]!.number}
+			value={inputDetails.statData[props.stat.prop]?.number || ''}
 			disabled={validGroups === 0}
 			onChange={value => onChange(i, props.stat.prop, value)}
 		/>;
