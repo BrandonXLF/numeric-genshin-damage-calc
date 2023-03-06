@@ -23,11 +23,6 @@ a:visited {
 	color: #eb83eb;
 }
 
-button {
-	font-size: unset;
-	border-radius: 4px;
-}
-
 .center-items {
 	display: flex;
 	flex-direction: column;

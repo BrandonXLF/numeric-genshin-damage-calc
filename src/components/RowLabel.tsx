@@ -11,14 +11,14 @@ export default function RowLabel(props: {
 		<span className="label-icon">{props.icon}</span>
 		{props.desc
 			? <><Popup
-				trigger={<span className="has-desc">{props.label}</span>}
+				trigger={<span className="label-text has-desc">{props.label}</span>}
 				position={['top center', 'bottom center', 'top right']}
 				on={['hover', 'focus']}
 				arrow={true}
 			>
 				{props.desc}
 			</Popup> </>
-			: <span>{props.label}</span>
+			: <span className="label-text">{props.label}</span>
 		}
 	</div>;
 }

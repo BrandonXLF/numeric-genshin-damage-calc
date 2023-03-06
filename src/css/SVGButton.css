@@ -5,6 +5,8 @@
 	margin: 0;
 	border: none;
 	cursor: pointer;
+	font-size: unset;
+	border-radius: 4px;
 }
 
 .svg-button-mini {
@@ -20,6 +22,8 @@
 	background: #444;
 }
 
+.svg-button-mini:hover,
+.svg-button-mini:focus,
 .svg-button:disabled:hover,
 .svg-button:disabled:focus {
 	background: none;
