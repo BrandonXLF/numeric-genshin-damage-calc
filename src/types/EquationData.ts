@@ -4,8 +4,12 @@ export type EquationInfo = {
 };
 
 type EquationData = {
-	talentScale: EquationInfo;
+	atk: EquationInfo;
+	def: EquationInfo;
+	hp: EquationInfo;
 	baseDamage: EquationInfo;
+	totalTalentDamageBonus: EquationInfo;
+	flatDamageBasic: EquationInfo;
 	enemyResistance: EquationInfo;
 	enemyResistanceMul: EquationInfo;
 	enemyDefenseFactor: EquationInfo;

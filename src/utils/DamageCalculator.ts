@@ -9,6 +9,8 @@ import VariableData from "../types/VariableData";
 import evaluateExpression from "./evalulateExpression";
 import stats from "./stats";
 import transformativeLevelMultipliers from "./transformativeLevelMultipliers";
+import Stat from "../types/Stat";
+import attributes, { getAttrStat } from "./attributes";
 
 export default class DamageCalculator {
 	static reactionTypes: ReactionType[] = [
@@ -66,7 +68,7 @@ export default class DamageCalculator {
 	private reactionType = DamageCalculator.reactionTypes[this.reactionTypeIndex];
 	private reaction = this.reactionType.reactions[this.reactionIndex];
 	private mainEquation = this.reactionType.equation;
-	private flatDamage = this.reactionType.flatDamage || 'flatDamage';
+	private flatDamage = this.reactionType.flatDamage || 'flatDamageBasic';
 
 	private variables = {
 		baseMultiplier: {
@@ -81,19 +83,29 @@ export default class DamageCalculator {
 	
 	// https://library.keqingmains.com/combat-mechanics/damage/damage-formula
 	private equations: EquationData = {
-		talentScale: {
-			name: 'ATK/HP/DEF',
+		atk: {
+			name: 'ATK',
 			expr: '(baseTalentScale * (1 + additionalBonusTalentScale)) + bonusTalentScale'
 		},
+		def: {
+			name: 'DEF',
+			expr: '(baseDEF * (1 + additionalBonusDEF)) + bonusDEF'
+		},
+		hp: {
+			name: 'HP',
+			expr: '(baseHP * (1 + additionalBonusHP)) + bonusHP'
+		},
 		baseDamage: {
-			name: 'Base DMG',
-			expr: () => {
-				if (this.variable('talentEM').value) {
-					return '((talentScale * talent) + (em * talentEM)) * baseDamageMultiplier'
-				}
-				
-				return 'talentScale * talent * baseDamageMultiplier'
-			}
+			name: 'Talent DMG',
+			expr: '(MULTI:talent) * baseDamageMultiplier'
+		},
+		totalTalentDamageBonus: {
+			name: 'Talent DMG Bonus',
+			expr: 'MULTI:talentDamageBonus'
+		},
+		flatDamageBasic: {
+			name: 'Additive DMG Bonus',
+			expr: 'flatDamage + totalTalentDamageBonus'
 		},
 		trueDamage: {
 			name: 'True DMG',
@@ -164,15 +176,15 @@ export default class DamageCalculator {
 			expr: 'generalDamage * amplifyingMul'
 		},
 		flatDamageAdded: {
-			name: 'Total Flat DMG Increase',
-			expr: 'flatDamage + flatDamageReactionBonus'
+			name: 'Additive DMG Bonus',
+			expr: 'flatDamage + totalTalentDamageBonus + flatDamageReactionBonus'
 		},
 		flatDamageReactionEMBonus: {
 			name: 'EM Bonus',
 			expr: '(5 * em) / (1200 + em)'
 		},
 		flatDamageReactionBonus: {
-			name: 'Additive Reaction DMG',
+			name: 'Reaction DMG',
 			expr: 'baseTransformativeDamage * (1 + flatDamageReactionEMBonus + reactionBonus)'
 		},
 		realCritRate: {
@@ -193,15 +205,42 @@ export default class DamageCalculator {
 		}
 	};
 	
+	private attrStatSubst: { [key: string]: string } = {};
+	
 	constructor(
 		private statData: StatData,
 		private reactionTypeIndex: number,
 		private reactionIndex: number
 	) {
-		stats.forEach(stat => this.variables[stat.prop] = {
-			name: stat.name,
-			value: this.statData[stat.prop].value
+		stats.forEach(stat => {
+			if ('attrs' in stat)
+				return this.populateAttrStat(stat);
+
+			this.variables[stat.prop] = {
+				name: stat.name,
+				value: this.statData[stat.prop]!.value
+			};
 		});
+	}
+
+	private populateAttrStat(stat: Stat) {
+		let arr: string[] = [];
+
+		attributes.forEach(attr => {
+			const subStat = getAttrStat(stat.prop, attr);
+			const subStatData = this.statData[subStat];
+			
+			if (!subStatData) return;
+			
+			this.variables[subStat] = {
+				name: `${attr} ${stat.name}`,
+				value: subStatData.value
+			}
+			
+			arr.push(`${attr.toLowerCase()} * ${subStat}`);
+		});
+
+		this.attrStatSubst[stat.prop] = `${arr.length > 1 ? '(' : ''}${arr.join(') + (')}${arr.length > 1 ? ')' : ''}`;
 	}
 	
 	private record(value: string, type: RecordEntryTypes) {
@@ -238,7 +277,7 @@ export default class DamageCalculator {
 	processComponent(component: string): ComponentOutput {
 		let variable;
 		
-		if (/^[A-Za-z]+$/.test(component) && (variable = this.variable(component))) {
+		if (/^[A-Za-z_]+$/.test(component) && (variable = this.variable(component))) {
 			return {
 				mathComponent: variable.value.toString(),
 				equationComponent: [
@@ -264,7 +303,9 @@ export default class DamageCalculator {
 		let equation: RecordEntry[] = [];
 		let parameters: Record<string, EquationRecord> = {};
 		
-		expr = expr.split(/([A-Za-z]+|\d+)+/g).map(component => {
+		expr = expr.replace(/MULTI:([A-Za-z]+)/g, (_, name) => this.attrStatSubst[name] || name);
+		
+		expr = expr.split(/([A-Za-z_]+|\d+)+/g).map(component => {
 			let res = this.processComponent(component);
 			
 			equation.push(...res.equationComponent);

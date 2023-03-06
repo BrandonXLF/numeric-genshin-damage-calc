@@ -14,27 +14,18 @@ const stats: Stat[] = [
 		icon: <StatIcon base="character" />
 	},
 	{
-		name: 'ATK/HP/DEF Multiplier',
+		name: 'Talent Scaling',
 		desc: 'The percent multiplier of the talent that scales with ATK/HP/DEF',
 		prop: 'talent',
 		default: 100,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="stats" indicator="percent" />
+		icon: <StatIcon base="stats" indicator="percent" />,
+		attrs: true
 	},
 	{
-		name: 'EM Multiplier',
-		desc: 'The percent multiplier of the talent that scales with EM if applicable',
-		prop: 'talentEM',
-		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterTalent,
-		groups: DamageGroups.General,
-		icon: <StatIcon base="em" indicator="percent" />
-	},
-	{
-		name: 'Talent DMG Multiplier',
+		name: 'Talent Multiplier',
 		desc: 'Multiplier that applies to the talent multipliers, increased by Xingqui\'s C4 and Yoimiya\'s skill for example',
 		prop: 'baseDamageMultiplier',
 		default: 100,
@@ -44,8 +35,19 @@ const stats: Stat[] = [
 		icon: <StatIcon base="percent" indicator="percent" />
 	},
 	{
-		name: 'Flat DMG Increase',
-		desc: 'Flat damage increases that are added to the talent damage, e.g. Yunjin\'s skill, Zhongli\'s A4, and Kokomi\'s burst',
+		name: 'Talent DMG Bonus',
+		desc: 'Damage increases that are added to the talent damage by other talents, e.g. Zhongli\'s A4, and Kokomi\'s burst',
+		prop: 'talentDamageBonus',
+		default: 0,
+		type: StatTypes.Percent,
+		section: StatSections.CharacterTalent,
+		groups: DamageGroups.General,
+		icon: <StatIcon base="damage" indicator="increase" />,
+		attrs: true
+	},
+	{
+		name: 'Flat DMG Bonus',
+		desc: 'Flat damage increases that are added to the talent damage, e.g. Yunjin\'s skill',
 		prop: 'flatDamage',
 		default: 0,
 		type: StatTypes.Number,
@@ -54,43 +56,113 @@ const stats: Stat[] = [
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
-		name: 'Base ATK/HP/DEF',
-		desc: 'The stat the talent scales off of, e.g. base ATK or base HP, from character and weapon flat stat only',
+		name: 'Base ATK',
+		desc: 'ATK from character and weapon flat stat only',
 		prop: 'baseTalentScale',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="stats" />
+		dependents: { [DamageGroups.General]: ['talent', 'talentDamageBonus'] },
+		icon: <StatIcon base="damage" />
 	},
 	{
-		name: 'Bonus ATK/HP/DEF',
-		desc: 'The green number next to the stat the talent scales off of, includes in-game ATK percent etc., add extra flat ATK etc. like from Bennett\'s ult here',
+		name: 'Bonus ATK',
+		desc: 'The green number next to the base ATK, includes in-game ATK percent, add extra flat ATK, like from Bennett\'s ult, here',
 		prop: 'bonusTalentScale',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="stats" indicator="increase" />
+		dependents: { [DamageGroups.General]: ['talent', 'talentDamageBonus'] },
+		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
-		name: 'Extra ATK/HP/DEF%',
-		desc: 'Extra ATK percent, HP percent, etc., in-game ATK percent etc. is integrated into Bonus ATK/HP/DEF',
+		name: 'Extra ATK %',
+		desc: 'Extra ATK percent, in-game ATK percent is integrated into Bonus ATK',
 		prop: 'additionalBonusTalentScale',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="stats" indicator="increase" />
+		dependents: { [DamageGroups.General]: ['talent', 'talentDamageBonus'] },
+		icon: <StatIcon base="damage" indicator="increase" />
+	},
+	{
+		name: 'Base DEF',
+		desc: 'DEF from character base stat only',
+		prop: 'baseDEF',
+		default: 500,
+		type: StatTypes.Number,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General,
+		dependents: { [DamageGroups.General]: ['talentDEF', 'talentDamageBonusDEF'] },
+		icon: <StatIcon base="def" />
+	},
+	{
+		name: 'Bonus DEF',
+		desc: 'The green number next to the base DEF, includes in-game DEF percent, add extra flat DEF, like from Gorou\'s skill, here',
+		prop: 'bonusDEF',
+		default: 500,
+		type: StatTypes.Number,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General,
+		dependents: { [DamageGroups.General]: ['talentDEF', 'talentDamageBonusDEF'] },
+		icon: <StatIcon base="def" indicator="increase" />
+	},
+	{
+		name: 'Extra DEF %',
+		desc: 'Extra DEF percent, in-game DEF percent is integrated into Bonus DEF',
+		prop: 'additionalBonusDEF',
+		default: 0,
+		type: StatTypes.Percent,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General,
+		dependents: { [DamageGroups.General]: ['talentDEF', 'talentDamageBonusDEF'] },
+		icon: <StatIcon base="def" indicator="increase" />
+	},
+	{
+		name: 'Base HP',
+		desc: 'HP from character base stat only',
+		prop: 'baseHP',
+		default: 500,
+		type: StatTypes.Number,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General,
+		dependents: { [DamageGroups.General]: ['talentHP', 'talentDamageBonusHP'] },
+		icon: <StatIcon base="hp" />
+	},
+	{
+		name: 'Bonus HP',
+		desc: 'The green number next to the base DEF, includes in-game DEF percent, add extra flat HP here',
+		prop: 'bonusHP',
+		default: 500,
+		type: StatTypes.Number,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General,
+		dependents: { [DamageGroups.General]: ['talentHP', 'talentDamageBonusHP'] },
+		icon: <StatIcon base="hp" indicator="increase" />
+	},
+	{
+		name: 'Extra HP %',
+		desc: 'Extra HP percent, in-game HP percent is integrated into Bonus HP',
+		prop: 'additionalBonusHP',
+		default: 0,
+		type: StatTypes.Percent,
+		section: StatSections.CharacterStats,
+		groups: DamageGroups.General,
+		dependents: { [DamageGroups.General]: ['talentHP', 'talentDamageBonusHP'] },
+		icon: <StatIcon base="hp" indicator="increase" />
 	},
 	{
 		name: 'Elemental Mastery',
-		desc: 'Used to calculate damage caused by Talent EM Multiplier and the Reaction Bonus, not needed otherwise',
+		desc: 'Used to calculate reaction DMG bonus and talent if applicable',
 		prop: 'em',
 		default: 0,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.General | DamageGroups.Reaction,
+		dependents: { [DamageGroups.General]: ['talentEM', 'talentDamageBonusEM'] },
 		icon: <StatIcon base="em" />
 	},
 	{

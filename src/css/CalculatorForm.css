@@ -22,7 +22,7 @@
 
 .grid {
 	display: grid;
-	align-items: center;
+	align-items: flex-start;
 	row-gap: 0.65em;
 	column-gap: 1em;
 	max-width: 100%;
@@ -61,9 +61,4 @@
 	display: flex;
 	align-items: center;
 	gap: 0.5em;
-}
-
-.has-desc {
-	text-decoration: underline dotted;
-	cursor: help;
 }
