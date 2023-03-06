@@ -36,7 +36,7 @@ export default function StatInputRow(props: {
 		
 		// Remove groups without any of the required dependents
 		for (let j = 1; DamageGroups[j]; j *= 2)
-			if (props.stat.dependents?.[j] && !props.stat.dependents[j].some(dependent => parseInt(inputDetails.statData[dependent]?.number || '')))
+			if (props.stat.dependents?.[j] && !props.stat.dependents[j]!.some(dependent => parseInt(inputDetails.statData[dependent]?.number || '')))
 				validGroups &= ~j;
 		
 		anyEnabled = anyEnabled || validGroups !== 0;

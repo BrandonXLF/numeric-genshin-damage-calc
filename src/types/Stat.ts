@@ -9,9 +9,7 @@ type Stat = DisplayedProp<StatData> & {
 	type: StatTypes;
 	section: StatSections;
 	groups: DamageGroups;
-	dependents?: {
-		[group in DamageGroups]: (keyof StatData)[];
-	}
+	dependents?: Partial<Record<DamageGroups, (keyof StatData)[]>>;
 	icon: ReactElement;
 	attrs?: boolean;
 };
