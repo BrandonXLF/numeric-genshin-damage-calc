@@ -28,8 +28,6 @@ export default function createInputDetails(base: StoredInputDetails = {}): Input
 			
 			if (anyFound)
 				return;
-				
-			console.log('F', stat.prop)
 		}
 		
 		const value = base?.statData?.[stat.prop];
