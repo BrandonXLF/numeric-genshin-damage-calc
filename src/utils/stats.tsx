@@ -15,7 +15,7 @@ const stats: Stat[] = [
 	},
 	{
 		name: 'Talent Scaling',
-		desc: 'The percent multiplier of the talent that scales with ATK/HP/DEF',
+		desc: 'The percent multiplier of the talent that scales with the selected stat',
 		prop: 'talent',
 		default: 100,
 		type: StatTypes.Percent,

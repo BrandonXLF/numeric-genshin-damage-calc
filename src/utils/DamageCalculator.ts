@@ -101,7 +101,7 @@ export default class DamageCalculator {
 		},
 		flatDamageBasic: {
 			name: 'Additive DMG Bonus',
-			expr: 'flatDamage + MULTI_talentDamageBonus'
+			expr: 'MULTI_talentDamageBonus + flatDamage'
 		},
 		trueDamage: {
 			name: 'True DMG',
