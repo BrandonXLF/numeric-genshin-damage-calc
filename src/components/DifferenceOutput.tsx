@@ -4,9 +4,7 @@ export default function DifferenceOutput(props: {
 	initial?: number;
 	value?: number
 }) {
-	if (
-		!props.initial || !props.value || Number.isNaN(props.initial) || Number.isNaN(props.value)
-	) {
+	if (!props.initial || !props.value) {
 		return null;
 	}
 

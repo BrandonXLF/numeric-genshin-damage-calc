@@ -8,7 +8,7 @@ export default function EquationLine(props: {
 		{props.record.equation.map((entry, i) =>
 			<span key={i} className={`calc-${entry.type}`}>{entry.value}</span>
 		)}
-		{Object.entries(props.record.parameters || {}).map(([key, row]) =>
+		{Object.entries(props.record.parameters ?? {}).map(([key, row]) =>
 			<EquationLine key={key} record={row} />
 		)}
 	</div>

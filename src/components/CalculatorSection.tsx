@@ -14,7 +14,7 @@ export default function CalculatorSection(props: {
 	let heading = useRef<HTMLHeadingElement>(null);
 	
 	useEffect(() => {
-		heading.current!.style.display = /H\d/.test(heading.current!.nextSibling?.nodeName || '') ? 'none' : '';
+		heading.current!.style.display = /H\d/.test(heading.current!.nextSibling?.nodeName ?? '') ? 'none' : '';
 	});
 	
 	return <>

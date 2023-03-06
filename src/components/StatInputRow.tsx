@@ -20,7 +20,7 @@ export default function StatInputRow(props: {
 		let newColumns = [...props.columns];
 		
 		if (!newColumns[i].statData[prop])
-			newColumns[i].statData[prop] = new StatValue(value || '', props.stat.type);
+			newColumns[i].statData[prop] = new StatValue(value ?? '', props.stat.type);
 		
 		if (value === undefined)
 			delete newColumns[i].statData[prop];
@@ -36,7 +36,7 @@ export default function StatInputRow(props: {
 		
 		// Remove groups without any of the required dependents
 		for (let j = 1; DamageGroups[j]; j *= 2)
-			if (props.stat.dependents?.[j] && !props.stat.dependents[j]!.some(dependent => parseInt(inputDetails.statData[dependent]?.number || '')))
+			if (props.stat.dependents?.[j] && !props.stat.dependents[j]!.some(dependent => parseInt(inputDetails.statData[dependent]?.number ?? '')))
 				validGroups &= ~j;
 		
 		anyEnabled = anyEnabled || validGroups !== 0;
@@ -52,7 +52,7 @@ export default function StatInputRow(props: {
 		return <StatInput
 			key={i}
 			stat={props.stat}
-			value={inputDetails.statData[props.stat.prop]?.number || ''}
+			value={inputDetails.statData[props.stat.prop]?.number ?? ''}
 			disabled={validGroups === 0}
 			onChange={value => onChange(i, props.stat.prop, value)}
 		/>;

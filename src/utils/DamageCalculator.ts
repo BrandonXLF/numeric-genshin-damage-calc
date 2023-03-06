@@ -68,12 +68,12 @@ export default class DamageCalculator {
 	private reactionType = DamageCalculator.reactionTypes[this.reactionTypeIndex];
 	private reaction = this.reactionType.reactions[this.reactionIndex];
 	private mainEquation = this.reactionType.equation;
-	private flatDamage = this.reactionType.flatDamage || 'flatDamageBasic';
+	private flatDamage = this.reactionType.flatDamage ?? 'flatDamageBasic';
 
 	private variables = {
 		baseMultiplier: {
 			name: 'Reaction Multiplier',
-			value: this.reaction.var || 1
+			value: this.reaction.var ?? 1
 		},
 		transformativeLevelMultiplier: {
 			name: 'Level Multiplier',
@@ -212,7 +212,7 @@ export default class DamageCalculator {
 
 			this.variables[stat.prop] = {
 				name: stat.name,
-				value: this.statData[stat.prop]?.value || NaN
+				value: this.statData[stat.prop]?.value ?? NaN
 			};
 		});
 	}
