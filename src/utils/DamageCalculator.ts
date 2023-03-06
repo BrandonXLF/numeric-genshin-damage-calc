@@ -212,7 +212,7 @@ export default class DamageCalculator {
 
 			this.variables[stat.prop] = {
 				name: stat.name,
-				value: this.statData[stat.prop]?.value ?? NaN
+				value: this.statData[stat.prop]?.value || 0
 			};
 		});
 	}
