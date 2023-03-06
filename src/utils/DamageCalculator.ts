@@ -1,7 +1,7 @@
 import Damage from "../types/Damage";
 import DamageGroups from "../types/DamageGroups";
 import ReactionType from "../types/ReactionType";
-import EquationData from "../types/EquationData";
+import EquationData, { EquationInfo } from "../types/EquationData";
 import VariableOutput, { ComponentOutput, EquationRecord } from "../types/VariableOutput";
 import RecordEntry, { RecordEntryTypes } from "../types/RecordEntry";
 import StatData from "../types/StatData";
@@ -97,15 +97,11 @@ export default class DamageCalculator {
 		},
 		baseDamage: {
 			name: 'Talent DMG',
-			expr: '(MULTI:talent) * baseDamageMultiplier'
-		},
-		totalTalentDamageBonus: {
-			name: 'Talent DMG Bonus',
-			expr: 'MULTI:talentDamageBonus'
+			expr: 'MULTI_INLINE_talent * baseDamageMultiplier'
 		},
 		flatDamageBasic: {
 			name: 'Additive DMG Bonus',
-			expr: 'flatDamage + totalTalentDamageBonus'
+			expr: 'flatDamage + MULTI_talentDamageBonus'
 		},
 		trueDamage: {
 			name: 'True DMG',
@@ -177,7 +173,7 @@ export default class DamageCalculator {
 		},
 		flatDamageAdded: {
 			name: 'Additive DMG Bonus',
-			expr: 'flatDamage + totalTalentDamageBonus + flatDamageReactionBonus'
+			expr: 'flatDamage + MULTI_talentDamageBonus + flatDamageReactionBonus'
 		},
 		flatDamageReactionEMBonus: {
 			name: 'EM Bonus',
@@ -205,8 +201,6 @@ export default class DamageCalculator {
 		}
 	};
 	
-	private attrStatSubst: { [key: string]: string } = {};
-	
 	constructor(
 		private statData: StatData,
 		private reactionTypeIndex: number,
@@ -228,19 +222,33 @@ export default class DamageCalculator {
 
 		attributes.forEach(attr => {
 			const subStat = getAttrStat(stat.prop, attr);
-			const subStatData = this.statData[subStat];
+			const value = this.statData[subStat]?.value;
 			
-			if (!subStatData) return;
+			if (!value) return;
 			
 			this.variables[subStat] = {
 				name: `${attr} ${stat.name}`,
-				value: subStatData.value
+				value: value
 			}
 			
 			arr.push(`${attr.toLowerCase()} * ${subStat}`);
 		});
-
-		this.attrStatSubst[stat.prop] = `${arr.length > 1 ? '(' : ''}${arr.join(') + (')}${arr.length > 1 ? ')' : ''}`;
+		
+		const parentKey = `MULTI_${stat.prop}` as `MULTI_${string}`;
+		
+		if (!arr.length) {
+			this.variables[parentKey] = {
+				name: stat.name,
+				value: 0
+			};
+			
+			return;
+		}
+		
+		this.equations[parentKey] = {
+			name: stat.name,
+			expr: `${arr.length > 1 ? '(' : ''}${arr.join(') + (')}${arr.length > 1 ? ')' : ''}`
+		};
 	}
 	
 	private record(value: string, type: RecordEntryTypes) {
@@ -258,26 +266,19 @@ export default class DamageCalculator {
 	}
 	
 	private variable(name: keyof VariableData | keyof EquationData): VariableOutput
-	private variable(name: string): VariableOutput | null
-	private variable(name: string): VariableOutput | null {
-		if (name in this.variables) {
-			return {
-				value: this.variables[name as keyof VariableData].value,
-				name: this.variables[name as keyof VariableData].name
-			}
-		}
+	private variable(name: string): VariableOutput | undefined
+	private variable(name: string): VariableOutput | undefined {
+		if (name in this.variables)
+			return this.variables[name as keyof VariableData];
 		
-		if (name in this.equations) {
+		if (name in this.equations)
 			return this.equation(name as keyof EquationData);
-		}
-		
-		return null;
 	}
 	
 	processComponent(component: string): ComponentOutput {
 		let variable;
 		
-		if (/^[A-Za-z_]+$/.test(component) && (variable = this.variable(component))) {
+		if (/^[A-Za-z_]+$/.test(component) && (variable = this.variable(component)))
 			return {
 				mathComponent: variable.value.toString(),
 				equationComponent: [
@@ -285,8 +286,7 @@ export default class DamageCalculator {
 					this.recordNumber(variable.value)
 				],
 				record: variable.record
-			}
-		}
+			};
 		
 		return {
 			mathComponent: component,
@@ -296,23 +296,37 @@ export default class DamageCalculator {
 		};
 	}
 	
+	expression(equationInfo: EquationInfo) {
+		let exprOrFunc = equationInfo.expr; 
+		
+		return typeof exprOrFunc === 'function' ? exprOrFunc() : exprOrFunc;
+	}
+	
 	equation(name: keyof EquationData): VariableOutput {
 		let equationInfo = this.equations[name];
-		let exprOrFunc = equationInfo.expr;
-		let expr = typeof exprOrFunc === 'function' ? exprOrFunc() : exprOrFunc;
+		let expr = this.expression(equationInfo!);
 		let equation: RecordEntry[] = [];
 		let parameters: Record<string, EquationRecord> = {};
 		
-		expr = expr.replace(/MULTI:([A-Za-z]+)/g, (_, name) => this.attrStatSubst[name] || name);
+		expr = expr.replace(/MULTI_(INLINE_|)([A-Za-z]+)/g, (str, inline, name) => {
+			const key = 'MULTI_' + name as keyof EquationData
+			
+			if (inline && key in this.equations) {
+				let expr = this.expression(this.equations[key]!);
+				
+				return `${expr.includes('+') ? '(' : ''}${expr}${expr.includes('+') ? ')' : ''}`;
+			}
+			
+			return key;
+		});
 		
 		expr = expr.split(/([A-Za-z_]+|\d+)+/g).map(component => {
 			let res = this.processComponent(component);
 			
 			equation.push(...res.equationComponent);
 			
-			if (res.record) {
+			if (res.record)
 				parameters[component] = res.record;
-			}
 			
 			return res.mathComponent;
 		}).join('');
@@ -320,14 +334,14 @@ export default class DamageCalculator {
 		let value = evaluateExpression(expr);
 		
 		equation.unshift(
-			this.record(`${equationInfo.name} `, RecordEntryTypes.Note),
+			this.record(`${equationInfo!.name} `, RecordEntryTypes.Note),
 			this.recordNumber(value),
 			this.record(' = ', RecordEntryTypes.Symbols)
 		);
 		
 		return {
 			value: value,
-			name: equationInfo.name,
+			name: equationInfo!.name,
 			record: {
 				equation: equation,
 				parameters: parameters
@@ -336,13 +350,12 @@ export default class DamageCalculator {
 	}
 	
 	calculateDamage(): Damage {
-		if (this.reactionType.canCrit) {
+		if (this.reactionType.canCrit)
 			return {
 				nonCrit: this.equation(this.reactionType.equation),
 				crit: this.equation('critHit'),
 				avgDmg: this.equation('avgDamage')
 			};
-		}
 		
 		return {
 			avgDmg: this.equation(this.reactionType.equation)

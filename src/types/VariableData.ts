@@ -5,6 +5,6 @@ export type VariableInfo = {
 	value: number;
 };
 
-type VariableData = Record<keyof StatData | 'baseMultiplier' | 'transformativeLevelMultiplier', VariableInfo>;
+type VariableData = Record<keyof StatData | 'baseMultiplier' | 'transformativeLevelMultiplier' | `MULTI_${string}`, VariableInfo>;
 
 export default VariableData;

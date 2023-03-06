@@ -8,7 +8,6 @@ type EquationData = {
 	def: EquationInfo;
 	hp: EquationInfo;
 	baseDamage: EquationInfo;
-	totalTalentDamageBonus: EquationInfo;
 	flatDamageBasic: EquationInfo;
 	enemyResistance: EquationInfo;
 	enemyResistanceMul: EquationInfo;
@@ -31,6 +30,7 @@ type EquationData = {
 	critBonus: EquationInfo;
 	flatDamageAdded: EquationInfo;
 	trueTransformativeReaction: EquationInfo;
+	[key: `MULTI_${string}`]: EquationInfo | undefined;
 };
 
 export default EquationData;
