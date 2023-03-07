@@ -27,22 +27,27 @@ export default function StatInputRow(props: {
 			const prop = getAttrStat(props.stat.prop, attr);
 			const value = props.inputDetails.statData[prop]!.number;
 			
+			const types: { name: string; value?: string; disabled?: boolean; }[] = attributes.map(optionAttr => ({
+				name: optionAttr,
+				disabled: !inactiveAttributes.includes(optionAttr) && optionAttr !== attr
+			}));
+			
+			if (activeAttributes.length > 1)
+				types.push({ name: '-', value: '' })
+			
 			return <StatInput
 				key={attr}
 				stat={props.stat}
 				value={value}
-				after={
-					<select className="mini-select" value={attr} onChange={e => {
-						props.onChange(prop);
-						
-						if (e.target.value)
-							props.onChange(getAttrStat(props.stat.prop, e.target.value as typeof attributes[keyof typeof attributes]), value);
-					}}>
-						{attributes.map(selectAttr => <option key={selectAttr} disabled={!inactiveAttributes.includes(selectAttr) && selectAttr !== attr}>{selectAttr}</option>)}
-						{activeAttributes.length > 1 && <option value="">-</option>}
-					</select>
-				}
 				onChange={value => props.onChange(prop, value)}
+				unit={attr}
+				unitOptions={types}
+				onUnitChange={value => {
+					props.onChange(prop);
+					
+					if (value)
+						props.onChange(getAttrStat(props.stat.prop, value as typeof attributes[keyof typeof attributes]), value);
+				}}
 			/>
 		})}
 		{props.stat.attrs && inactiveAttributes.length > 0 &&

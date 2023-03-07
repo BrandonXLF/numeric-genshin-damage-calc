@@ -37,22 +37,20 @@ export default function LoadColumnsPopup(props: {
 			/>
 		</div>
 		<div className="load-columns-popup-body">
-			{props.closedColumns.map((inputDetails, i) =>
-				<div key={i}>
-					<SVGButton
-						label={inputDetails.label || `Saved Column ${i + 1}`}
-						onClick={() => {
-							let newColumns = [...props.columns];
-							let newClosedColumns = [...props.closedColumns];
-							
-							newColumns.push(newClosedColumns.splice(i, 1)[0]);
-							
-							props.setColumns(newColumns);
-							props.setClosedColumns(newClosedColumns);
-						}}
-					/>
-				</div>
-			)}
+			{props.closedColumns.map((inputDetails, i) => <div key={i}>
+				<SVGButton
+					label={inputDetails.label || `Saved Column ${i + 1}`}
+					onClick={() => {
+						let newColumns = [...props.columns];
+						let newClosedColumns = [...props.closedColumns];
+						
+						newColumns.push(newClosedColumns.splice(i, 1)[0]);
+						
+						props.setColumns(newColumns);
+						props.setClosedColumns(newClosedColumns);
+					}}
+				/>
+			</div>)}
 		</div>
 	</Popup>
 }

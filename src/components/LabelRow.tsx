@@ -9,16 +9,16 @@ export default function LabelRow(props: {
 }) {
 	return <>
 		<RowLabel label="Label" />
-		{props.columns.map((inputDetails, i) =>
-			<FormInput key={i}>
-				<input type="text" value={inputDetails.label} onChange={e => {
-					let newColumns = [...props.columns];
-					
-					newColumns[i].label = e.target.value;
+		{props.columns.map((inputDetails, i) => <FormInput
+			key={i}
+			value={inputDetails.label}
+			onChange={value => {
+				let newColumns = [...props.columns];
+				
+				newColumns[i].label = value;
 
-					props.setColumns(newColumns);
-				}} />
-			</FormInput>
-		)}
+				props.setColumns(newColumns);
+			}}
+		/>)}
 	</>;
 }

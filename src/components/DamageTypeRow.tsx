@@ -10,32 +10,30 @@ export default function DamageTypeRow(props: {
 }) {
 	return <>
 		<RowLabel label="Reaction" />
-		{props.columns.map((inputDetails, i) =>
-			<FormInput key={i}>
-				<select
-					value={`${inputDetails.reactionType},${inputDetails.reaction}`}
-					style={{ color: DamageCalculator.reactionTypes[inputDetails.reactionType].reactions[inputDetails.reaction].color ?? 'white' }} 
-					onChange={e => {
-					let newColumns = [...props.columns];
-					
-					[
-						newColumns[i].reactionType,
-						newColumns[i].reaction
-					] = e.target.value.split(',').map(Number);
+		{props.columns.map((inputDetails, i) => <FormInput
+			key={i}
+			value={`${inputDetails.reactionType},${inputDetails.reaction}`}
+			style={{
+				color: DamageCalculator.reactionTypes[inputDetails.reactionType].reactions[inputDetails.reaction].color ?? 'white'
+			}} 
+			onChange={value => {
+				let newColumns = [...props.columns];
 				
-					props.setColumns(newColumns);
-				}}>
-					{DamageCalculator.reactionTypes.map((damageType, i) => {
-						return <optgroup key={i} label={damageType.name}>
-							{damageType.reactions.map((damageSubType, j) => {
-								return <option style={{ color: damageSubType.color ?? 'white' }} value={`${i},${j}`} key={j}>
-									{damageSubType.name}
-								</option>;
-							})}
-						</optgroup>;
-					})}
-				</select>
-			</FormInput>
-		)}
-	</>;
+				[ newColumns[i].reactionType, newColumns[i].reaction ] = value.split(',').map(Number);
+			
+				props.setColumns(newColumns);
+			}}
+			options={
+				DamageCalculator.reactionTypes.map((damageType, i) => {
+					return {
+						label: damageType.name,
+						options: damageType.reactions.map((damageSubType, j) => ({
+							name: damageSubType.name,
+							value: `${i},${j}`
+						}))
+					}
+				})
+			}
+		/>
+	)}</>;
 }
