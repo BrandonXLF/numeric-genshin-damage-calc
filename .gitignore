@@ -10,6 +10,7 @@
 /build
 .htaccess
 build.sh
+build.cmd
 
 # misc
 .DS_Store
