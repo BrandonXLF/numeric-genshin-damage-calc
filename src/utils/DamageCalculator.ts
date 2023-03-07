@@ -104,7 +104,7 @@ export default class DamageCalculator {
 			expr: 'MULTI_talentDamageBonus + flatDamage'
 		},
 		trueDamage: {
-			name: 'True DMG',
+			name: 'Outgoing DMG',
 			expr: `(baseDamage + ${this.flatDamage}) * (1 + damageBonus)`
 		},
 		enemyResistance: {
