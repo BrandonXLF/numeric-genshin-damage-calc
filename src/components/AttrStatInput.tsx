@@ -34,10 +34,12 @@ export default function StatInputRow(props: {
 				after={
 					<select className="mini-select" value={attr} onChange={e => {
 						props.onChange(prop);
-						props.onChange(getAttrStat(props.stat.prop, e.target.value as typeof attributes[keyof typeof attributes]), value);
+						
+						if (e.target.value)
+							props.onChange(getAttrStat(props.stat.prop, e.target.value as typeof attributes[keyof typeof attributes]), value);
 					}}>
 						{attributes.map(selectAttr => <option key={selectAttr} disabled={!inactiveAttributes.includes(selectAttr) && selectAttr !== attr}>{selectAttr}</option>)}
-						{activeAttributes.length > 1 && <option>-</option>}
+						{activeAttributes.length > 1 && <option value="">-</option>}
 					</select>
 				}
 				onChange={value => props.onChange(prop, value)}
