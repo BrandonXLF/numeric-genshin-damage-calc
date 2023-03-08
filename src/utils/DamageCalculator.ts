@@ -118,16 +118,14 @@ export default class DamageCalculator {
 			expr: () => {
 				let enemyResistance = this.variable('enemyResistance').value;
 				
-				if (enemyResistance < 0) {
-					return '1 - (enemyResistance / 2)'
-				}
+				if (enemyResistance < 0)
+					return '1 - (enemyResistance / 2)';
 
-				if (enemyResistance < 0.75) {
-					return '1 - enemyResistance'
-				}
+				if (enemyResistance < 0.75)
+					return '1 - enemyResistance';
 
 				return '1 / (1 + (4 * enemyResistance))';
-			},
+			}
 		},
 		enemyDefenseFactor: {
 			name: 'Enemy DEF Enemy Factor',
