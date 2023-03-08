@@ -1,0 +1,58 @@
+.form-input {
+	width: 12em;
+	max-width: 40vw;
+	display: flex;
+
+	> :not(.mini-select) {
+		padding-left: 4px;
+		padding-right: 4px;
+	}
+	
+	> :first-child {
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+	}
+
+	> :last-child {
+		border-top-right-radius: 4px;
+		border-bottom-right-radius: 4px;
+	}
+	
+	input,
+	select:not(.mini-select),
+	.label-text {
+		padding-top: 4px;
+		padding-bottom: 4px;
+	}
+
+	input,
+	select:not(.mini-select) {
+		border: none;
+		background: #4a4a4a;
+		color: white;
+		flex: 1;
+		width: 0;
+		margin: 0;
+	}
+
+	input:disabled,
+	select:disabled {
+		background: #3a3a3a;
+		color: #3a3a3a;
+	}
+}
+
+.input-icon {
+	display: flex;
+	background: #3a3a3a;
+	align-items: center;
+	font-weight: bold;
+	user-select: none;
+}
+
+.mini-select {
+	border: none;
+	background: #3a3a3a;
+	color: white;
+	margin-left: -4px;
+}

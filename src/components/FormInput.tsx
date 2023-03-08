@@ -1,4 +1,4 @@
-import '../css/FormInput.css';
+import '../less/FormInput.less';
 import SelectOptions from './SelectOptions';
 import SelectOption from '../types/SelectOption';
 
@@ -16,10 +16,11 @@ export default function FormInput(props: {
 	unitOptions?: SelectOption[];
 	onUnitChange?: (val: string) => void;
 	style?: React.CSSProperties;
+	class?: string;
 }) {
 	const Tag = props.options ? 'select' : 'input' as const;
 	
-	return <div className="form-input">
+	return <div className={`form-input ${props.class || ''}`}>
 		{props.frontIcon &&
 			<div className="input-icon" role="img" title={props.frontIconLabel}>{props.frontIcon}</div>
 		}

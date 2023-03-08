@@ -1,0 +1,42 @@
+.svg-button {
+	color: #fff;
+	background: none;
+	padding: 4px;
+	margin: 0;
+	border: none;
+	cursor: pointer;
+	font-size: unset;
+	border-radius: 4px;
+
+	&-mini {
+		padding: 0;
+	}
+
+	&:disabled {
+		opacity: 0.75;
+	}
+
+	&:hover,
+	&:focus {
+		background: #444;
+	}
+
+	&-mini:hover,
+	&-mini:focus,
+	&:disabled:hover,
+	&:disabled:focus {
+		background: none;
+	}
+
+	svg {
+		height: 1.4em;
+	}
+
+	&-mini svg {
+		height: 1em;
+	}
+
+	* {
+		vertical-align: middle;
+	}
+}

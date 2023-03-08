@@ -6,7 +6,7 @@
 		"fparser": "^2.0.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-scripts": "^5.0.1",
+		"react-scripts-less": "^5.0.4",
 		"reactjs-popup": "^2.0.5",
 		"typescript": "^4.9.5"
 	},
@@ -17,8 +17,8 @@
 		"@types/fparser": "^2.0.0"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build"
+		"start": "react-scripts-less start",
+		"build": "react-scripts-less build"
 	},
 	"eslintConfig": {
 		"extends": [

@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
-import '../css/SVGButton.css';
+import { forwardRef, ReactElement } from "react";
+import '../less/SVGButton.less';
 
 type SVGButtonProps = {
 	svg?: ReactElement;
@@ -10,7 +10,7 @@ type SVGButtonProps = {
 	disabled?: boolean;
 };
 
-const SVGButton = React.forwardRef<HTMLButtonElement, SVGButtonProps>((props, ref) =>
+const SVGButton = forwardRef<HTMLButtonElement, SVGButtonProps>((props, ref) =>
 	<button
 		className={`svg-button${props.mini ? ' svg-button-mini' : ''}`}
 		disabled={props.disabled}

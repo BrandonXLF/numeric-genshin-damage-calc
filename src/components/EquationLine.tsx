@@ -1,5 +1,5 @@
 import { EquationRecord } from "../types/VariableOutput";
-import '../css/EquationLine.css';
+import '../less/EquationLine.less';
 
 export default function EquationLine(props: {
 	record: EquationRecord

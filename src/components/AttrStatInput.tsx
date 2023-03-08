@@ -6,6 +6,7 @@ import StatData from "../types/StatData";
 import attributes, { getAttrStat } from "../utils/attributes";
 import AddSVG from "../svgs/AddSVG";
 import SVGButton from "./SVGButton";
+import '../less/AttrStatInput.less';
 
 export default function StatInputRow(props: {
 	stat: Stat;
@@ -22,7 +23,7 @@ export default function StatInputRow(props: {
 		props.inputDetails.statData[getAttrStat(props.stat.prop, attr)] = new StatValue(props.stat.default.toString(), props.stat.type);
 	}
 	
-	return <div className="form-inputs">
+	return <div className="attr-inputs">
 		{activeAttributes.map(attr =>  {
 			const prop = getAttrStat(props.stat.prop, attr);
 			const value = props.inputDetails.statData[prop]!.number;

@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import Popup from "reactjs-popup";
-import '../css/RowLabel.css';
+import '../less/RowLabel.less';
 
 export default function RowLabel(props: {
 	label: string | ReactElement;

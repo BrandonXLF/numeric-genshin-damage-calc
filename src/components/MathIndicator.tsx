@@ -1,4 +1,4 @@
-import '../css/MathIndicator.less';
+import '../less/MathIndicator.less';
 
 export default function MathIndicator() {
 	return <div className="math-indicator">

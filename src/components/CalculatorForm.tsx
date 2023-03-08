@@ -5,7 +5,7 @@ import DamageTypeRow from "./DamageTypeRow";
 import HeadingRow from "./HeadingRow";
 import InputDetails, { StoredInputDetails } from "../types/InputDetails";
 import createInputDetails from "../utils/createInputDetails";
-import '../css/CalculatorForm.css';
+import '../less/CalculatorForm.less';
 import TopButtonRow from "./TopButtonRow";
 import RemoveColumnRow from "./RemoveColumnRow";
 import statSections from "../utils/statSections";

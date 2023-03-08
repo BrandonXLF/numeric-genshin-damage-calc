@@ -4,7 +4,7 @@ import React from 'react';
 import SVGButton from "./SVGButton";
 import AddSVG from "../svgs/AddSVG";
 import LoadColumnsPopup from "./LoadColumnsPopup";
-import '../css/LoadColumnsPopup.css';
+import '../less/TopButtonRow.less';
 
 export default function TopButtonRow(props: {
 	columns: InputDetails[];

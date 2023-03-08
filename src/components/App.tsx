@@ -1,7 +1,7 @@
 import CalculatorForm from './CalculatorForm';
-import '../css/index.css';
+import '../less/index.less';
 import 'reactjs-popup/dist/index.css';
-import '../css/popup.css';
+import '../less/popup.less';
 import { Footer } from './Footer';
 
 export default function App() {

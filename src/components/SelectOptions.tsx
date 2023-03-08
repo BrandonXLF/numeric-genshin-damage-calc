@@ -1,4 +1,5 @@
 import SelectOption from '../types/SelectOption';
+import '../less/FormInput.less';
 
 export default function SelectOptions(props: { options: SelectOption[] }) {
 	return <>{props.options.map(option => {

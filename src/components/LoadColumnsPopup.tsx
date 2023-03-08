@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import Popup from "reactjs-popup";
 import { PopupActions } from "reactjs-popup/dist/types";
-import CloseSVG from "../svgs/CloseSVG";
 import SVGButton from "./SVGButton";
-import '../css/LoadColumnsPopup.css';
+import '../less/LoadColumnsPopup.less';
 import LoadSVG from "../svgs/LoadSVG";
 import InputDetails from "../types/InputDetails";
+import PopupHeader from "./PopupHeader";
 
 export default function LoadColumnsPopup(props: {
 	columns: InputDetails[];
@@ -27,16 +27,8 @@ export default function LoadColumnsPopup(props: {
 			disabled={!props.closedColumns.length}
 		/>
 	} ref={ref} modal>
-		<div className="load-columns-popup-top">
-			<h2>Load Columns</h2>
-			<SVGButton
-				svg={<CloseSVG className="neg" />}
-				label="Close"
-				hideLabel={true}
-				onClick={() => ref.current?.close()}
-			/>
-		</div>
-		<div className="load-columns-popup-body">
+		<PopupHeader title="Load Columns" ref={ref} />
+		<div className="load-columns">
 			{props.closedColumns.map((inputDetails, i) => <div key={i}>
 				<SVGButton
 					label={inputDetails.label || `Saved Column ${i + 1}`}
