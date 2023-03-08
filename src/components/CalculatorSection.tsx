@@ -11,14 +11,17 @@ export default function CalculatorSection(props: {
 	columns: InputDetails[],
 	setColumns: (value: React.SetStateAction<InputDetails[]>) => void
 }) {
-	let heading = useRef<HTMLHeadingElement>(null);
+	const heading = useRef<HTMLHeadingElement>(null);
+	const headingLevel = props.section.sub ? 3 : 2;
 	
 	useEffect(() => {
-		heading.current!.style.display = /H\d/.test(heading.current!.nextSibling?.nodeName ?? '') ? 'none' : '';
+		const levelAttr = heading.current!.nextElementSibling?.getAttribute('data-level');
+		
+		heading.current!.style.display = levelAttr && parseInt(levelAttr) <= headingLevel ? 'none' : '';
 	});
 	
 	return <>
-		<HeadingRow ref={heading} title={props.section.name} span={props.headerSpan} level={props.section.sub ? 3 : 2} />
+		<HeadingRow ref={heading} title={props.section.name} span={props.headerSpan} level={headingLevel} />
 		{stats.filter(stat => stat.section === props.section.value).map(stat =>
 			<StatInputRow key={stat.prop} stat={stat} columns={props.columns} setColumns={props.setColumns} />
 		)}
