@@ -2,13 +2,13 @@ import SVGButton from "./SVGButton";
 import CloseSVG from "../svgs/CloseSVG";
 import { PopupActions } from "reactjs-popup/dist/types";
 import "../less/PopupHeader.less";
-import { forwardRef, RefObject } from "react";
+import React, { RefObject } from "react";
 
 type PopupHederProps = {
 	title: string;
 };
 
-export default forwardRef<PopupActions, PopupHederProps>((props, ref) =>
+export default React.forwardRef<PopupActions, PopupHederProps>((props, ref) =>
 	<div className="popup-header">
 	<h2>{props.title}</h2>
 		<SVGButton

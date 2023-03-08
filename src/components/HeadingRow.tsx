@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import React from "react";
 
 type HeadingRowProps = {
 	title: string;
@@ -7,7 +7,7 @@ type HeadingRowProps = {
 	className?: string;
 };
 
-const HeadingRow = forwardRef<HTMLHeadingElement, HeadingRowProps>((props, ref) => {
+const HeadingRow = React.forwardRef<HTMLHeadingElement, HeadingRowProps>((props, ref) => {
 	const Tag = `h${props.level ?? 2}` as 'h2';
 	
 	return <Tag ref={ref} className={props.className} style={{ gridColumn: `1 / span ${props.span}` }}>{props.title}</Tag>;
