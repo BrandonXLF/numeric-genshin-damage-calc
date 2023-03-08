@@ -10,7 +10,7 @@ type SVGButtonProps = {
 	disabled?: boolean;
 };
 
-const SVGButton = React.forwardRef<HTMLButtonElement, SVGButtonProps>((props, ref) =>
+export default React.forwardRef<HTMLButtonElement, SVGButtonProps>((props, ref) =>
 	<button
 		className={`svg-button${props.mini ? ' svg-button-mini' : ''}`}
 		disabled={props.disabled}
@@ -23,5 +23,3 @@ const SVGButton = React.forwardRef<HTMLButtonElement, SVGButtonProps>((props, re
 		{props?.svg}{props.hideLabel ? '' : <> <span>{props.label}</span></>}
 	</button>
 );
-
-export default SVGButton;

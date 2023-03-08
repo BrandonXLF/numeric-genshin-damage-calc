@@ -8,7 +8,7 @@ import AddSVG from "../svgs/AddSVG";
 import SVGButton from "./SVGButton";
 import '../less/AttrStatInput.less';
 
-export default function StatInputRow(props: {
+export default function AttrStatInput(props: {
 	stat: Stat;
 	inputDetails: InputDetails;
 	onChange: (name: keyof StatData, val?: string) => void,

@@ -7,7 +7,7 @@ type HeadingRowProps = {
 	className?: string;
 };
 
-const HeadingRow = React.forwardRef<HTMLHeadingElement, HeadingRowProps>((props, ref) => {
+export default React.forwardRef<HTMLHeadingElement, HeadingRowProps>((props, ref) => {
 	const Tag = `h${props.level ?? 2}` as 'h2';
 
 	return <Tag
@@ -19,5 +19,3 @@ const HeadingRow = React.forwardRef<HTMLHeadingElement, HeadingRowProps>((props,
 		{props.title}
 	</Tag>;
 });
-
-export default HeadingRow;
