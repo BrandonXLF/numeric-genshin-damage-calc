@@ -43,11 +43,11 @@ export default function StatInputRow(props: {
 				onChange={value => props.onChange(prop, value)}
 				unit={attr}
 				unitOptions={types}
-				onUnitChange={value => {
+				onUnitChange={newAttr => {
 					props.onChange(prop);
 					
-					if (value)
-						props.onChange(getAttrStat(props.stat.prop, value as typeof attributes[keyof typeof attributes]), value);
+					if (newAttr)
+						props.onChange(getAttrStat(props.stat.prop, newAttr as typeof attributes[keyof typeof attributes]), value);
 				}}
 			/>
 		})}
