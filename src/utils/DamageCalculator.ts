@@ -275,22 +275,33 @@ export default class DamageCalculator {
 	}
 	
 	processComponent(component: string): ComponentOutput {
-		let variable;
-		
-		if (/^[A-Za-z_]+$/.test(component) && (variable = this.variable(component)))
+		if (/^[A-Za-z_]+$/.test(component)) {
+			const variable = this.variable(component);
+			
+			if (variable)
+				return {
+					mathComponent: variable.value.toString(),
+					equationComponent: [
+						this.record(`${variable.name} `, RecordEntryTypes.Note),
+						this.recordNumber(variable.value)
+					],
+					record: variable.record
+				};
+				
 			return {
-				mathComponent: variable.value.toString(),
+				mathComponent: component,
 				equationComponent: [
-					this.record(`${variable.name} `, RecordEntryTypes.Note),
-					this.recordNumber(variable.value)
-				],
-				record: variable.record
+					this.record(component, RecordEntryTypes.Function)
+				]
 			};
-		
+		}
+
 		return {
 			mathComponent: component,
 			equationComponent: [
-				this.record(component.replace(/\*/g, '\u00D7'), /^\d+$/.test(component) ? RecordEntryTypes.Number : RecordEntryTypes.Symbols)
+				/^\d+$/.test(component)
+					? this.record(component, RecordEntryTypes.Number)
+					: this.record(component.replace(/\*/g, '\u00D7'), RecordEntryTypes.Symbols)
 			]
 		};
 	}
