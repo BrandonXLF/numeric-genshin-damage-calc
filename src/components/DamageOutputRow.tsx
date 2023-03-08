@@ -24,9 +24,7 @@ export default function DamageOutputRow(props: {
 		return <DamageOutput key={i} initial={i !== 0 ? initial : undefined} value={value} calcs={damage[props.damageType.prop]?.record} />;
 	});
 	
-	if (!hasValues) {
-		return null;
-	}
+	if (!hasValues) return null;
 	
 	return <>
 		<RowLabel label={props.damageType.name} desc={props.damageType.desc} />

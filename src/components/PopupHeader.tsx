@@ -10,7 +10,7 @@ type PopupHederProps = {
 
 export default React.forwardRef<PopupActions, PopupHederProps>((props, ref) =>
 	<div className="popup-header">
-	<h2>{props.title}</h2>
+		<h2>{props.title}</h2>
 		<SVGButton
 			svg={<CloseSVG className="neg" />}
 			label="Close"

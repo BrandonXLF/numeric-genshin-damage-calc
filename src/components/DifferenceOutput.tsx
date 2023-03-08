@@ -4,9 +4,8 @@ export default function DifferenceOutput(props: {
 	initial?: number;
 	value?: number
 }) {
-	if (!props.initial || !props.value) {
+	if (!props.initial || !props.value)
 		return null;
-	}
 
 	let number = Math.round((props.value - props.initial) / props.initial * 100);
 	let className = number > 0 ? 'pos' : number < 0 ? 'neg' : '';
