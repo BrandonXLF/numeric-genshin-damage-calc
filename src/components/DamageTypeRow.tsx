@@ -26,15 +26,14 @@ export default function DamageTypeRow(props: {
 				props.setColumns(newColumns);
 			}}
 			options={
-				DamageCalculator.reactionTypes.map((damageType, i) => {
-					return {
-						label: damageType.name,
-						options: damageType.reactions.map((damageSubType, j) => ({
-							name: damageSubType.name,
-							value: `${i},${j}`
-						}))
-					}
-				})
+				DamageCalculator.reactionTypes.map((damageType, i) => ({
+					label: damageType.name,
+					options: damageType.reactions.map((damageSubType, j) => ({
+						name: damageSubType.name,
+						value: `${i},${j}`,
+						style: { color: damageSubType.color ?? 'white' }
+					}))
+				}))
 			}
 		/>
 	)}</>;
