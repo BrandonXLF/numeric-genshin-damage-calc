@@ -234,7 +234,7 @@ const stats: Stat[] = [
 	},
 	{
 		name: 'Base RES',
-		desc: <span>The resistance the enemy has for the element of the attack before any reductions, see <a href="https://genshin-impact.fandom.com/wiki/Resistance#Enemy_Resistances">the wiki</a></span>,
+		desc: <span>The resistance the enemy has for the element of the attack before any reductions, see <a href="https://genshin-impact.fandom.com/wiki/Resistance#Enemy_Resistances" target="genshin-wiki">the wiki</a></span>,
 		prop: 'resistance',
 		default: 10,
 		type: StatTypes.Percent,
