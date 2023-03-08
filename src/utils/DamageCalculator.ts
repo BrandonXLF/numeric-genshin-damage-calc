@@ -297,28 +297,28 @@ export default class DamageCalculator {
 		};
 	}
 	
-	expression(equationInfo: EquationInfo) {
-		let exprOrFunc = equationInfo.expr; 
+	expression(equationInfo: EquationInfo): string {
+		const exprOrFunc = equationInfo.expr; 
+		const expr = typeof exprOrFunc === 'function' ? exprOrFunc() : exprOrFunc;
 		
-		return typeof exprOrFunc === 'function' ? exprOrFunc() : exprOrFunc;
+		return expr.replace(/INLINE_([A-Za-z_]+)/g, (_, inlineName: (keyof EquationData | keyof VariableData)) => {
+			if (!(inlineName in this.equations)) 
+				return inlineName;
+			
+			const inlineExpr = this.expression(this.equations[inlineName as keyof EquationData]);
+			const hasAddition = inlineExpr.includes('+') || inlineExpr.includes('-');
+			
+			return `${hasAddition ? '(' : ''}${inlineExpr}${hasAddition ? ')' : ''}`;
+		});
 	}
 	
 	equation(name: keyof EquationData): VariableOutput {
-		let equationInfo = this.equations[name];
-		let expr = this.expression(equationInfo);
-		let equation: RecordEntry[] = [];
-		let parameters: Record<string, EquationRecord> = {};
+		const equationInfo = this.equations[name];
+		const expr = this.expression(equationInfo);
+		const equation: RecordEntry[] = [];
+		const parameters: Record<string, EquationRecord> = {};
 		
-		expr = expr.replace(/INLINE_([A-Za-z_]+)/g, (_, inlineName: (keyof EquationData | keyof VariableData)) => {
-			if (!(inlineName in this.equations)) 
-				return inlineName;
-				
-			let expr = this.expression(this.equations[inlineName as keyof EquationData]);
-				
-			return `${expr.includes('+') ? '(' : ''}${expr}${expr.includes('+') ? ')' : ''}`;
-		});
-		
-		expr = expr.split(/([A-Za-z_]+|\d+)+/g).map(component => {
+		const mathExpr = expr.split(/([A-Za-z_]+|\d+)+/g).map(component => {
 			let res = this.processComponent(component);
 			
 			equation.push(...res.equationComponent);
@@ -329,7 +329,7 @@ export default class DamageCalculator {
 			return res.mathComponent;
 		}).join('');
 		
-		let value = evaluateExpression(expr);
+		const value = evaluateExpression(mathExpr);
 		
 		equation.unshift(
 			this.record(`${equationInfo.name} `, RecordEntryTypes.Note),
