@@ -11,6 +11,9 @@ type Stat = DisplayedProp<StatData> & {
 	groups: DamageGroups;
 	dependents?: Partial<Record<DamageGroups, (keyof StatData)[]>>;
 	icon: ReactElement;
+	/**
+	 * True if the stat is a series of multipliers that are multiplied with in-game attributes (ATK etc.)
+	*/
 	attrs?: boolean;
 };
 

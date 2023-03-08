@@ -81,7 +81,9 @@ export default class DamageCalculator {
 		}
 	} as VariableData;
 	
-	// https://library.keqingmains.com/combat-mechanics/damage/damage-formula
+	/**
+	 * @see {@link https://library.keqingmains.com/combat-mechanics/damage/damage-formula KQM Damage Formula} for formula
+	 */
 	private equations: EquationData = {
 		atk: {
 			name: 'ATK',
@@ -97,11 +99,11 @@ export default class DamageCalculator {
 		},
 		baseDamage: {
 			name: 'Talent DMG',
-			expr: 'MULTI_INLINE_talent * baseDamageMultiplier'
+			expr: 'INLINE_talent * baseDamageMultiplier'
 		},
 		flatDamageBasic: {
 			name: 'Additive DMG Bonus',
-			expr: 'MULTI_talentDamageBonus + flatDamage'
+			expr: 'talentDamageBonus + flatDamage'
 		},
 		trueDamage: {
 			name: 'Outgoing DMG',
@@ -173,7 +175,7 @@ export default class DamageCalculator {
 		},
 		flatDamageAdded: {
 			name: 'Additive DMG Bonus',
-			expr: 'flatDamage + MULTI_talentDamageBonus + flatDamageReactionBonus'
+			expr: 'flatDamage + talentDamageBonus + flatDamageReactionBonus'
 		},
 		flatDamageReactionEMBonus: {
 			name: 'EM Bonus',
@@ -221,23 +223,22 @@ export default class DamageCalculator {
 		let arr: string[] = [];
 
 		attributes.forEach(attr => {
-			const subStat = getAttrStat(stat.prop, attr);
-			const value = this.statData[subStat]?.value;
+			const attrStat = getAttrStat(stat.prop, attr);
+			const value = this.statData[attrStat]?.value;
+			const varName = `${stat.prop}_${attr}` as keyof VariableData;
 			
 			if (!value) return;
 			
-			this.variables[subStat] = {
+			this.variables[varName] = {
 				name: `${attr} ${stat.name}`,
 				value: value
 			}
 			
-			arr.push(`${attr.toLowerCase()} * ${subStat}`);
+			arr.push(`${attr.toLowerCase()} * ${varName}`);
 		});
 		
-		const parentKey = `MULTI_${stat.prop}` as `MULTI_${string}`;
-		
 		if (!arr.length) {
-			this.variables[parentKey] = {
+			this.variables[stat.prop] = {
 				name: stat.name,
 				value: 0
 			};
@@ -245,7 +246,7 @@ export default class DamageCalculator {
 			return;
 		}
 		
-		this.equations[parentKey] = {
+		this.equations[stat.prop as keyof EquationData] = {
 			name: stat.name,
 			expr: `${arr.length > 1 ? '(' : ''}${arr.join(') + (')}${arr.length > 1 ? ')' : ''}`
 		};
@@ -304,20 +305,17 @@ export default class DamageCalculator {
 	
 	equation(name: keyof EquationData): VariableOutput {
 		let equationInfo = this.equations[name];
-		let expr = this.expression(equationInfo!);
+		let expr = this.expression(equationInfo);
 		let equation: RecordEntry[] = [];
 		let parameters: Record<string, EquationRecord> = {};
 		
-		expr = expr.replace(/MULTI_(INLINE_|)([A-Za-z]+)/g, (str, inline, name) => {
-			const key = 'MULTI_' + name as keyof EquationData
-			
-			if (inline && key in this.equations) {
-				let expr = this.expression(this.equations[key]!);
+		expr = expr.replace(/INLINE_([A-Za-z_]+)/g, (_, inlineName: (keyof EquationData | keyof VariableData)) => {
+			if (!(inlineName in this.equations)) 
+				return inlineName;
 				
-				return `${expr.includes('+') ? '(' : ''}${expr}${expr.includes('+') ? ')' : ''}`;
-			}
-			
-			return key;
+			let expr = this.expression(this.equations[inlineName as keyof EquationData]);
+				
+			return `${expr.includes('+') ? '(' : ''}${expr}${expr.includes('+') ? ')' : ''}`;
 		});
 		
 		expr = expr.split(/([A-Za-z_]+|\d+)+/g).map(component => {
@@ -334,14 +332,14 @@ export default class DamageCalculator {
 		let value = evaluateExpression(expr);
 		
 		equation.unshift(
-			this.record(`${equationInfo!.name} `, RecordEntryTypes.Note),
+			this.record(`${equationInfo.name} `, RecordEntryTypes.Note),
 			this.recordNumber(value),
 			this.record(' = ', RecordEntryTypes.Symbols)
 		);
 		
 		return {
 			value: value,
-			name: equationInfo!.name,
+			name: equationInfo.name,
 			record: {
 				equation: equation,
 				parameters: parameters

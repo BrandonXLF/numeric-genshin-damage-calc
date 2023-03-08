@@ -1,5 +1,9 @@
 export type EquationInfo = {
 	name: string;
+	/**
+	 * @remark
+	 * INLINE_ attempts to inline the following expression name
+	 */
 	expr: string | (() => string);
 };
 
@@ -30,7 +34,6 @@ type EquationData = {
 	critBonus: EquationInfo;
 	flatDamageAdded: EquationInfo;
 	trueTransformativeReaction: EquationInfo;
-	[key: `MULTI_${string}`]: EquationInfo | undefined;
 };
 
 export default EquationData;
