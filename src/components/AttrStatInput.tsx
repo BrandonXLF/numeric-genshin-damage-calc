@@ -51,7 +51,7 @@ export default function AttrStatInput(props: {
 				}}
 			/>
 		})}
-		{props.stat.attrs && inactiveAttributes.length > 0 &&
+		{inactiveAttributes.length > 0 &&
 			<SVGButton
 				mini={true}
 				svg={<AddSVG />}

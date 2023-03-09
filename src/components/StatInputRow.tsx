@@ -7,7 +7,8 @@ import Stat from "../types/Stat";
 import React from 'react';
 import StatValue from "../utils/StatValue";
 import StatData from "../types/StatData";
-import DamageGroups from "../types/DamageGroups";
+import { attrStats } from "../utils/stats";
+import { getAttrStat } from "../utils/attributes";
 
 export default function StatInputRow(props: {
 	stat: Stat,
@@ -32,16 +33,17 @@ export default function StatInputRow(props: {
 	
 	let statInputs = props.columns.map((inputDetails, i) => {
 		let damageGroups = DamageCalculator.reactionTypes[inputDetails.reactionType].groups;
-		let validGroups = props.stat.groups & damageGroups;
+		let enabled = Boolean(props.stat.groups! & damageGroups);
 		
-		// Remove groups without any of the required dependents
-		for (let j = 1; DamageGroups[j]; j *= 2)
-			if (props.stat.dependents?.[j] && !props.stat.dependents[j]!.some(dependent => parseInt(inputDetails.statData[dependent]?.number ?? '')))
-				validGroups &= ~j;
+		if (!enabled && 'attr' in props.stat)
+			enabled = attrStats.some(stat =>
+				(stat.groups! & damageGroups) &&
+				parseInt(inputDetails.statData[getAttrStat(stat.prop, props.stat.attr!)]?.number ?? '')
+			);
 		
-		anyEnabled = anyEnabled || validGroups !== 0;
+		anyEnabled = anyEnabled || enabled;
 		
-		if ('attrs' in props.stat && validGroups)
+		if ('usesAttrs' in props.stat && enabled)
 			return <AttrStatInput
 				key={i}
 				stat={props.stat}
@@ -53,7 +55,7 @@ export default function StatInputRow(props: {
 			key={i}
 			stat={props.stat}
 			value={inputDetails.statData[props.stat.prop]?.number ?? ''}
-			disabled={validGroups === 0}
+			disabled={!enabled}
 			onChange={value => onChange(i, props.stat.prop, value)}
 		/>;
 	});

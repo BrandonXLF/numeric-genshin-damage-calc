@@ -13,7 +13,7 @@ export default function createInputDetails(base: StoredInputDetails = {}): Input
 	};
 	
 	stats.forEach(stat => {
-		if (stat.attrs) {
+		if (stat.usesAttrs) {
 			let anyFound = false;
 			
 			attributes.forEach(attr => {

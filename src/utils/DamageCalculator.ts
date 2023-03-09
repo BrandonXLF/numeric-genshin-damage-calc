@@ -207,7 +207,7 @@ export default class DamageCalculator {
 		private reactionIndex: number
 	) {
 		stats.forEach(stat => {
-			if ('attrs' in stat)
+			if ('usesAttrs' in stat)
 				return this.populateAttrStat(stat);
 
 			this.variables[stat.prop] = {

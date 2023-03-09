@@ -17,12 +17,12 @@ const stats: Stat[] = [
 		name: 'Talent Scaling',
 		desc: 'The percent multiplier of the talent that scales with the selected stat',
 		prop: 'talent',
+		usesAttrs: true,
 		default: 100,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="stats" indicator="percent" />,
-		attrs: true
+		icon: <StatIcon base="stats" indicator="percent" />
 	},
 	{
 		name: 'Talent Multiplier',
@@ -38,12 +38,12 @@ const stats: Stat[] = [
 		name: 'Talent DMG Bonus',
 		desc: 'Damage increases that are added to the talent damage by other talents, e.g. Zhongli\'s A4, and Kokomi\'s burst',
 		prop: 'talentDamageBonus',
+		usesAttrs: true,
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="damage" indicator="increase" />,
-		attrs: true
+		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
 		name: 'Flat DMG Bonus',
@@ -59,110 +59,101 @@ const stats: Stat[] = [
 		name: 'Base ATK',
 		desc: 'ATK from character and weapon flat stat only',
 		prop: 'baseTalentScale',
+		attr: 'ATK',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
-		dependents: { [DamageGroups.General]: ['talent', 'talentDamageBonus'] },
 		icon: <StatIcon base="damage" />
 	},
 	{
 		name: 'Bonus ATK',
 		desc: 'The green number next to the base ATK, includes in-game ATK percent, add extra flat ATK, like from Bennett\'s ult, here',
 		prop: 'bonusTalentScale',
+		attr: 'ATK',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
-		dependents: { [DamageGroups.General]: ['talent', 'talentDamageBonus'] },
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
 		name: 'Extra ATK %',
 		desc: 'Extra ATK percent, in-game ATK percent is integrated into Bonus ATK',
 		prop: 'additionalBonusTalentScale',
+		attr: 'ATK',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
-		dependents: { [DamageGroups.General]: ['talent', 'talentDamageBonus'] },
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
 		name: 'Base DEF',
 		desc: 'DEF from character base stat only',
 		prop: 'baseDEF',
+		attr: 'DEF',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
-		dependents: { [DamageGroups.General]: ['talentDEF', 'talentDamageBonusDEF'] },
 		icon: <StatIcon base="def" />
 	},
 	{
 		name: 'Bonus DEF',
 		desc: 'The green number next to the base DEF, includes in-game DEF percent, add extra flat DEF, like from Gorou\'s skill, here',
 		prop: 'bonusDEF',
+		attr: 'DEF',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
-		dependents: { [DamageGroups.General]: ['talentDEF', 'talentDamageBonusDEF'] },
 		icon: <StatIcon base="def" indicator="increase" />
 	},
 	{
 		name: 'Extra DEF %',
 		desc: 'Extra DEF percent, in-game DEF percent is integrated into Bonus DEF',
 		prop: 'additionalBonusDEF',
+		attr: 'DEF',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
-		dependents: { [DamageGroups.General]: ['talentDEF', 'talentDamageBonusDEF'] },
 		icon: <StatIcon base="def" indicator="increase" />
 	},
 	{
 		name: 'Base HP',
 		desc: 'HP from character base stat only',
 		prop: 'baseHP',
+		attr: 'HP',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
-		dependents: { [DamageGroups.General]: ['talentHP', 'talentDamageBonusHP'] },
 		icon: <StatIcon base="hp" />
 	},
 	{
 		name: 'Bonus HP',
 		desc: 'The green number next to the base DEF, includes in-game DEF percent, add extra flat HP here',
 		prop: 'bonusHP',
+		attr: 'HP',
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
-		dependents: { [DamageGroups.General]: ['talentHP', 'talentDamageBonusHP'] },
 		icon: <StatIcon base="hp" indicator="increase" />
 	},
 	{
 		name: 'Extra HP %',
 		desc: 'Extra HP percent, in-game HP percent is integrated into Bonus HP',
 		prop: 'additionalBonusHP',
+		attr: 'HP',
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
-		dependents: { [DamageGroups.General]: ['talentHP', 'talentDamageBonusHP'] },
 		icon: <StatIcon base="hp" indicator="increase" />
 	},
 	{
 		name: 'Elemental Mastery',
 		desc: 'Used to calculate reaction DMG bonus and talent if applicable',
 		prop: 'em',
+		attr: 'EM',
 		default: 0,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		groups: DamageGroups.General | DamageGroups.Reaction,
-		dependents: { [DamageGroups.General]: ['talentEM', 'talentDamageBonusEM'] },
+		groups: DamageGroups.Reaction,
 		icon: <StatIcon base="em" />
 	},
 	{
@@ -253,5 +244,7 @@ const stats: Stat[] = [
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	}
 ];
+
+export const attrStats = stats.filter(stat => stat.usesAttrs);
 
 export default stats;
