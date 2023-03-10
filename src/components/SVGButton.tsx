@@ -1,8 +1,8 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import '../less/SVGButton.less';
 
 type SVGButtonProps = {
-	svg?: ReactElement;
+	svg?: React.ReactNode;
 	label: string;
 	onClick?: () => any;
 	hideLabel?: boolean;

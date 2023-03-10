@@ -1,8 +1,6 @@
-import { ReactElement } from "react";
-
 type DisplayedProp<T> = {
 	name: string;
-	desc?: string | ReactElement;
+	desc?: React.ReactNode;
 	prop: keyof T;
 };
 

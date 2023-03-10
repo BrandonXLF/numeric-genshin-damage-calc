@@ -1,11 +1,10 @@
-import { ReactElement } from "react";
 import Popup from "reactjs-popup";
 import '../less/RowLabel.less';
 
 export default function RowLabel(props: {
-	label: string | ReactElement;
-	desc?: string | ReactElement;
-	icon?: ReactElement;
+	label: React.ReactNode;
+	desc?: React.ReactNode;
+	icon?: React.ReactNode;
 }) {
 	return <div className="row-label">
 		<span className="label-icon">{props.icon}</span>
