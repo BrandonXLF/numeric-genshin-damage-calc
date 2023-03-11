@@ -250,16 +250,16 @@ export default class DamageCalculator {
 		};
 	}
 	
-	private record(value: string, type: RecordEntryTypes) {
+	private record(value: string, type: RecordEntryTypes): RecordEntry {
 		return {
 			value: value,
 			type: type
 		};
 	}
 	
-	private recordNumber(value: number) {
+	private recordNumber(value: number): RecordEntry {
 		return {
-			value: parseFloat(value.toFixed(4)).toString(),
+			value: Math.round(value * 1e4) / 1e4,
 			type: RecordEntryTypes.Number
 		};
 	}

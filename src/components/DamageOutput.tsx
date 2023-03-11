@@ -10,7 +10,7 @@ export default function DamageOutput(props: {
 }) {
 	return <div className="damage-output">
 		{props.calcs && <><CalculationPopup calcs={props.calcs} /> </>}
-		<output>{parseFloat(props.value.toFixed(2)).toString()}</output>
+		<output>{Math.round(props.value * 1e2) / 1e2}</output>
 		<> </><DifferenceOutput initial={props.initial} value={props.value} />
 	</div>
 }

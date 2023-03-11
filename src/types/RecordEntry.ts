@@ -6,7 +6,7 @@ export enum RecordEntryTypes {
 };
 
 type RecordEntry = {
-	value: string;
+	value: React.ReactNode;
 	type: RecordEntryTypes;
 }
 
