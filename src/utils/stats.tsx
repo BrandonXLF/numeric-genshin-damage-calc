@@ -22,7 +22,7 @@ const stats: Stat[] = [
 		type: StatTypes.Percent,
 		section: StatSections.CharacterTalent,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="stats" indicator="percent" />
+		icon: <StatIcon base="percent" />
 	},
 	{
 		name: 'Talent Multiplier',
