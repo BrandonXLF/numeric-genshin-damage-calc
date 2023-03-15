@@ -184,12 +184,12 @@ export default class DamageCalculator {
 			expr: 'baseTransformativeDamage * (1 + flatDamageReactionEMBonus + reactionBonus)'
 		},
 		realCritRate: {
-			name: 'Real CRIT Rate',
+			name: 'Actual CRIT Rate',
 			expr: 'max(0, min(critRate, 1))'
 		},
 		critBonus: {
 			name: 'Effective CRIT Bonus',
-			expr: 'realCritRate * critDamage'
+			expr: '1 + (realCritRate * critDamage)'
 		},
 		critHit: {
 			name: 'CRIT Hit',
@@ -197,7 +197,7 @@ export default class DamageCalculator {
 		},
 		avgDamage: {
 			name: 'Average DMG',
-			expr: `${this.mainEquation} * (1 + critBonus)`
+			expr: `${this.mainEquation} * critBonus`
 		}
 	};
 	
