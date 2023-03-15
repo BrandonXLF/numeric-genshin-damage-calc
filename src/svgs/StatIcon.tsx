@@ -73,7 +73,7 @@ export default function StatIcon(props: {
 	let maskID = useId();
 	let hasMask = Boolean(props.indicator || props.mask);
 	
-	return <svg viewBox="0 0 16 16" fill="currentColor">
+	return <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
 		{bases[props.base](hasMask ? { mask: `url(#${maskID})` } : undefined)}
 		{hasMask && <mask id={maskID}>
 			<rect x="0" y="0" width="100%" height="100%" fill="white" />
