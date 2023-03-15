@@ -21,7 +21,11 @@ export default function DamageOutputRow(props: {
 		
 		hasValues = true;
 		
-		return <DamageOutput key={i} initial={i !== 0 ? initial : undefined} value={value} calcs={damage[props.damageType.prop]?.record} />;
+		return <DamageOutput
+			key={i}
+			equation={damage[props.damageType.prop]!}
+			initial={i !== 0 ? initial : undefined}
+		/>;
 	});
 	
 	if (!hasValues) return null;

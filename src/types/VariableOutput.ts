@@ -1,20 +1,15 @@
 import RecordEntry from "./RecordEntry";
 
-export type EquationRecord = {
+export type EquationOutput = {
+	value: number;
+	label: RecordEntry[];
 	equation: RecordEntry[];
-	parameters?: Record<string, EquationRecord>;
+	children: Record<string, EquationOutput>;
 }
-
-export type ComponentOutput = {
-	mathComponent: string;
-	equationComponent: RecordEntry[];
-	record?: EquationRecord;
-};
 
 type VariableOutput = {
 	value: number;
-	name: string;
-	record?: EquationRecord;
-};
+	label: RecordEntry[];
+} | EquationOutput;
 
 export default VariableOutput;

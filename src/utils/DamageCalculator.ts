@@ -2,15 +2,16 @@ import Damage from "../types/Damage";
 import DamageGroups from "../types/DamageGroups";
 import ReactionType from "../types/ReactionType";
 import EquationData, { EquationInfo } from "../types/EquationData";
-import VariableOutput, { ComponentOutput, EquationRecord } from "../types/VariableOutput";
+import VariableOutput, { EquationOutput as EquationOutput } from "../types/VariableOutput";
 import RecordEntry, { RecordEntryTypes } from "../types/RecordEntry";
 import StatData from "../types/StatData";
-import VariableData from "../types/VariableData";
+import ValueData from "../types/VariableData";
 import evaluateExpression from "./evalulateExpression";
 import stats from "./stats";
 import transformativeLevelMultipliers from "./transformativeLevelMultipliers";
 import Stat from "../types/Stat";
 import attributes, { getAttrStat } from "./attributes";
+import MathComponent from "../types/MathComponent";
 
 export default class DamageCalculator {
 	static reactionTypes: ReactionType[] = [
@@ -70,7 +71,7 @@ export default class DamageCalculator {
 	private mainEquation = this.reactionType.equation;
 	private flatDamage = this.reactionType.flatDamage ?? 'flatDamageBasic';
 
-	private variables = {
+	private values = {
 		baseMultiplier: {
 			name: 'Reaction Multiplier',
 			value: this.reaction.var ?? 1
@@ -79,7 +80,7 @@ export default class DamageCalculator {
 			name: 'Level Multiplier',
 			value: transformativeLevelMultipliers[this.statData.characterLevel.value] ?? NaN
 		}
-	} as VariableData;
+	} as ValueData;
 	
 	/**
 	 * @see {@link https://library.keqingmains.com/combat-mechanics/damage/damage-formula KQM Damage Formula} for formula
@@ -210,7 +211,7 @@ export default class DamageCalculator {
 			if ('usesAttrs' in stat)
 				return this.populateAttrStat(stat);
 
-			this.variables[stat.prop] = {
+			this.values[stat.prop] = {
 				name: stat.name,
 				value: this.statData[stat.prop]?.value || 0
 			};
@@ -218,25 +219,25 @@ export default class DamageCalculator {
 	}
 
 	private populateAttrStat(stat: Stat) {
-		let arr: string[] = [];
+		let subExpressions: string[] = [];
 
 		attributes.forEach(attr => {
 			const attrStat = getAttrStat(stat.prop, attr);
 			const value = this.statData[attrStat]?.value;
-			const varName = `${stat.prop}_${attr}` as keyof VariableData;
+			const varName = `${stat.prop}_${attr}` as keyof ValueData;
 			
 			if (!value) return;
 			
-			this.variables[varName] = {
+			this.values[varName] = {
 				name: `${attr} ${stat.name}`,
 				value: value
 			}
 			
-			arr.push(`${attr.toLowerCase()} * ${varName}`);
+			subExpressions.push(`${attr.toLowerCase()} * ${varName}`);
 		});
 		
-		if (!arr.length) {
-			this.variables[stat.prop] = {
+		if (!subExpressions.length) {
+			this.values[stat.prop] = {
 				name: stat.name,
 				value: 0
 			};
@@ -246,7 +247,7 @@ export default class DamageCalculator {
 		
 		this.equations[stat.prop as keyof EquationData] = {
 			name: stat.name,
-			expr: `${arr.length > 1 ? '(' : ''}${arr.join(') + (')}${arr.length > 1 ? ')' : ''}`
+			expr: `${subExpressions.length > 1 ? '(' : ''}${subExpressions.join(') + (')}${subExpressions.length > 1 ? ')' : ''}`
 		};
 	}
 	
@@ -260,57 +261,46 @@ export default class DamageCalculator {
 	private recordNumber(value: number): RecordEntry {
 		return {
 			value: Math.round(value * 1e4) / 1e4,
-			type: RecordEntryTypes.Number
+			type: RecordEntryTypes.Value
 		};
 	}
 	
-	private variable(name: keyof VariableData | keyof EquationData): VariableOutput
+	private variable(name: keyof ValueData | keyof EquationData): VariableOutput
 	private variable(name: string): VariableOutput | undefined
-	private variable(name: string): VariableOutput | undefined {
-		if (name in this.variables)
-			return this.variables[name as keyof VariableData];
+	private variable(name: string) {
+		if (name in this.values)
+			return this.value(name as keyof ValueData);
 		
 		if (name in this.equations)
 			return this.equation(name as keyof EquationData);
 	}
 	
-	processComponent(component: string): ComponentOutput {
-		if (/^[A-Za-z_]+$/.test(component)) {
-			const variable = this.variable(component);
-			
-			if (variable)
-				return {
-					mathComponent: variable.value.toString(),
-					equationComponent: [
-						this.record(`${variable.name} `, RecordEntryTypes.Note),
-						this.recordNumber(variable.value)
-					],
-					record: variable.record
-				};
-				
-			return {
-				mathComponent: component,
-				equationComponent: [
-					this.record(component, RecordEntryTypes.Function)
-				]
-			};
-		}
-
+	private value(name: keyof ValueData): VariableOutput {
+		const variableInfo = this.values[name];
+		
 		return {
-			mathComponent: component,
-			equationComponent: [
-				/^\d+$/.test(component)
-					? this.record(component, RecordEntryTypes.Number)
-					: this.record(component.replace(/\*/g, '\u00D7'), RecordEntryTypes.Symbols)
+			label: [
+				this.record(`${variableInfo.name} `, RecordEntryTypes.Note),
+				this.recordNumber(variableInfo.value)
+			],
+			value: variableInfo.value
+		};
+	}
+	
+	private processComponent(component: string): VariableOutput | MathComponent {
+		return this.variable(component) || {
+			value: component,
+			label: [
+				this.record(component.replace(/\*/g, '\u00D7'), RecordEntryTypes.Mathematical)
 			]
 		};
 	}
 	
-	expression(equationInfo: EquationInfo): string {
+	private expression(equationInfo: EquationInfo): string {
 		const exprOrFunc = equationInfo.expr; 
 		const expr = typeof exprOrFunc === 'function' ? exprOrFunc() : exprOrFunc;
 		
-		return expr.replace(/INLINE_([A-Za-z_]+)/g, (_, inlineName: (keyof EquationData | keyof VariableData)) => {
+		return expr.replace(/INLINE_([A-Za-z_]+)/g, (_, inlineName: (keyof EquationData | keyof ValueData)) => {
 			if (!(inlineName in this.equations)) 
 				return inlineName;
 			
@@ -321,39 +311,36 @@ export default class DamageCalculator {
 		});
 	}
 	
-	equation(name: keyof EquationData): VariableOutput {
+	private equation(name: keyof EquationData): EquationOutput {
 		const equationInfo = this.equations[name];
 		const expr = this.expression(equationInfo);
 		const equation: RecordEntry[] = [];
-		const parameters: Record<string, EquationRecord> = {};
+		const children: EquationOutput['children'] = {};
 		
 		const mathExpr = expr.split(/([A-Za-z_]+|\d+)+/g).map(component => {
 			let res = this.processComponent(component);
 			
-			equation.push(...res.equationComponent);
+			equation.push(...res.label);
 			
-			if (res.record)
-				parameters[component] = res.record;
+			if ('equation' in res)
+				children[component] = res;
 			
-			return res.mathComponent;
+			return res.value;
 		}).join('');
 		
 		const value = evaluateExpression(mathExpr);
 		
-		equation.unshift(
+		const label = [
 			this.record(`${equationInfo.name} `, RecordEntryTypes.Note),
-			this.recordNumber(value),
-			this.record(' = ', RecordEntryTypes.Symbols)
+			this.recordNumber(value)
+		];
+		
+		equation.unshift(
+			...label,
+			this.record(' = ', RecordEntryTypes.Mathematical)
 		);
 		
-		return {
-			value: value,
-			name: equationInfo.name,
-			record: {
-				equation: equation,
-				parameters: parameters
-			}
-		};
+		return { label, value, equation, children };
 	}
 	
 	calculateDamage(): Damage {

@@ -1,8 +1,7 @@
 export enum RecordEntryTypes {
 	Note = 'note',
-	Number = 'number',
-	Symbols = 'symbols',
-	Function = 'function'
+	Value = 'value',
+	Mathematical = 'math'
 };
 
 type RecordEntry = {

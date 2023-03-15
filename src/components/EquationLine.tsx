@@ -1,15 +1,15 @@
-import { EquationRecord } from "../types/VariableOutput";
+import { EquationOutput } from "../types/VariableOutput";
 import '../less/EquationLine.less';
 
 export default function EquationLine(props: {
-	record: EquationRecord
+	equation: EquationOutput
 }) {
 	return <div className="calc">
-		{props.record.equation.map((entry, i) =>
+		{props.equation.equation.map((entry, i) =>
 			<span key={i} className={`calc-${entry.type}`}>{entry.value}</span>
 		)}
-		{Object.entries(props.record.parameters ?? {}).map(([key, row]) =>
-			<EquationLine key={key} record={row} />
+		{Object.entries(props.equation.children).map(([key, row]) =>
+			<EquationLine key={key} equation={row} />
 		)}
 	</div>
 }
