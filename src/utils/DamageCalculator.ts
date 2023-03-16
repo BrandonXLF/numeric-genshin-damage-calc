@@ -153,7 +153,7 @@ export default class DamageCalculator {
 			expr: `baseMultiplier * transformativeLevelMultiplier`
 		},
 		trueTransformativeReaction: {
-			name: 'True DMG',
+			name: 'Outgoing DMG',
 			expr: `baseTransformativeDamage * (1 + transformativeEMBonus + reactionBonus)`
 		},
 		transformativeReaction: {
