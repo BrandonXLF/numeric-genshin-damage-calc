@@ -276,14 +276,14 @@ export default class DamageCalculator {
 	}
 	
 	private value(name: keyof ValueData): VariableOutput {
-		const variableInfo = this.values[name];
+		const valueInfo = this.values[name];
 		
 		return {
 			label: [
-				this.record(`${variableInfo.name} `, RecordEntryTypes.Note),
-				this.recordNumber(variableInfo.value)
+				this.record(`${valueInfo.name} `, RecordEntryTypes.Note),
+				this.recordNumber(valueInfo.value)
 			],
-			value: variableInfo.value
+			value: valueInfo.value
 		};
 	}
 	
