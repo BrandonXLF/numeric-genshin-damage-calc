@@ -14,7 +14,7 @@ const stats: Stat[] = [
 		icon: <StatIcon base="character" />
 	},
 	{
-		name: 'Talent Scaling',
+		name: 'Talent DMG',
 		desc: 'The percent multiplier of the talent that scales with the selected stat',
 		prop: 'talent',
 		usesAttrs: true,
