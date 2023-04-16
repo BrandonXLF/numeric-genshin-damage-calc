@@ -219,24 +219,30 @@ export default class DamageCalculator {
 	}
 
 	private populateAttrStat(stat: Stat) {
-		let subExpressions: string[] = [];
+		let subEquations: (keyof EquationData)[] = [];
 
 		attributes.forEach(attr => {
 			const attrStat = getAttrStat(stat.prop, attr);
 			const value = this.statData[attrStat]?.value;
-			const varName = `${stat.prop}_${attr}` as keyof ValueData;
+			const varName = `${stat.prop}${attr}Scaling` as keyof ValueData;
+			const eqName = `${stat.prop}${attr}` as keyof EquationData;
 			
 			if (!value) return;
 			
 			this.values[varName] = {
-				name: `${attr} ${stat.name}`,
+				name: `${attr} ${stat.name} Scaling`,
 				value: value
-			}
+			};
+
+			this.equations[eqName] = {
+				name: `${attr} ${stat.name}`,
+				expr: `${attr.toLowerCase()} * ${varName}`
+			};
 			
-			subExpressions.push(`${attr.toLowerCase()} * ${varName}`);
+			subEquations.push(eqName);
 		});
 		
-		if (!subExpressions.length) {
+		if (!subEquations.length) {
 			this.values[stat.prop] = {
 				name: stat.name,
 				value: 0
@@ -247,7 +253,7 @@ export default class DamageCalculator {
 		
 		this.equations[stat.prop as keyof EquationData] = {
 			name: stat.name,
-			expr: `${subExpressions.length > 1 ? '(' : ''}${subExpressions.join(') + (')}${subExpressions.length > 1 ? ')' : ''}`
+			expr: subEquations.length > 1 ? subEquations.join(' + ') : this.equations[subEquations[0]].expr
 		};
 	}
 	
