@@ -16,6 +16,7 @@ export default function LabelRow(props: {
 				let newColumns = [...props.columns];
 				
 				newColumns[i].label = value;
+				newColumns[i].unmodified = false;
 
 				props.setColumns(newColumns);
 			}}

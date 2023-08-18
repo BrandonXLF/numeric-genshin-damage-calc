@@ -6,6 +6,7 @@ type InputDetails = {
 	reaction: number
 	label: string
 	statData: StatData;
+	unmodified: boolean;
 };
 
 export type StoredInputDetails = {
@@ -14,6 +15,7 @@ export type StoredInputDetails = {
 	label?: string
 	shown?: boolean
 	statData?: Partial<Record<keyof StatData, StatValue | string>>;
+	unmodified?: boolean;
 };
 
 export default InputDetails;

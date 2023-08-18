@@ -15,10 +15,10 @@ import damageTypes from "../utils/damageTypes";
 
 export default function CalculatorForm() {
 	let [columns, setColumns] = React.useState<InputDetails[]>(() => {
-		let storedColumns = (JSON.parse(localStorage.getItem('GIDC-data') || '[]') as StoredInputDetails[])
+		let storedColumns = (JSON.parse(localStorage.getItem('GIDC-data') ?? '[]') as StoredInputDetails[])
 			.filter(storedInputDetails => storedInputDetails.shown !== false);
 		
-		storedColumns[0] = storedColumns[0] ?? [];
+		storedColumns[0] = storedColumns[0] ?? undefined;
 		
 		return storedColumns.map(createInputDetails);
 	});
@@ -36,7 +36,7 @@ export default function CalculatorForm() {
 	
 	useEffect(() => {
 		localStorage.setItem('GIDC-data', JSON.stringify([
-			...(columns as StoredInputDetails[]).map(inputDetails => {
+			...(columns as StoredInputDetails[]).filter(column => !column.unmodified).map(inputDetails => {
 				inputDetails.shown = true;
 				return inputDetails;
 			}),

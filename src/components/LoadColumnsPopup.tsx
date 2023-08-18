@@ -35,6 +35,9 @@ export default function LoadColumnsPopup(props: {
 					onClick={() => {
 						let newColumns = [...props.columns];
 						let newClosedColumns = [...props.closedColumns];
+
+						for (let i = newColumns.length - 1; i >= 0 && newColumns[i].unmodified; i--)
+							newColumns.pop();
 						
 						newColumns.push(newClosedColumns.splice(i, 1)[0]);
 						

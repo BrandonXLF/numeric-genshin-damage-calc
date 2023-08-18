@@ -4,12 +4,13 @@ import attributes, { getAttrStat } from "./attributes";
 import stats from "./stats";
 import StatValue from "./StatValue";
 
-export default function createInputDetails(base: StoredInputDetails = {}): InputDetails {
+export default function createInputDetails(base?: StoredInputDetails): InputDetails {
 	let out: InputDetails = {
 		reaction: base?.reaction ?? 0,
 		reactionType: base?.reactionType ?? 0,
 		label: base?.label ?? '',
-		statData: {} as StatData
+		statData: {} as StatData,
+		unmodified: base === undefined ? true : (base?.unmodified ?? false)
 	};
 	
 	stats.forEach(stat => {

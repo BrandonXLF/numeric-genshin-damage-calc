@@ -22,6 +22,7 @@ export default function DamageTypeRow(props: {
 				let newColumns = [...props.columns];
 				
 				[ newColumns[i].reactionType, newColumns[i].reaction ] = value.split(',').map(Number);
+				newColumns[i].unmodified = false;
 			
 				props.setColumns(newColumns);
 			}}

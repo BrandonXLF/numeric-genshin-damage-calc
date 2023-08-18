@@ -27,6 +27,8 @@ export default function StatInputRow(props: {
 			delete newColumns[i].statData[prop];
 		else
 			newColumns[i].statData[prop]!.number = value;
+
+		newColumns[i].unmodified = false;
 		
 		props.setColumns(newColumns);
 	}
