@@ -6,6 +6,7 @@ import '../less/LoadColumnsPopup.less';
 import LoadSVG from "../svgs/LoadSVG";
 import InputDetails from "../types/InputDetails";
 import PopupHeader from "./PopupHeader";
+import ColumnUtils from "../utils/ColumnUtils";
 
 export default function LoadColumnsPopup(props: {
 	columns: InputDetails[];
@@ -33,16 +34,10 @@ export default function LoadColumnsPopup(props: {
 				<SVGButton
 					label={inputDetails.label || `Saved Column ${i + 1}`}
 					onClick={() => {
-						let newColumns = [...props.columns];
-						let newClosedColumns = [...props.closedColumns];
-
-						for (let i = newColumns.length - 1; i >= 0 && newColumns[i].unmodified; i--)
-							newColumns.pop();
+						let chosenColumn = props.closedColumns[i];
 						
-						newColumns.push(newClosedColumns.splice(i, 1)[0]);
-						
-						props.setColumns(newColumns);
-						props.setClosedColumns(newClosedColumns);
+						props.setClosedColumns(closedColumns => ColumnUtils.remove(closedColumns, chosenColumn));
+						props.setColumns(columns => ColumnUtils.transfer(columns, chosenColumn));
 					}}
 				/>
 			</div>)}

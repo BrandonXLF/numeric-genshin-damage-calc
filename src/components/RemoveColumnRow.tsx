@@ -2,8 +2,8 @@ import React from "react";
 import DeleteSVG from "../svgs/DeleteSVG";
 import SaveSVG from "../svgs/SaveSVG";
 import InputDetails from "../types/InputDetails";
-import createInputDetails from "../utils/createInputDetails";
 import SVGButton from "./SVGButton";
+import ColumnUtils from "../utils/ColumnUtils";
 
 export default function RemoveColumnRow(props: {
 	columns: InputDetails[];
@@ -19,14 +19,10 @@ export default function RemoveColumnRow(props: {
 					label="Save and Close Column"
 					hideLabel={true}
 					onClick={() => {
-						let newColumns = [...props.columns];
-						let newClosedColumns = [...props.closedColumns];
+						let chosenColumn = props.columns[i];
 						
-						newClosedColumns.push(newColumns.splice(i, 1)[0]);
-						if (!newColumns.length) newColumns.push(createInputDetails());
-						
-						props.setColumns(newColumns);
-						props.setClosedColumns(newClosedColumns);
+						props.setClosedColumns(closedColumns => ColumnUtils.transfer(closedColumns, chosenColumn));
+						props.setColumns(columns => ColumnUtils.remove(columns, chosenColumn, true));
 					}}
 				/>
 				<SVGButton
@@ -34,12 +30,9 @@ export default function RemoveColumnRow(props: {
 					label="Delete Column"
 					hideLabel={true}
 					onClick={() => {
-						let newColumns = [...props.columns];
+						let chosenColumn = props.columns[i];
 						
-						newColumns.splice(i, 1);
-						if (!newColumns.length) newColumns.push(createInputDetails());
-						
-						props.setColumns(newColumns);
+						props.setColumns(columns => ColumnUtils.remove(columns, chosenColumn, true));
 					}}
 				/>
 			</div>

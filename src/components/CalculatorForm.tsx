@@ -4,7 +4,6 @@ import DamageOutputRow from "./DamageOutputRow";
 import DamageTypeRow from "./DamageTypeRow";
 import HeadingRow from "./HeadingRow";
 import InputDetails, { StoredInputDetails } from "../types/InputDetails";
-import createInputDetails from "../utils/createInputDetails";
 import '../less/CalculatorForm.less';
 import TopButtonRow from "./TopButtonRow";
 import RemoveColumnRow from "./RemoveColumnRow";
@@ -12,6 +11,7 @@ import statSections from "../utils/statSections";
 import CalculatorSection from "./CalculatorSection";
 import LabelRow from "./LabelRow";
 import damageTypes from "../utils/damageTypes";
+import ColumnUtils from "../utils/ColumnUtils";
 
 export default function CalculatorForm() {
 	let [columns, setColumns] = React.useState<InputDetails[]>(() => {
@@ -20,14 +20,14 @@ export default function CalculatorForm() {
 		
 		storedColumns[0] = storedColumns[0] ?? undefined;
 		
-		return storedColumns.map(createInputDetails);
+		return storedColumns.map(ColumnUtils.create);
 	});
 	
 	let [closedColumns, setClosedColumns] = React.useState<InputDetails[]>(() => {
 		let storedClosedColumns = (JSON.parse(localStorage.getItem('GIDC-data') || '[]') as StoredInputDetails[])
 			.filter(storedInputDetails => storedInputDetails.shown === false);
 		
-		return storedClosedColumns.map(createInputDetails);
+		return storedClosedColumns.map(ColumnUtils.create);
 	});
 	
 	let damages = columns.map(({statData, reactionType, reaction}) =>

@@ -1,10 +1,10 @@
 import InputDetails from "../types/InputDetails";
-import createInputDetails from "../utils/createInputDetails";
 import React from 'react';
 import SVGButton from "./SVGButton";
 import AddSVG from "../svgs/AddSVG";
 import LoadColumnsPopup from "./LoadColumnsPopup";
 import '../less/TopButtonRow.less';
+import ColumnUtils from "../utils/ColumnUtils";
 
 export default function TopButtonRow(props: {
 	columns: InputDetails[];
@@ -22,9 +22,7 @@ export default function TopButtonRow(props: {
 		<SVGButton
 			svg={<AddSVG className="pos" />}
 			label="Add Column"
-			onClick={() => props.setColumns(
-				[...props.columns, createInputDetails(props.columns[props.columns.length - 1])]
-			)}
+			onClick={() => props.setColumns(columns => ColumnUtils.add(columns))}
 		/>
 	</div>;
 }
