@@ -24,7 +24,7 @@ export default function LoadColumnsPopup(props: {
 	return <Popup trigger={
 		<SVGButton
 			svg={<LoadSVG />}
-			label="Load Column"
+			label="Load Saved"
 			disabled={!props.closedColumns.length}
 		/>
 	} ref={ref} modal>
@@ -35,7 +35,7 @@ export default function LoadColumnsPopup(props: {
 					label={inputDetails.label || `Saved Column ${i + 1}`}
 					onClick={() => {
 						let chosenColumn = props.closedColumns[i];
-						
+
 						props.setClosedColumns(closedColumns => ColumnUtils.remove(closedColumns, chosenColumn));
 						props.setColumns(columns => ColumnUtils.transfer(columns, chosenColumn));
 					}}

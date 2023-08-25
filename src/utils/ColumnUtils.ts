@@ -1,4 +1,4 @@
-import CharacterBuild from "../types/CharacterBuild";
+import ImportedCharacter from "../types/ImportedCharacter";
 import InputDetails, { StoredInputDetails } from "../types/InputDetails";
 import { StatTypes } from "../types/Stat";
 import StatData from "../types/StatData";
@@ -75,6 +75,38 @@ export default class ColumnUtils {
         newColumns.push(ColumnUtils.create(column));
 
         return newColumns;
+    }
+
+    static import(columns: InputDetails[], build: ImportedCharacter, element: typeof elements[number]) {
+        const base: StoredInputDetails = {
+            label: build.name,
+            statData: {}
+        };
+
+        stats.forEach(stat => {
+            if (!('map' in stat)) return;
+
+            let numVal: number | undefined;
+
+            if (stat.map === 'char') {
+                numVal = +build.propMap[stat.mapNumber].val;
+            } else {
+                let key = typeof stat.mapNumber === 'object'
+                    ? stat.mapNumber[element]
+                    : stat.mapNumber;
+
+                numVal = build.fightPropMap[key];
+            }
+
+            if (numVal === undefined) return;
+
+            if (stat.type === StatTypes.Percent) numVal *= 100;
+            numVal = Math.round(numVal * 100) / 100;
+
+            base.statData![stat.prop] = numVal.toString();
+        });
+
+        return ColumnUtils.load(columns, base);
     }
 
     static remove(columns: InputDetails[], column: InputDetails, keepOne = false) {

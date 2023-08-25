@@ -11,7 +11,9 @@ const stats: Stat[] = [
 		type: StatTypes.Number,
 		section: StatSections.Character,
 		groups: DamageGroups.General | DamageGroups.Reaction,
-		icon: <StatIcon base="character" />
+		icon: <StatIcon base="character" />,
+		map: 'char',
+		mapNumber: 4001
 	},
 	{
 		name: 'Talent DMG',
@@ -63,7 +65,9 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		icon: <StatIcon base="damage" />
+		icon: <StatIcon base="damage" />,
+		map: 'fight',
+		mapNumber: 4
 	},
 	{
 		name: 'Bonus ATK',
@@ -73,7 +77,9 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		icon: <StatIcon base="damage" indicator="increase" />
+		icon: <StatIcon base="damage" indicator="increase" />,
+		map: 'fight',
+		mapNumber: 5
 	},
 	{
 		name: 'Extra ATK %',
@@ -83,7 +89,9 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		icon: <StatIcon base="damage" indicator="increase" />
+		icon: <StatIcon base="damage" indicator="increase" />,
+		map: 'fight',
+		mapNumber: 6
 	},
 	{
 		name: 'Base DEF',
@@ -93,7 +101,9 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		icon: <StatIcon base="def" />
+		icon: <StatIcon base="def" />,
+		map: 'fight',
+		mapNumber: 7
 	},
 	{
 		name: 'Bonus DEF',
@@ -103,7 +113,9 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		icon: <StatIcon base="def" indicator="increase" />
+		icon: <StatIcon base="def" indicator="increase" />,
+		map: 'fight',
+		mapNumber: 8
 	},
 	{
 		name: 'Extra DEF %',
@@ -113,7 +125,9 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		icon: <StatIcon base="def" indicator="increase" />
+		icon: <StatIcon base="def" indicator="increase" />,
+		map: 'fight',
+		mapNumber: 9
 	},
 	{
 		name: 'Base HP',
@@ -123,7 +137,9 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		icon: <StatIcon base="hp" />
+		icon: <StatIcon base="hp" />,
+		map: 'fight',
+		mapNumber: 1
 	},
 	{
 		name: 'Bonus HP',
@@ -133,7 +149,9 @@ const stats: Stat[] = [
 		default: 500,
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
-		icon: <StatIcon base="hp" indicator="increase" />
+		icon: <StatIcon base="hp" indicator="increase" />,
+		map: 'fight',
+		mapNumber: 2
 	},
 	{
 		name: 'Extra HP %',
@@ -143,7 +161,9 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
-		icon: <StatIcon base="hp" indicator="increase" />
+		icon: <StatIcon base="hp" indicator="increase" />,
+		map: 'fight',
+		mapNumber: 3
 	},
 	{
 		name: 'Elemental Mastery',
@@ -154,7 +174,9 @@ const stats: Stat[] = [
 		type: StatTypes.Number,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.Reaction,
-		icon: <StatIcon base="em" />
+		icon: <StatIcon base="em" />,
+		map: 'fight',
+		mapNumber: 28
 	},
 	{
 		name: 'DMG Bonus',
@@ -164,7 +186,18 @@ const stats: Stat[] = [
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="damage" indicator="increase" />
+		icon: <StatIcon base="damage" indicator="increase" />,
+		map: 'fight',
+		mapNumber: {
+			Physical: 30,
+			Pyro: 40,
+			Electro: 41,
+			Hydro: 42,
+			Dendro: 43,
+			Anemo: 44,
+			Geo: 45,
+			Cryo: 46
+		}
 	},
 	{
 		name: 'Reaction Bonus',
@@ -183,7 +216,9 @@ const stats: Stat[] = [
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="critRate" />
+		icon: <StatIcon base="critRate" />,
+		map: 'fight',
+		mapNumber: 20
 	},
 	{
 		name: 'CRIT DMG',
@@ -192,7 +227,9 @@ const stats: Stat[] = [
 		type: StatTypes.Percent,
 		section: StatSections.CharacterStats,
 		groups: DamageGroups.General,
-		icon: <StatIcon base="critDmg" />
+		icon: <StatIcon base="critDmg" />,
+		map: 'fight',
+		mapNumber: 22
 	},
 	{
 		name: 'Enemy Level',
@@ -241,7 +278,18 @@ const stats: Stat[] = [
 		type: StatTypes.Percent,
 		section: StatSections.Enemy,
 		groups:  DamageGroups.General | DamageGroups.Reaction,
-		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
+		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />,
+		map: 'fight',
+		mapNumber: {
+			Physical: 29,
+			Pyro: 50,
+			Electro: 51,
+			Hydro: 52,
+			Dendro: 53,
+			Anemo: 54,
+			Geo: 55,
+			Cryo: 56
+		}
 	}
 ];
 

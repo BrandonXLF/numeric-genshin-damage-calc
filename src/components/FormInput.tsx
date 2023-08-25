@@ -17,6 +17,8 @@ export default function FormInput(props: {
 	onUnitChange?: (val: string) => void;
 	style?: React.CSSProperties;
 	class?: string;
+	id?: string;
+	placeholder?: string;
 }) {
 	const Tag = props.options ? 'select' : 'input' as const;
 	
@@ -30,6 +32,8 @@ export default function FormInput(props: {
 			value={props.disabled ? '' : props.value}
 			onChange={e => props.onChange(e.target.value)}
 			style={props.style}
+			id={props.id}
+			placeholder={props.placeholder}
 		>
 			{props.options ? <SelectOptions options={props.options} /> : undefined}
 		</Tag>

@@ -1,11 +1,22 @@
 import attributes from "../utils/attributes";
+import elements from "../utils/elements";
 import DamageGroups from "./DamageGroups";
 import DisplayedProp from "./DisplayedProp";
 import StatData from "./StatData";
 import { StatSections } from "./StatSection";
 
-type Stat = DisplayedProp<StatData> & {
-	attr?: typeof attributes[keyof typeof attributes];
+type MapInfo =
+	| {
+		map: 'char';
+		mapNumber: number;
+	}
+	| {
+		map: 'fight';
+		mapNumber: number | Record<typeof elements[number], number>;
+	};
+
+type Stat = DisplayedProp<StatData> & (MapInfo | {}) & {
+	attr?: typeof attributes[number];
 	default: number;
 	type: StatTypes;
 	section: StatSections;
