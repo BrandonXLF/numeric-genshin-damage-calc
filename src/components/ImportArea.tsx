@@ -105,6 +105,7 @@ export default function ImportArea(props: {
                     svg={<SearchSVG />}
                     label="Search"
                     onClick={() => setUid(inProgressUID)}
+                    mini
                 />
             </div>
         </div>
