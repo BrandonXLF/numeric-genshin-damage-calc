@@ -65,7 +65,7 @@ export default function ImportArea(props: {
         }
 
         (async () => {
-            let res = await fetch(`${process.env.REACT_APP_ENKA_PROXY}https://enka.network/api/uid/${uid}`);
+            let res = await fetch(`${process.env.REACT_APP_ENKA_PROXY}/uid/${uid}`);
             let data = await res.json();
   
             let enkaBuilds: EnkaBuild[] = data?.avatarInfoList || [];

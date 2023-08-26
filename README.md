@@ -12,4 +12,4 @@ Install dependencies using `npm install`. Launch the app in development mode usi
 
 Environment variables are defined in `.env` and can be overridden locally in the `.env.local` file see [Adding Custom Environment Variables](https://create-react-app.dev/docs/adding-custom-environment-variables) for more info.
 
-* `REACT_APP_ENKA_PROXY` - The prefix to use for requests to Enka.Network API to work around CORS. By default this is <https://www.brandonfowler.me/enka-proxy/>.
+* `REACT_APP_ENKA_PROXY` - The prefix to use for requests to Enka.Network API to work around CORS. The proxy should send requests to `https://enka.network/api/[REQUEST_PATH]` By default this is <https://www.brandonfowler.me/enka-proxy>.
