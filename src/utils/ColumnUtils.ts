@@ -59,6 +59,15 @@ export default class ColumnUtils {
         return newColumns;
     }
 
+    static clone(columns: InputDetails[], column: InputDetails) {
+        const index = columns.indexOf(column);
+        const newColumns = [...columns];
+
+        newColumns.splice(index + 1, 0, ColumnUtils.create(newColumns[index]));
+
+        return newColumns;
+    }
+
     static transfer(columns: InputDetails[], column: InputDetails) {
         const newColumns = [...columns];
 
@@ -76,7 +85,7 @@ export default class ColumnUtils {
 
         return newColumns;
     }
-
+    
     static import(columns: InputDetails[], build: ImportedCharacter, element: typeof elements[number]) {
         const base: StoredInputDetails = {
             label: build.name,

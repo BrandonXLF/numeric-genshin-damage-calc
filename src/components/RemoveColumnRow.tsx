@@ -4,6 +4,7 @@ import SaveSVG from "../svgs/SaveSVG";
 import InputDetails from "../types/InputDetails";
 import SVGButton from "./SVGButton";
 import ColumnUtils from "../utils/ColumnUtils";
+import CopySVG from "../svgs/CopySVG";
 
 export default function RemoveColumnRow(props: {
 	columns: InputDetails[];
@@ -23,6 +24,16 @@ export default function RemoveColumnRow(props: {
 						
 						props.setClosedColumns(closedColumns => ColumnUtils.transfer(closedColumns, chosenColumn));
 						props.setColumns(columns => ColumnUtils.remove(columns, chosenColumn, true));
+					}}
+				/>
+				<SVGButton
+					svg={<CopySVG />}
+					label="Duplicate Column"
+					hideLabel={true}
+					onClick={() => {
+						let chosenColumn = props.columns[i];
+						
+						props.setColumns(columns => ColumnUtils.clone(columns, chosenColumn));
 					}}
 				/>
 				<SVGButton
