@@ -55,9 +55,12 @@ export default function ImportArea(props: {
     const [uid, setUid] = React.useState<string | undefined>(undefined);
     const [profile, setProfile] = React.useState<ImportedIdentity | undefined>();
     const [builds, setBuilds] = React.useState<ImportedCharacter[] | undefined>(undefined);
+    const [error, setError] = React.useState<string | undefined>(undefined);
     const elementSelectID = React.useId();
 
     useEffect(() => {
+        setError(undefined);
+
         if (!uid) {
             setBuilds(undefined);
             setProfile(undefined);
@@ -65,8 +68,21 @@ export default function ImportArea(props: {
         }
 
         (async () => {
-            let res = await fetch(`${process.env.REACT_APP_ENKA_PROXY}/uid/${uid}`);
+            let res;
+
+            try {
+                res = await fetch(`${process.env.REACT_APP_ENKA_PROXY}/uid/${uid}`);
+            } catch {
+                setError('Could not connect to Enka.Network. Please check your internet connection.');
+                return;
+            }
+
             let data = await res.json();
+
+            if (!res.ok) {
+                setError(data?.message || `Enka.Network API error. Status code ${res.status}.`);
+                return;
+            }
   
             let enkaBuilds: EnkaBuild[] = data?.avatarInfoList || [];
             let characterBuilds: ImportedCharacter[] = [];
@@ -151,11 +167,14 @@ export default function ImportArea(props: {
                 </div>
             </div>
         </>}
-        {builds && builds.length === 0 && <div className="flex-row">
+        {error && <div className="flex-row">
+            <div className="notice">{error}</div>
+        </div>}
+        {!error && builds && builds.length === 0 && <div className="flex-row">
             <div className="notice">
                 No builds found. Make sure character details are shown in-game.
             </div>
         </div>}
-        {uid && !builds && <div>Loading...</div>}
+        {!error && uid && !builds && <div>Loading...</div>}
     </div>;
 }
