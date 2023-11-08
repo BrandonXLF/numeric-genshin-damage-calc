@@ -54,7 +54,7 @@ export default function AttrStatInput(props: {
 		{inactiveAttributes.length > 0 &&
 			<SVGButton
 				mini={true}
-				svg={<AddSVG />}
+				svg={<AddSVG className="pos" />}
 				label="Add Stat"
 				onClick={() => props.onChange(
 					getAttrStat(props.stat.prop, inactiveAttributes[0]),
