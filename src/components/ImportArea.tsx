@@ -74,6 +74,8 @@ export default function ImportArea(props: {
                 res = await fetch(`${process.env.REACT_APP_ENKA_PROXY}/uid/${uid}`);
             } catch {
                 setError('Could not connect to Enka.Network. Please check your internet connection.');
+                setBuilds(undefined);
+                setProfile(undefined);
                 return;
             }
 
@@ -81,6 +83,8 @@ export default function ImportArea(props: {
 
             if (!res.ok) {
                 setError(data?.message || `Enka.Network API error. Status code ${res.status}.`);
+                setBuilds(undefined);
+                setProfile(undefined);
                 return;
             }
   
