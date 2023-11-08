@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Popup from "reactjs-popup";
 import { PopupActions } from "reactjs-popup/dist/types";
 import CalculatorSVG from "../svgs/CalculatorSVG";
@@ -15,6 +15,9 @@ export default function CalculationPopup(props: {
 }) {
 	const ref = React.useRef<PopupActions>(null);
 	const [shown, setShown] = React.useState(props.current);
+	const givenCurrent = props.current;
+
+	useEffect(() => setShown(givenCurrent), [givenCurrent]);
 	
 	return <Popup trigger={
 		<SVGButton svg={<CalculatorSVG />} label="Show Calculations" hideLabel={true} mini={true} />

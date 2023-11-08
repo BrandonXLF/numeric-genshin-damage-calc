@@ -12,9 +12,9 @@ export default function DamageOutput(props: {
 }) {
 	return <div className="damage-output">
 		<CalculationPopup damages={props.damages} current={props.current} prop={props.prop} />
-		<> </>
+		{' '}
 		<output>{Math.round(props.value * 100) / 100}</output>
-		<> </>
+		{' '}
 		<DifferenceOutput initial={props.initial} value={props.value} />
 	</div>
 }

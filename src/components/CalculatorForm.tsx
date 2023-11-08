@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import DamageCalculator from "../utils/DamageCalculator";
 import DamageOutputRow from "./DamageOutputRow";
 import DamageTypeRow from "./DamageTypeRow";
@@ -18,13 +18,13 @@ export default function CalculatorForm() {
 	let [groups, setGroups] = React.useState<Group[]>(() => GroupListUtils.loadFromStorage(true, true));
 	let [closedGroups, setClosedGroups] = React.useState<Group[]>(() => GroupListUtils.loadFromStorage(false));
 	
-	let groupDamages = groups.map(group => {
+	let groupDamages = useMemo(() => groups.map(group => {
 		let damages = group.items.map(
 			({statData, reactionType, reaction})=> new DamageCalculator(statData, reactionType, reaction).calculateDamage()
 		);
 
 		return { items: damages, activeIndex: group.activeIndex };
-	});
+	}), [groups]);
 	
 	useEffect(
 		() => GroupListUtils.saveToStorage(groups, closedGroups),
