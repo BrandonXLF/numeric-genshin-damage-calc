@@ -1,24 +1,24 @@
 import React from "react";
-import InputDetails from "../types/InputDetails";
+import Group from "../utils/Group";
 import FormInput from "./FormInput";
 import RowLabel from "./RowLabel";
 
 export default function LabelRow(props: {
-	columns: InputDetails[];
-	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	groups: Group[];
+	setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
 }) {
 	return <>
 		<RowLabel label="Label" />
-		{props.columns.map((inputDetails, i) => <FormInput
+		{props.groups.map((group, i) => <FormInput
 			key={i}
-			value={inputDetails.label}
+			value={group.first.label}
 			onChange={value => {
-				let newColumns = [...props.columns];
+				let newGroups = [...props.groups];
 				
-				newColumns[i].label = value;
-				newColumns[i].unmodified = false;
+				newGroups[i].first.label = value;
+				newGroups[i].first.unmodified = false;
 
-				props.setColumns(newColumns);
+				props.setGroups(newGroups);
 			}}
 		/>)}
 	</>;

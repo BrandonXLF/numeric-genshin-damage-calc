@@ -3,19 +3,27 @@ import Popup from "reactjs-popup";
 import { PopupActions } from "reactjs-popup/dist/types";
 import CalculatorSVG from "../svgs/CalculatorSVG";
 import SVGButton from "./SVGButton";
-import { EquationOutput } from "../types/VariableOutput";
+import Damage from "../types/Damage";
+import ColumnList from "./ColumnList";
 import EquationLine from "./EquationLine";
 import PopupHeader from "./PopupHeader";
 
 export default function CalculationPopup(props: {
-	equation: EquationOutput;
+	damages: Damage[];
+	current: number;
+	prop: keyof Damage;
 }) {
 	const ref = React.useRef<PopupActions>(null);
+	const [shown, setShown] = React.useState(props.current);
 	
 	return <Popup trigger={
 		<SVGButton svg={<CalculatorSVG />} label="Show Calculations" hideLabel={true} mini={true} />
 	} ref={ref} modal>
 		<PopupHeader title="Calculations" ref={ref} />
-		<EquationLine equation={props.equation} />
+		<div className="calc">
+			<span>Attack #: </span>
+			<ColumnList columns={props.damages} active={shown} setActive={setShown} />
+		</div>
+		<EquationLine equation={props.damages[shown][props.prop]!} />
 	</Popup>
 }

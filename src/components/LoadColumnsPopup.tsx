@@ -4,20 +4,20 @@ import { PopupActions } from "reactjs-popup/dist/types";
 import SVGButton from "./SVGButton";
 import '../less/LoadColumnsPopup.less';
 import LoadSVG from "../svgs/LoadSVG";
-import InputDetails from "../types/InputDetails";
+import Group from "../utils/Group";
 import PopupHeader from "./PopupHeader";
-import ColumnUtils from "../utils/ColumnUtils";
+import GroupListUtils from "../utils/GroupListUtils";
 
 export default function LoadColumnsPopup(props: {
-	columns: InputDetails[];
-	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
-	closedColumns: InputDetails[];
-	setClosedColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	groups: Group[];
+	setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
+	closedGroups: Group[];
+	setClosedGroups: React.Dispatch<React.SetStateAction<Group[]>>;
 }) {
 	const ref = React.useRef<PopupActions>(null);
 	
 	useEffect(() => {
-		if (ref.current && !props.closedColumns.length)
+		if (ref.current && !props.closedGroups.length)
 			ref.current.close();
 	});
 	
@@ -25,19 +25,19 @@ export default function LoadColumnsPopup(props: {
 		<SVGButton
 			svg={<LoadSVG />}
 			label="Load Saved"
-			disabled={!props.closedColumns.length}
+			disabled={!props.closedGroups.length}
 		/>
 	} ref={ref} modal>
 		<PopupHeader title="Load Columns" ref={ref} />
 		<div className="load-columns">
-			{props.closedColumns.map((inputDetails, i) => <div key={i}>
+			{props.closedGroups.map((group, i) => <div key={i}>
 				<SVGButton
-					label={inputDetails.label || `Saved Column ${i + 1}`}
+					label={group.first.label || `Saved Column ${i + 1}`}
 					onClick={() => {
-						let chosenColumn = props.closedColumns[i];
+						let chosenGroup = props.closedGroups[i];
 
-						props.setClosedColumns(closedColumns => ColumnUtils.remove(closedColumns, chosenColumn));
-						props.setColumns(columns => ColumnUtils.transfer(columns, chosenColumn));
+						props.setGroups(columns => GroupListUtils.transfer(columns, chosenGroup));
+						props.setClosedGroups(closedColumns => GroupListUtils.remove(closedColumns, chosenGroup));
 					}}
 				/>
 			</div>)}

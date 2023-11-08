@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import '../less/ImportArea.less';
-import InputDetails from "../types/InputDetails";
+import Group from "../utils/Group";
 import elements, { elementColors } from "../utils/elements";
 import SVGButton from "./SVGButton";
 import ImportedCharacter, { EnkaBuild, ImportedIdentity } from "../types/ImportedCharacter";
 import FormInput from "./FormInput";
 import SearchSVG from "../svgs/SearchSVG";
-import ColumnUtils from "../utils/ColumnUtils";
+import GroupListUtils from "../utils/GroupListUtils";
 import StatIcon from "../svgs/StatIcon";
 
 let nameResourcesCache: [
@@ -48,7 +48,7 @@ async function getIcon(avatarId: number) {
 }
 
 export default function ImportArea(props: {
-	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
 }) {
     const [inProgressUID, setInProgressUID] = React.useState<string>(localStorage.getItem('GIDC-uid') ?? '');
     const [element, setElement] = React.useState<typeof elements[number]>(elements[0]);
@@ -155,7 +155,7 @@ export default function ImportArea(props: {
                     <SVGButton
                         svg={build.icon}
                         label={build.name}
-                        onClick={() => props.setColumns(columns => ColumnUtils.import(columns, build, element))}
+                        onClick={() => props.setGroups(columns => GroupListUtils.import(columns, build, element))}
                     />
                 </div>)}
             </div>

@@ -3,7 +3,8 @@ import DamageCalculator from "../utils/DamageCalculator";
 import DamageOutputRow from "./DamageOutputRow";
 import DamageTypeRow from "./DamageTypeRow";
 import HeadingRow from "./HeadingRow";
-import InputDetails, { StoredInputDetails } from "../types/InputDetails";
+import AttacksRow from "./AttacksRow";
+import Group from "../utils/Group";
 import '../less/CalculatorForm.less';
 import TopButtonRow from "./TopButtonRow";
 import RemoveColumnRow from "./RemoveColumnRow";
@@ -11,58 +12,42 @@ import statSections from "../utils/statSections";
 import CalculatorSection from "./CalculatorSection";
 import LabelRow from "./LabelRow";
 import damageTypes from "../utils/damageTypes";
-import ColumnUtils from "../utils/ColumnUtils";
+import GroupListUtils from "../utils/GroupListUtils";
 
 export default function CalculatorForm() {
-	let [columns, setColumns] = React.useState<InputDetails[]>(() => {
-		let storedColumns = (JSON.parse(localStorage.getItem('GIDC-data') ?? '[]') as StoredInputDetails[])
-			.filter(storedInputDetails => storedInputDetails.shown !== false);
-		
-		storedColumns[0] = storedColumns[0] ?? undefined;
-		
-		return storedColumns.map(ColumnUtils.create);
+	let [groups, setGroups] = React.useState<Group[]>(() => GroupListUtils.loadFromStorage(true, true));
+	let [closedGroups, setClosedGroups] = React.useState<Group[]>(() => GroupListUtils.loadFromStorage(false));
+	
+	let groupDamages = groups.map(group => {
+		let damages = group.items.map(
+			({statData, reactionType, reaction})=> new DamageCalculator(statData, reactionType, reaction).calculateDamage()
+		);
+
+		return { items: damages, activeIndex: group.activeIndex };
 	});
 	
-	let [closedColumns, setClosedColumns] = React.useState<InputDetails[]>(() => {
-		let storedClosedColumns = (JSON.parse(localStorage.getItem('GIDC-data') || '[]') as StoredInputDetails[])
-			.filter(storedInputDetails => storedInputDetails.shown === false);
-		
-		return storedClosedColumns.map(ColumnUtils.create);
-	});
-	
-	let damages = columns.map(({statData, reactionType, reaction}) =>
-		new DamageCalculator(statData, reactionType, reaction).calculateDamage()
+	useEffect(
+		() => GroupListUtils.saveToStorage(groups, closedGroups),
+		[groups, closedGroups]
 	);
-	
-	useEffect(() => {
-		localStorage.setItem('GIDC-data', JSON.stringify([
-			...(columns as StoredInputDetails[]).filter(column => !column.unmodified).map(inputDetails => {
-				inputDetails.shown = true;
-				return inputDetails;
-			}),
-			...(closedColumns as StoredInputDetails[]).map(inputDetails => {
-				inputDetails.shown = false;
-				return inputDetails;
-			})
-		]));
-	}, [columns, closedColumns]);
 
 	return <section className="form-section">
-		<TopButtonRow columns={columns} setColumns={setColumns} closedColumns={closedColumns} setClosedColumns={setClosedColumns} />
+		<TopButtonRow groups={groups} setGroups={setGroups} closedGroups={closedGroups} setClosedGroups={setClosedGroups} />
 		<div className="center-items grid-container">
-			<form className={`grid${columns.length === 1 ? ' wide-inputs' : ''}`} style={{
-				gridTemplateColumns: `max-content repeat(${columns.length}, 1fr)`
+			<form className={`grid${groups.length === 1 ? ' wide-inputs' : ''}`} style={{
+				gridTemplateColumns: `max-content repeat(${groups.length}, 1fr)`
 			}}>
 				<HeadingRow title="General" span={1} />
-				<RemoveColumnRow columns={columns} setColumns={setColumns} closedColumns={closedColumns} setClosedColumns={setClosedColumns} />
-				<LabelRow columns={columns} setColumns={setColumns} />
-				<DamageTypeRow columns={columns} setColumns={setColumns} />
+				<RemoveColumnRow groups={groups} setGroups={setGroups} closedGroups={closedGroups} setClosedGroups={setClosedGroups} />
+				<LabelRow groups={groups} setGroups={setGroups} />
+				<AttacksRow groups={groups} setGroups={setGroups} />
+				<DamageTypeRow groups={groups} setGroups={setGroups} />
 				{statSections.map(statSection =>
-					<CalculatorSection key={statSection.value} section={statSection} headerSpan={columns.length + 1} columns={columns} setColumns={setColumns} />
+					<CalculatorSection key={statSection.value} section={statSection} headerSpan={groups.length + 1} groups={groups} setGroups={setGroups} />
 				)}
-				<HeadingRow title="Damage" span={columns.length + 1} />
+				<HeadingRow title="Damage" span={groups.length + 1} />
 				{damageTypes.map(damageType =>
-					<DamageOutputRow key={damageType.prop} damageType={damageType} damages={damages} />
+					<DamageOutputRow key={damageType.prop} damageType={damageType} groupDamages={groupDamages} />
 				)}
 			</form>
 		</div>

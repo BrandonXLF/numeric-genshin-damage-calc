@@ -1,17 +1,20 @@
 import CalculationPopup from "./CalculationPopup";
 import DifferenceOutput from "./DifferenceOutput";
-import { EquationOutput } from "../types/VariableOutput";
+import Damage from "../types/Damage";
 import '../less/DamageOutput.less';
 
 export default function DamageOutput(props: {
-	equation: EquationOutput;
+	damages: Damage[];
+	current: number;
+	prop: keyof Damage;
+	value:  number;
 	initial?: number;
 }) {
 	return <div className="damage-output">
-		<CalculationPopup equation={props.equation} />
+		<CalculationPopup damages={props.damages} current={props.current} prop={props.prop} />
 		<> </>
-		<output>{Math.round(props.equation.value * 1e2) / 1e2}</output>
+		<output>{Math.round(props.value * 100) / 100}</output>
 		<> </>
-		<DifferenceOutput initial={props.initial} value={props.equation.value} />
+		<DifferenceOutput initial={props.initial} value={props.value} />
 	</div>
 }

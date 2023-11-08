@@ -1,30 +1,34 @@
 import React from "react";
 import DamageCalculator from "../utils/DamageCalculator";
-import InputDetails from "../types/InputDetails";
+import Group from "../utils/Group";
 import RowLabel from "./RowLabel";
 import FormInput from "./FormInput";
 import '../less/DamageTypeRow.less';
 
 export default function DamageTypeRow(props: {
-	columns: InputDetails[];
-	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	groups: Group[];
+	setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
 }) {
 	return <>
 		<RowLabel label="Reaction" />
-		{props.columns.map((inputDetails, i) => <FormInput
+		{props.groups.map((group, i) => <FormInput
 			key={i}
 			class="damage-type"
-			value={`${inputDetails.reactionType},${inputDetails.reaction}`}
+			value={`${group.active.reactionType},${group.active.reaction}`}
 			style={{
-				color: DamageCalculator.reactionTypes[inputDetails.reactionType].reactions[inputDetails.reaction].color ?? 'white'
+				color: DamageCalculator.reactionTypes[group.active.reactionType].reactions[group.active.reaction].color ?? 'white'
 			}} 
 			onChange={value => {
-				let newColumns = [...props.columns];
+				let newGroups = [...props.groups];
 				
-				[ newColumns[i].reactionType, newColumns[i].reaction ] = value.split(',').map(Number);
-				newColumns[i].unmodified = false;
+				[
+					newGroups[i].active.reactionType,
+					newGroups[i].active.reaction
+				] = value.split(',').map(Number);
+				
+				newGroups[i].active.unmodified = false;
 			
-				props.setColumns(newColumns);
+				props.setGroups(newGroups);
 			}}
 			options={
 				DamageCalculator.reactionTypes.map((damageType, i) => ({

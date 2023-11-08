@@ -1,29 +1,29 @@
 import React from "react";
 import DeleteSVG from "../svgs/DeleteSVG";
 import SaveSVG from "../svgs/SaveSVG";
-import InputDetails from "../types/InputDetails";
+import Group from "../utils/Group";
 import SVGButton from "./SVGButton";
-import ColumnUtils from "../utils/ColumnUtils";
+import GroupListUtils from "../utils/GroupListUtils";
 import CopySVG from "../svgs/CopySVG";
 
 export default function RemoveColumnRow(props: {
-	columns: InputDetails[];
-	setColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
-	closedColumns: InputDetails[];
-	setClosedColumns: React.Dispatch<React.SetStateAction<InputDetails[]>>;
+	groups: Group[];
+	setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
+	closedGroups: Group[];
+	setClosedGroups: React.Dispatch<React.SetStateAction<Group[]>>;
 }) {
 	return <>
-		{props.columns.map((_, i) =>
+		{props.groups.map((_, i) =>
 			<div key={i} className="column-top">
 				<SVGButton
 					svg={<SaveSVG />}
 					label="Save and Close Column"
 					hideLabel={true}
 					onClick={() => {
-						let chosenColumn = props.columns[i];
+						let chosenGroup = props.groups[i];
 						
-						props.setClosedColumns(closedColumns => ColumnUtils.transfer(closedColumns, chosenColumn));
-						props.setColumns(columns => ColumnUtils.remove(columns, chosenColumn, true));
+						props.setGroups(groups => GroupListUtils.remove(groups, chosenGroup, true));
+						props.setClosedGroups(closedGroups => GroupListUtils.transfer(closedGroups, chosenGroup));
 					}}
 				/>
 				<SVGButton
@@ -31,9 +31,9 @@ export default function RemoveColumnRow(props: {
 					label="Duplicate Column"
 					hideLabel={true}
 					onClick={() => {
-						let chosenColumn = props.columns[i];
+						let chosenGroup = props.groups[i];
 						
-						props.setColumns(columns => ColumnUtils.clone(columns, chosenColumn));
+						props.setGroups(groups => GroupListUtils.duplicate(groups, chosenGroup));
 					}}
 				/>
 				<SVGButton
@@ -41,9 +41,9 @@ export default function RemoveColumnRow(props: {
 					label="Delete Column"
 					hideLabel={true}
 					onClick={() => {
-						let chosenColumn = props.columns[i];
+						let chosenGroup = props.groups[i];
 						
-						props.setColumns(columns => ColumnUtils.remove(columns, chosenColumn, true));
+						props.setGroups(groups => GroupListUtils.remove(groups, chosenGroup, true));
 					}}
 				/>
 			</div>

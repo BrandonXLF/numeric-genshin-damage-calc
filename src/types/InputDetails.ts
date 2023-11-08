@@ -14,6 +14,7 @@ export type StoredInputDetails = {
 	reaction?: number;
 	label?: string;
 	shown?: boolean;
+	group?: number;
 	statData?: Partial<Record<keyof StatData, StatValue | string>>;
 	unmodified?: boolean;
 };

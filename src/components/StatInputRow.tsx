@@ -1,7 +1,7 @@
 import StatInput from "./StatInput";
 import AttrStatInput from "./AttrStatInput";
 import DamageCalculator from "../utils/DamageCalculator";
-import InputDetails from "../types/InputDetails";
+import Group from "../utils/Group";
 import RowLabel from "./RowLabel";
 import Stat from "../types/Stat";
 import React from 'react';
@@ -12,28 +12,31 @@ import { getAttrStat } from "../utils/attributes";
 
 export default function StatInputRow(props: {
 	stat: Stat,
-	columns: InputDetails[],
-	setColumns: (value: React.SetStateAction<InputDetails[]>) => void
+	groups: Group[],
+	setGroups: (value: React.SetStateAction<Group[]>) => void
 }) {
 	let anyEnabled = false;
 	
-	function onChange(i: number, prop: keyof StatData, value?: string) {
-		let newColumns = [...props.columns];
+	function onChange(i: number, j: number, prop: keyof StatData, value?: string) {
+		let newGroups = [...props.groups];
 		
-		if (!newColumns[i].statData[prop])
-			newColumns[i].statData[prop] = new StatValue(value ?? '', props.stat.type);
+		if (!newGroups[i].items[j].statData[prop])
+			newGroups[i].items[j].statData[prop] = new StatValue(value ?? '', props.stat.type);
 		
 		if (value === undefined)
-			delete newColumns[i].statData[prop];
+			delete newGroups[i].items[j].statData[prop];
 		else
-			newColumns[i].statData[prop]!.number = value;
+			newGroups[i].items[j].statData[prop]!.number = value;
 
-		newColumns[i].unmodified = false;
+		newGroups[i].items[j].unmodified = false;
 		
-		props.setColumns(newColumns);
+		props.setGroups(newGroups);
 	}
 	
-	let statInputs = props.columns.map((inputDetails, i) => {
+	let statInputs = props.groups.map((group, groupIndex) => {
+		const inputDetails = group.active;
+		const columnIndex = group.activeIndex;
+
 		let damageGroups = DamageCalculator.reactionTypes[inputDetails.reactionType].groups;
 		let enabled = Boolean(props.stat.groups! & damageGroups);
 		
@@ -47,18 +50,18 @@ export default function StatInputRow(props: {
 		
 		if ('usesAttrs' in props.stat && enabled)
 			return <AttrStatInput
-				key={i}
+				key={groupIndex}
 				stat={props.stat}
 				inputDetails={inputDetails}
-				onChange={(props, value) => onChange(i, props, value)}
+				onChange={(props, value) => onChange(groupIndex, columnIndex, props, value)}
 			/>;
 		
 		return <StatInput
-			key={i}
+			key={groupIndex}
 			stat={props.stat}
 			value={inputDetails.statData[props.stat.prop]?.number ?? ''}
 			disabled={!enabled}
-			onChange={value => onChange(i, props.stat.prop, value)}
+			onChange={value => onChange(groupIndex, columnIndex, props.stat.prop, value)}
 		/>;
 	});
 	

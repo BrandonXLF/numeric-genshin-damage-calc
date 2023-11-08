@@ -1,11 +1,15 @@
-.form-input {
+.form-input,
+.form-width {
 	width: 12em;
 	max-width: 40vw;
-	display: flex;
 
 	.wide-inputs & {
 		width: 14em;
 	}
+}
+
+.form-input {
+	display: flex;
 
 	&.adaptive-width {
 		width: unset;

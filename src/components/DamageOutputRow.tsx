@@ -5,17 +5,17 @@ import RowLabel from "./RowLabel";
 
 export default function DamageOutputRow(props: {
 	damageType: DisplayedProp<Damage>;
-	damages: Damage[];
+	groupDamages: { items: Damage[]; activeIndex: number; }[];
 }) {
 	let initial: number | undefined;
 	let hasValues = false;
 	
-	let damageOutputs = props.damages.map((damage, i) => {
-		let value = damage[props.damageType.prop]?.value;
+	let damageOutputs = props.groupDamages.map((damages, i) => {
+		let value = damages.items.reduce((prev, curr) => prev + (curr[props.damageType.prop]?.value ?? NaN), 0);
 		
 		if (i === 0) initial = value;
 		
-		if (value === undefined) {
+		if (Number.isNaN(value)) {
 			return <div key={i}>&mdash;</div>;
 		}
 		
@@ -23,7 +23,10 @@ export default function DamageOutputRow(props: {
 		
 		return <DamageOutput
 			key={i}
-			equation={damage[props.damageType.prop]!}
+			damages={damages.items}
+			current={damages.activeIndex}
+			prop={props.damageType.prop}
+			value={value}
 			initial={i !== 0 ? initial : undefined}
 		/>;
 	});
