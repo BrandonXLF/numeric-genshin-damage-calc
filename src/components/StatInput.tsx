@@ -18,9 +18,9 @@ export default function StatInput(props: {
 		value={props.value}
 		onChange={props.onChange}
 		disabled={props.disabled}
-		frontIcon={!props.disabled && <MathIndicator />}
-		backIcon={!props.disabled && percent && <div>%</div>}
-		frontIconLabel="Equation"
+		expandIcon={<MathIndicator />}
+		backIcon={percent && <div>%</div>}
+		expandIconLabel="Equation, Click to Expand"
 		backIconLabel="Percent"
 		unit={props.unit}
 		unitOptions={props.unitOptions}

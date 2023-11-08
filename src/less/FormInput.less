@@ -1,3 +1,10 @@
+.input-mixin() {
+	background: #4a4a4a;
+	border: none;
+	color: white;
+	margin: 0;
+}
+
 .form-input,
 .form-width {
 	width: 12em;
@@ -38,10 +45,7 @@
 	}
 	
 	input, select {
-		background: #4a4a4a;
-		border: none;
-		color: white;
-		margin: 0;
+		.input-mixin();
 	}
 	
 	input,
@@ -68,4 +72,12 @@
 	align-items: center;
 	font-weight: bold;
 	user-select: none;
+}
+
+.popup-textarea {
+	.input-mixin();
+	border-radius: 4px;
+	width: 25em;
+	max-width: 100%;
+	resize: vertical;
 }

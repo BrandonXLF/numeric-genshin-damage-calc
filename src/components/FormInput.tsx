@@ -1,6 +1,11 @@
 import '../less/FormInput.less';
 import SelectOptions from './SelectOptions';
 import SelectOption from '../types/SelectOption';
+import Popup from 'reactjs-popup';
+import PopupHeader from './PopupHeader';
+import React from 'react';
+import { PopupActions } from 'reactjs-popup/dist/types';
+import SVGButton from './SVGButton';
 
 export default function FormInput(props: {
 	value: string;
@@ -8,8 +13,8 @@ export default function FormInput(props: {
 	options?: SelectOption[];
 	type?: string;
 	disabled?: boolean;
-	frontIcon?: React.ReactNode | boolean,
-	frontIconLabel?: string;
+	expandIcon?: React.ReactNode | boolean,
+	expandIconLabel?: string;
 	backIcon?: React.ReactNode | boolean,
 	backIconLabel?: string;
 	unit?: string;
@@ -21,10 +26,24 @@ export default function FormInput(props: {
 	placeholder?: string;
 }) {
 	const Tag = props.options ? 'select' : 'input' as const;
+	const popupRef = React.useRef<PopupActions>(null);
 	
-	return <div className={`form-input ${props.class || ''}`}>
-		{props.frontIcon &&
-			<div className="input-icon" role="img" title={props.frontIconLabel}>{props.frontIcon}</div>
+	return <div className={`form-input ${props.class ?? ''}`}>
+		{!props.disabled && props.expandIcon &&
+			<div className="input-icon" role="img" title={props.expandIconLabel}>
+				<Popup trigger={<SVGButton mini label={props.expandIconLabel!} svg={props.expandIcon} hideLabel></SVGButton>} ref={popupRef} modal>
+					<PopupHeader title="Equation Input" ref={popupRef} />
+					<div className="calc">
+						<textarea
+							className="popup-textarea"
+							value={props.value}
+							rows={3}
+							onChange={e => props.onChange(e.target.value)}
+							placeholder={props.placeholder}
+						/>
+					</div>
+				</Popup>
+			</div>
 		}
 		<Tag
 			type={props.type ?? Tag === 'select' ? '' : 'text'}
@@ -37,10 +56,10 @@ export default function FormInput(props: {
 		>
 			{props.options ? <SelectOptions options={props.options} /> : undefined}
 		</Tag>
-		{props.backIcon &&
+		{!props.disabled && props.backIcon &&
 			<div className="input-icon" role="img" title={props.backIconLabel}>{props.backIcon}</div>
 		}
-		{props.unit &&
+		{!props.disabled && props.unit &&
 			<select className="mini-select" value={props.unit} onChange={e => props.onUnitChange!(e.target.value)}>
 				<SelectOptions options={props.unitOptions!} />
 			</select>
