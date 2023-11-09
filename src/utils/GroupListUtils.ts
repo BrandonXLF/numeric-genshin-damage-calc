@@ -187,9 +187,11 @@ export default class GroupListUtils {
         if (index === -1) return groups;
 
         const newGroups = [...groups];
-        const newGroup = new Group([...group.items], group.activeIndex);
+        const newGroup = new Group(
+            [...group.items, GroupListUtils.createColumn(base)],
+            group.items.length
+        );
 
-        newGroup.items.push(GroupListUtils.createColumn(base));
         newGroups.splice(index, 1, newGroup);
 
         return newGroups;
