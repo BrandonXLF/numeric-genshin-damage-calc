@@ -79,15 +79,21 @@ export default class GroupListUtils {
 
     private static encodeForStorage(groups: Group[], shown: boolean): StoredInputDetails[] {
         const itemLists = GroupListUtils.clean(groups)
-            .map(group => group.items as StoredInputDetails[]);
+            .map(group => group.items);
 
         const processedItemLists = itemLists.map((items, itemsIndex) => items.map((column, colIndex) => {
-            column.shown = shown;
+            const storedColumn: StoredInputDetails = {...column};
 
-            if (items.length > 1) column.group = itemsIndex;
-            if (colIndex > 1) delete column.label;
+            if (items.length > 1)
+                storedColumn.group = itemsIndex;
 
-            return column;
+            if (colIndex === 0) {
+                storedColumn.shown = shown;
+            } else {
+                delete storedColumn.label;
+            }
+
+            return storedColumn;
         }));
 
         return processedItemLists.flat();
