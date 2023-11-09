@@ -22,7 +22,7 @@ export default function CalculationPopup(props: {
 		<PopupHeader title="Calculations" ref={ref} />
 		<div className="calc">
 			<span>Attack: </span>
-			<AttackList columns={props.damages} active={shown} setActive={setShown} />
+			<AttackList attacks={props.damages} active={shown} setActive={setShown} />
 		</div>
 		<EquationLine equation={props.damages[shown][props.prop]!} />
 	</Popup>

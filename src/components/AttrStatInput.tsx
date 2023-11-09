@@ -1,5 +1,5 @@
 import StatInput from "./StatInput";
-import InputDetails from "../types/InputDetails";
+import Attack from "../types/Attack";
 import Stat from "../types/Stat";
 import StatValue from "../utils/StatValue";
 import StatData from "../types/StatData";
@@ -10,7 +10,7 @@ import '../less/AttrStatInput.less';
 
 export default function AttrStatInput(props: {
 	stat: Stat;
-	inputDetails: InputDetails;
+	inputDetails: Attack;
 	onChange: (name: keyof StatData, val?: string) => void,
 }) {
 	const activeAttributes = attributes.filter(attr => getAttrStat(props.stat.prop, attr) in props.inputDetails.statData);

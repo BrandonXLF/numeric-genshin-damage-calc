@@ -3,24 +3,24 @@ import DeleteSVG from "../svgs/DeleteSVG";
 import '../less/AttackList.less';
 
 export default function AttackList(props: {
-	columns: unknown[];
+	attacks: unknown[];
     active: number;
     setActive: (index: number) => void;
-    deleteColumn?: (index: number) => void;
+    deleteAttack?: (index: number) => void;
 }) {
 	return <>
-		{props.columns.map((_, i) => <span key={i} className={`column-list-entry ${i === props.active ? 'active-column' : ''}`}>
+		{props.attacks.map((_, i) => <span key={i} className={`attack-list-entry ${i === props.active ? 'active-attack' : ''}`}>
             <SVGButton
                 mini
                 label={`#${i + 1}`}
                 onClick={() => props.setActive(i)}
             />
-            {props.deleteColumn && props.columns.length > 1 && <SVGButton
+            {props.deleteAttack && props.attacks.length > 1 && <SVGButton
                 svg={<DeleteSVG className="neg" />}
                 label="Delete Attack"
                 mini
                 hideLabel
-                onClick={() => props.deleteColumn!(i)}
+                onClick={() => props.deleteAttack!(i)}
             />}
         </span>)}
 	</>;

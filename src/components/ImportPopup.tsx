@@ -2,14 +2,14 @@ import React from "react";
 import Popup from "reactjs-popup";
 import { PopupActions } from "reactjs-popup/dist/types";
 import SVGButton from "./SVGButton";
-import '../less/LoadColumnsPopup.less';
-import Group from "../utils/Group";
+import '../less/LoadSavedPopup.less';
+import Column from "../utils/Column";
 import PopupHeader from "./PopupHeader";
 import ImportSVG from "../svgs/ImportSVG";
 import ImportArea from "./ImportArea";
 
 export default function ImportPopup(props: {
-	setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
+	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
 }) {
 	const ref = React.useRef<PopupActions>(null);
 	
@@ -17,6 +17,6 @@ export default function ImportPopup(props: {
 		<SVGButton svg={<ImportSVG />} label="Import" />
 	} ref={ref} modal>
 		<PopupHeader title="Import Stats" ref={ref} />
-		<ImportArea setGroups={props.setGroups} />
+		<ImportArea setColumns={props.setColumns} />
 	</Popup>
 }

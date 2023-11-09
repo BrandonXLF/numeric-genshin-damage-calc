@@ -1,30 +1,30 @@
 import React from "react";
 import SVGButton from "./SVGButton";
-import GroupListUtils from "../utils/GroupListUtils";
+import ColumnListUtils from "../utils/ColumnListUtils";
 import AddSVG from "../svgs/AddSVG";
-import Group from "../utils/Group";
+import Column from "../utils/Column";
 import AttackList from "./AttackList";
 import '../less/FormInput.less';
 import '../less/AttacksRow.less';
 import RowLabel from "./RowLabel";
 
 export default function AttacksRow(props: {
-	groups: Group[],
-	setGroups: (value: React.SetStateAction<Group[]>) => void
+	columns: Column[],
+	setColumns: (value: React.SetStateAction<Column[]>) => void
 }) {
 	return <>
         <RowLabel label="Attack" desc="Individual damage instances that contribute to the final calculated damage" />
-		{props.groups.map((group, groupIndex) => <div key={groupIndex} className="form-width group-columns">
+		{props.columns.map((column, colIndex) => <div key={colIndex} className="form-width column-attacks">
             <AttackList
-                columns={group.items}
-                active={group.activeIndex}
-                setActive={colIndex => {
-                    const column = group.items[colIndex];
-                    props.setGroups(groups => GroupListUtils.setActiveColumn(groups, group, column));
+                attacks={column.attacks}
+                active={column.activeIndex}
+                setActive={atkIndex => {
+                    const attack = column.attacks[atkIndex];
+                    props.setColumns(columns => ColumnListUtils.setActiveAttack(columns, column, attack));
                 }}
-                deleteColumn={colIndex => {
-                    const column = group.items[colIndex];
-                    props.setGroups(groups => GroupListUtils.removeColumn(groups, group, column));
+                deleteAttack={atkIndex => {
+                    const attack = column.attacks[atkIndex];
+                    props.setColumns(columns => ColumnListUtils.removeAttack(columns, column, attack));
                 }}
             />
             <SVGButton
@@ -33,7 +33,7 @@ export default function AttacksRow(props: {
                 mini
                 hideLabel
                 onClick={() => {
-                    props.setGroups(groups => GroupListUtils.addColumn(groups, group, group.last));
+                    props.setColumns(columns => ColumnListUtils.addAttack(columns, column, column.last));
                 }}
             />
 		</div>)}

@@ -1,30 +1,30 @@
-import Group from "../utils/Group";
+import Column from "../utils/Column";
 import React from 'react';
 import SVGButton from "./SVGButton";
 import AddSVG from "../svgs/AddSVG";
-import LoadColumnsPopup from "./LoadColumnsPopup";
+import LoadSavedPopup from "./LoadSavedPopup";
 import '../less/TopButtonRow.less';
 import ImportPopup from "./ImportPopup";
-import GroupListUtils from "../utils/GroupListUtils";
+import ColumnListUtils from "../utils/ColumnListUtils";
 
 export default function TopButtonRow(props: {
-	groups: Group[];
-	setGroups: React.Dispatch<React.SetStateAction<Group[]>>;
-	closedGroups: Group[];
-	setClosedGroups: React.Dispatch<React.SetStateAction<Group[]>>;
+	columns: Column[];
+	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+	closedColumns: Column[];
+	setClosedColumns: React.Dispatch<React.SetStateAction<Column[]>>;
 }) {
 	return <div className="form-top">
 		<SVGButton
 			svg={<AddSVG className="pos" />}
 			label="Add Column"
-			onClick={() => props.setGroups(columns => GroupListUtils.add(columns))}
+			onClick={() => props.setColumns(columns => ColumnListUtils.add(columns))}
 		/>
-		<LoadColumnsPopup
-			groups={props.groups}
-			setGroups={props.setGroups}
-			closedGroups={props.closedGroups}
-			setClosedGroups={props.setClosedGroups}
+		<LoadSavedPopup
+			columns={props.columns}
+			setColumns={props.setColumns}
+			closedColumns={props.closedColumns}
+			setClosedColumns={props.setClosedColumns}
 		/>
-		<ImportPopup setGroups={props.setGroups} />
+		<ImportPopup setColumns={props.setColumns} />
 	</div>;
 }

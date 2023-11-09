@@ -1,7 +1,7 @@
 import StatValue from "../utils/StatValue";
 import StatData from "./StatData";
 
-type InputDetails = {
+type Attack = {
 	reactionType: number;
 	reaction: number;
 	label: string;
@@ -9,7 +9,7 @@ type InputDetails = {
 	unmodified: boolean;
 };
 
-export type StoredInputDetails = {
+export type StoredAttack = {
 	reactionType?: number;
 	reaction?: number;
 	label?: string;
@@ -19,4 +19,4 @@ export type StoredInputDetails = {
 	unmodified?: boolean;
 };
 
-export default InputDetails;
+export default Attack;

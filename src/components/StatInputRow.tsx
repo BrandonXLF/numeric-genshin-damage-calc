@@ -1,7 +1,7 @@
 import StatInput from "./StatInput";
 import AttrStatInput from "./AttrStatInput";
 import DamageCalculator from "../utils/DamageCalculator";
-import Group from "../utils/Group";
+import Column from "../utils/Column";
 import RowLabel from "./RowLabel";
 import Stat from "../types/Stat";
 import React from 'react';
@@ -12,37 +12,37 @@ import { getAttrStat } from "../utils/attributes";
 
 export default function StatInputRow(props: {
 	stat: Stat,
-	groups: Group[],
-	setGroups: (value: React.SetStateAction<Group[]>) => void
+	columns: Column[],
+	setColumns: (value: React.SetStateAction<Column[]>) => void
 }) {
 	let anyEnabled = false;
 	
 	function onChange(i: number, j: number, prop: keyof StatData, value?: string) {
-		let newGroups = [...props.groups];
+		let newColumns = [...props.columns];
 		
-		if (!newGroups[i].items[j].statData[prop])
-			newGroups[i].items[j].statData[prop] = new StatValue(value ?? '', props.stat.type);
+		if (!newColumns[i].attacks[j].statData[prop])
+			newColumns[i].attacks[j].statData[prop] = new StatValue(value ?? '', props.stat.type);
 		
 		if (value === undefined)
-			delete newGroups[i].items[j].statData[prop];
+			delete newColumns[i].attacks[j].statData[prop];
 		else
-			newGroups[i].items[j].statData[prop]!.number = value;
+			newColumns[i].attacks[j].statData[prop]!.number = value;
 
-		newGroups[i].items[j].unmodified = false;
+		newColumns[i].attacks[j].unmodified = false;
 		
-		props.setGroups(newGroups);
+		props.setColumns(newColumns);
 	}
 	
-	let statInputs = props.groups.map((group, groupIndex) => {
-		const inputDetails = group.active;
-		const columnIndex = group.activeIndex;
+	let statInputs = props.columns.map((column, colIndex) => {
+		const inputDetails = column.active;
+		const atkIndex = column.activeIndex;
 
-		let damageGroups = DamageCalculator.reactionTypes[inputDetails.reactionType].groups;
-		let enabled = Boolean(props.stat.groups! & damageGroups);
+		let damageColumns = DamageCalculator.reactionTypes[inputDetails.reactionType].groups;
+		let enabled = Boolean(props.stat.groups! & damageColumns);
 		
 		if (!enabled && 'attr' in props.stat)
 			enabled = attrStats.some(stat =>
-				(stat.groups! & damageGroups) &&
+				(stat.groups! & damageColumns) &&
 				parseInt(inputDetails.statData[getAttrStat(stat.prop, props.stat.attr!)]?.number ?? '')
 			);
 		
@@ -50,18 +50,18 @@ export default function StatInputRow(props: {
 		
 		if ('usesAttrs' in props.stat && enabled)
 			return <AttrStatInput
-				key={groupIndex}
+				key={colIndex}
 				stat={props.stat}
 				inputDetails={inputDetails}
-				onChange={(props, value) => onChange(groupIndex, columnIndex, props, value)}
+				onChange={(props, value) => onChange(colIndex, atkIndex, props, value)}
 			/>;
 		
 		return <StatInput
-			key={groupIndex}
+			key={colIndex}
 			stat={props.stat}
 			value={inputDetails.statData[props.stat.prop]?.number ?? ''}
 			disabled={!enabled}
-			onChange={value => onChange(groupIndex, columnIndex, props.stat.prop, value)}
+			onChange={value => onChange(colIndex, atkIndex, props.stat.prop, value)}
 		/>;
 	});
 	

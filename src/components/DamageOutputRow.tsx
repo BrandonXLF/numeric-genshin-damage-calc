@@ -5,12 +5,12 @@ import RowLabel from "./RowLabel";
 
 export default function DamageOutputRow(props: {
 	damageType: DisplayedProp<Damage>;
-	groupDamages: { items: Damage[]; activeIndex: number; }[];
+	columnDamages: { items: Damage[]; activeIndex: number; }[];
 }) {
 	let initial: number | undefined;
 	let hasValues = false;
 	
-	let damageOutputs = props.groupDamages.map((damages, i) => {
+	let damageOutputs = props.columnDamages.map((damages, i) => {
 		let value = damages.items.reduce((prev, curr) => prev + (curr[props.damageType.prop]?.value ?? NaN), 0);
 		
 		if (i === 0) initial = value;
