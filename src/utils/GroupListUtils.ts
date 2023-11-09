@@ -81,10 +81,11 @@ export default class GroupListUtils {
         const itemLists = GroupListUtils.clean(groups)
             .map(group => group.items as StoredInputDetails[]);
 
-        const processedItemLists = itemLists.map((items, i) => items.map(column => {
+        const processedItemLists = itemLists.map((items, itemsIndex) => items.map((column, colIndex) => {
             column.shown = shown;
 
-            if (items.length > 1) column.group = i;
+            if (items.length > 1) column.group = itemsIndex;
+            if (colIndex > 1) delete column.label;
 
             return column;
         }));
