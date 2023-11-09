@@ -78,19 +78,18 @@ export default class GroupListUtils {
     }
 
     private static encodeForStorage(groups: Group[], shown: boolean): StoredInputDetails[] {
-        return groups
-            .map(group => group.items as StoredInputDetails[])
-            .map((group, i) =>
-                group
-                    .filter(column => !column.unmodified)
-                    .map(column => {
-                        column.shown = shown;
-                        if (group.length > 1) column.group = i;
+        const itemLists = GroupListUtils.clean(groups)
+            .map(group => group.items as StoredInputDetails[]);
 
-                        return column;
-                    })
-            )
-            .flat();
+        const processedItemLists = itemLists.map((items, i) => items.map(column => {
+            column.shown = shown;
+
+            if (items.length > 1) column.group = i;
+
+            return column;
+        }));
+
+        return processedItemLists.flat();
     }
 
     static saveToStorage(shownGroups: Group[], closedGroups: Group[]) {
@@ -101,8 +100,13 @@ export default class GroupListUtils {
     }
 
     private static clean(groups: Group[]) {
-        for (let i = groups.length - 1; i >= 0 && groups[i].items.length === 1 && groups[i].items[0].unmodified; i--)
-            groups.pop();
+        let cleanLength = groups.length;
+
+        while (cleanLength > 0 && groups[cleanLength - 1].unmodified) {
+            cleanLength--;
+        }
+
+        return groups.slice(0, cleanLength);
     }
 
     static add(groups: Group[]) {
@@ -124,18 +128,14 @@ export default class GroupListUtils {
     }
 
     static transfer(groups: Group[], group: Group) {
-        const newGroups = [...groups];
-
-        GroupListUtils.clean(newGroups);
+        const newGroups = GroupListUtils.clean(groups);
         newGroups.push(group);
 
         return newGroups;
     }
 
     static load(groups: Group[], column: StoredInputDetails) {
-        const newGroups = [...groups];
-
-        GroupListUtils.clean(newGroups);
+        const newGroups = GroupListUtils.clean(groups);
         newGroups.push(new Group([GroupListUtils.createColumn(column)]));
 
         return newGroups;

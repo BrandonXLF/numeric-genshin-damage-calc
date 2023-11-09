@@ -14,4 +14,8 @@ export default class Group {
     get last() {
         return this.items[this.items.length - 1];
     }
+
+    get unmodified() {
+        return this.items.length === 1 && this.first.unmodified;
+    }
 }
