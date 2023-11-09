@@ -3,7 +3,7 @@ import SVGButton from "./SVGButton";
 import GroupListUtils from "../utils/GroupListUtils";
 import AddSVG from "../svgs/AddSVG";
 import Group from "../utils/Group";
-import ColumnList from "./ColumnList";
+import AttackList from "./AttackList";
 import '../less/FormInput.less';
 import '../less/AttacksRow.less';
 import RowLabel from "./RowLabel";
@@ -13,9 +13,9 @@ export default function AttacksRow(props: {
 	setGroups: (value: React.SetStateAction<Group[]>) => void
 }) {
 	return <>
-        <RowLabel label="Attacks" desc="Individual damage instances that contribute to the final calculated damage" />
+        <RowLabel label="Attack" desc="Individual damage instances that contribute to the final calculated damage" />
 		{props.groups.map((group, groupIndex) => <div key={groupIndex} className="form-width group-columns">
-            <ColumnList
+            <AttackList
                 columns={group.items}
                 active={group.activeIndex}
                 setActive={colIndex => {

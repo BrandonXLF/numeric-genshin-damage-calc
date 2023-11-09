@@ -1,8 +1,8 @@
 import SVGButton from "./SVGButton";
 import DeleteSVG from "../svgs/DeleteSVG";
-import '../less/ColumnList.less';
+import '../less/AttackList.less';
 
-export default function ColumnList(props: {
+export default function AttackList(props: {
 	columns: unknown[];
     active: number;
     setActive: (index: number) => void;
@@ -12,7 +12,7 @@ export default function ColumnList(props: {
 		{props.columns.map((_, i) => <span key={i} className={`column-list-entry ${i === props.active ? 'active-column' : ''}`}>
             <SVGButton
                 mini
-                label={(i + 1).toString()}
+                label={`#${i + 1}`}
                 onClick={() => props.setActive(i)}
             />
             {props.deleteColumn && props.columns.length > 1 && <SVGButton
