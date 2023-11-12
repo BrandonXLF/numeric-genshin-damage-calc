@@ -15,6 +15,7 @@ export default class ColumnListUtils {
             reactionType: base?.reactionType ?? 0,
             label: base?.label ?? '',
             statData: {} as StatData,
+            synced: base?.synced ?? [],
             unmodified: base === undefined ? true : (base?.unmodified ?? false)
         };
         
@@ -91,6 +92,7 @@ export default class ColumnListUtils {
                 storedAttack.shown = shown;
             } else {
                 delete storedAttack.label;
+                delete storedAttack.synced;
             }
 
             return storedAttack;

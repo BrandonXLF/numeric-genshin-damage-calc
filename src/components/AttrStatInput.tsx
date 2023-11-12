@@ -10,23 +10,23 @@ import '../less/AttrStatInput.less';
 
 export default function AttrStatInput(props: {
 	stat: Stat;
-	inputDetails: Attack;
+	attack: Attack;
 	onChange: (name: keyof StatData, val?: string) => void,
 }) {
-	const activeAttributes = attributes.filter(attr => getAttrStat(props.stat.prop, attr) in props.inputDetails.statData);
-	const inactiveAttributes = attributes.filter(attr => !(getAttrStat(props.stat.prop, attr) in props.inputDetails.statData));
+	const activeAttributes = attributes.filter(attr => getAttrStat(props.stat.prop, attr) in props.attack.statData);
+	const inactiveAttributes = attributes.filter(attr => !(getAttrStat(props.stat.prop, attr) in props.attack.statData));
 	
 	if (!activeAttributes.length) {
 		const attr = inactiveAttributes.shift()!;
 
 		activeAttributes.push(attr);
-		props.inputDetails.statData[getAttrStat(props.stat.prop, attr)] = new StatValue(props.stat.default.toString(), props.stat.type);
+		props.attack.statData[getAttrStat(props.stat.prop, attr)] = new StatValue(props.stat.default.toString(), props.stat.type);
 	}
 	
 	return <div className="attr-inputs">
 		{activeAttributes.map(attr =>  {
 			const prop = getAttrStat(props.stat.prop, attr);
-			const value = props.inputDetails.statData[prop]!.number;
+			const value = props.attack.statData[prop]!.number;
 			
 			const types: { name: string; value?: string; disabled?: boolean; }[] = attributes.map(optionAttr => ({
 				name: optionAttr,

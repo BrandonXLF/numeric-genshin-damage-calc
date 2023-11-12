@@ -6,6 +6,7 @@ type Attack = {
 	reaction: number;
 	label: string;
 	statData: StatData;
+	synced: string[];
 	unmodified: boolean;
 };
 
@@ -16,6 +17,7 @@ export type StoredAttack = {
 	shown?: boolean;
 	group?: number;
 	statData?: Partial<Record<keyof StatData, StatValue | string>>;
+	synced?: string[];
 	unmodified?: boolean;
 };
 

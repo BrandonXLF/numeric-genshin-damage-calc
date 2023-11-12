@@ -9,6 +9,9 @@ import StatValue from "../utils/StatValue";
 import StatData from "../types/StatData";
 import { attrStats } from "../utils/stats";
 import { getAttrStat } from "../utils/attributes";
+import SyncSVG from "../svgs/SyncSVG";
+import "../less/StatInputRow.less";
+import Attack from "../types/Attack";
 
 export default function StatInputRow(props: {
 	stat: Stat,
@@ -16,53 +19,94 @@ export default function StatInputRow(props: {
 	setColumns: (value: React.SetStateAction<Column[]>) => void
 }) {
 	let anyEnabled = false;
-	
-	function onChange(i: number, j: number, prop: keyof StatData, value?: string) {
-		let newColumns = [...props.columns];
-		
-		if (!newColumns[i].attacks[j].statData[prop])
-			newColumns[i].attacks[j].statData[prop] = new StatValue(value ?? '', props.stat.type);
+
+	function updateAttack(attack: Attack, prop: keyof StatData, value?: string) {
+		if (!attack.statData[prop])
+			attack.statData[prop] = new StatValue(value ?? '', props.stat.type);
 		
 		if (value === undefined)
-			delete newColumns[i].attacks[j].statData[prop];
+			delete attack.statData[prop];
 		else
-			newColumns[i].attacks[j].statData[prop]!.number = value;
+			attack.statData[prop]!.number = value;
 
-		newColumns[i].attacks[j].unmodified = false;
+		attack.unmodified = false;
+	}
+	
+	function onChange(colIndex: number, atkIndex: number, prop: keyof StatData, value?: string) {
+		const newColumns = [...props.columns];
+		const column = newColumns[colIndex];
 		
+		if (column.first.synced.includes(prop)) {
+			column.attacks.forEach(attack => updateAttack(attack, prop, value));
+		} else {
+			updateAttack(column.attacks[atkIndex], prop, value);
+		}
+		
+		props.setColumns(newColumns);
+	}
+
+	function setSynced(colIndex: number, prop: keyof StatData, synced: boolean, value?: StatValue) {
+		let newColumns = [...props.columns];
+		
+		if (synced && !newColumns[colIndex].first.synced.includes(prop)) {
+			newColumns[colIndex].first.synced.push(prop);
+		}
+
+		if (synced)
+			newColumns[colIndex].attacks.forEach(attack => {
+				attack.statData[prop] = value as StatValue;
+				attack.unmodified = false;
+			});
+		
+		if (!synced) {
+			newColumns[colIndex].first.synced = newColumns[colIndex].first.synced.filter(syncedProp => syncedProp !== prop);
+		}
+
 		props.setColumns(newColumns);
 	}
 	
 	let statInputs = props.columns.map((column, colIndex) => {
-		const inputDetails = column.active;
+		const attack = column.active;
 		const atkIndex = column.activeIndex;
 
-		let damageColumns = DamageCalculator.reactionTypes[inputDetails.reactionType].groups;
+		let damageColumns = DamageCalculator.reactionTypes[attack.reactionType].groups;
 		let enabled = Boolean(props.stat.groups! & damageColumns);
 		
 		if (!enabled && 'attr' in props.stat)
 			enabled = attrStats.some(stat =>
 				(stat.groups! & damageColumns) &&
-				parseInt(inputDetails.statData[getAttrStat(stat.prop, props.stat.attr!)]?.number ?? '')
+				parseInt(attack.statData[getAttrStat(stat.prop, props.stat.attr!)]?.number ?? '')
 			);
 		
 		anyEnabled = anyEnabled || enabled;
-		
-		if ('usesAttrs' in props.stat && enabled)
-			return <AttrStatInput
-				key={colIndex}
-				stat={props.stat}
-				inputDetails={inputDetails}
-				onChange={(props, value) => onChange(colIndex, atkIndex, props, value)}
-			/>;
-		
-		return <StatInput
-			key={colIndex}
-			stat={props.stat}
-			value={inputDetails.statData[props.stat.prop]?.number ?? ''}
-			disabled={!enabled}
-			onChange={value => onChange(colIndex, atkIndex, props.stat.prop, value)}
-		/>;
+
+		return <div key={colIndex} className="stat-input-row">
+			{'usesAttrs' in props.stat && enabled
+				? <AttrStatInput
+					stat={props.stat}
+					attack={attack}
+					onChange={(props, value) => onChange(colIndex, atkIndex, props, value)}
+				/>
+				: <StatInput
+					stat={props.stat}
+					value={attack.statData[props.stat.prop]?.number ?? ''}
+					disabled={!enabled}
+					onChange={value => onChange(colIndex, atkIndex, props.stat.prop, value)}
+				/>
+			}
+			{column.attacks.length > 1 &&
+				<SyncSVG
+					onClick={() => setSynced(
+						colIndex,
+						props.stat.prop,
+						!column.first.synced.includes(props.stat.prop),
+						attack.statData[props.stat.prop]
+					)}
+					className="sync-stat"
+					noSync={!column.first.synced.includes(props.stat.prop)}
+				/>
+			}
+		</div>;
 	});
 	
 	if (!anyEnabled) return null;

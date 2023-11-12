@@ -35,7 +35,7 @@ export default function CalculatorForm() {
 		<TopButtonRow columns={columns} setColumns={setColumns} closedColumns={closedColumns} setClosedColumns={setClosedColumns} />
 		<div className="center-items grid-container">
 			<form className={`grid${columns.length === 1 ? ' wide-inputs' : ''}`} style={{
-				gridTemplateColumns: `max-content repeat(${columns.length}, 1fr)`
+				gridTemplateColumns: `max-content repeat(${columns.length}, auto)`
 			}}>
 				<HeadingRow title="General" span={1} />
 				<RemoveColumnRow columns={columns} setColumns={setColumns} closedColumns={closedColumns} setClosedColumns={setClosedColumns} />
