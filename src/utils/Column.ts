@@ -1,7 +1,7 @@
 import Attack from "../types/Attack";
 
 export default class Column {
-    constructor(public attacks: Attack[]= [], public activeIndex = 0) { }
+    constructor(public attacks: Attack[] = [], public activeIndex = 0) { }
 
     get active() {
         return this.attacks[this.activeIndex];
