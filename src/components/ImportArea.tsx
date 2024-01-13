@@ -47,9 +47,9 @@ async function getIcon(avatarId: number) {
     return <img src={`https://enka.network/ui/${path}.png`} alt=""></img>;
 }
 
-export default function ImportArea(props: {
+export default function ImportArea(props: Readonly<{
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-}) {
+}>) {
     const [inProgressUID, setInProgressUID] = React.useState<string>(localStorage.getItem('GIDC-uid') ?? '');
     const [element, setElement] = React.useState<typeof elements[number]>(elements[0]);
     const [uid, setUid] = React.useState<string | undefined>(undefined);

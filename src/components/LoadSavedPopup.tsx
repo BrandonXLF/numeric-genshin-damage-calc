@@ -8,12 +8,12 @@ import Column from "../utils/Column";
 import PopupHeader from "./PopupHeader";
 import ColumnListUtils from "../utils/ColumnListUtils";
 
-export default function LoadSavedPopup(props: {
+export default function LoadSavedPopup(props: Readonly<{
 	columns: Column[];
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
 	closedColumns: Column[];
 	setClosedColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-}) {
+}>) {
 	const ref = React.useRef<PopupActions>(null);
 	
 	useEffect(() => {

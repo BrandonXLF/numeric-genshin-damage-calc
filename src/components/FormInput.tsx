@@ -7,7 +7,7 @@ import React from 'react';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import SVGButton from './SVGButton';
 
-export default function FormInput(props: {
+export default function FormInput(props: Readonly<{
 	value: string;
 	onChange: (val: string) => void;
 	options?: SelectOption[];
@@ -24,7 +24,7 @@ export default function FormInput(props: {
 	class?: string;
 	id?: string;
 	placeholder?: string;
-}) {
+}>) {
 	const Tag = props.options ? 'select' : 'input' as const;
 	const popupRef = React.useRef<PopupActions>(null);
 	

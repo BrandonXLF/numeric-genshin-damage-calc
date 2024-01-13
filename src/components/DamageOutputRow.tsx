@@ -3,10 +3,10 @@ import DisplayedProp from "../types/DisplayedProp";
 import DamageOutput from "./DamageOutput";
 import RowLabel from "./RowLabel";
 
-export default function DamageOutputRow(props: {
+export default function DamageOutputRow(props: Readonly<{
 	damageType: DisplayedProp<Damage>;
 	columnDamages: { items: Damage[]; activeIndex: number; }[];
-}) {
+}>) {
 	let initial: number | undefined;
 	let hasValues = false;
 	

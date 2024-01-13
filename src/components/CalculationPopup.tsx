@@ -8,11 +8,11 @@ import AttackList from "./AttackList";
 import EquationLine from "./EquationLine";
 import PopupHeader from "./PopupHeader";
 
-export default function CalculationPopup(props: {
+export default function CalculationPopup(props: Readonly<{
 	damages: Damage[];
 	current: number;
 	prop: keyof Damage;
-}) {
+}>) {
 	const ref = React.useRef<PopupActions>(null);
 	const [shown, setShown] = React.useState(props.current);
 	

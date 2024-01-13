@@ -65,11 +65,11 @@ const masks = {
 	</g>
 };
 
-export default function StatIcon(props: {
+export default function StatIcon(props: Readonly<{
 	base: keyof typeof bases;
 	mask?: keyof typeof masks;
 	indicator?: keyof typeof indicators;
-}) {
+}>) {
 	let maskID = useId();
 	let hasMask = Boolean(props.indicator || props.mask);
 	

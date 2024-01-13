@@ -8,10 +8,10 @@ import '../less/FormInput.less';
 import '../less/AttacksRow.less';
 import RowLabel from "./RowLabel";
 
-export default function AttacksRow(props: {
+export default function AttacksRow(props: Readonly<{
 	columns: Column[],
 	setColumns: (value: React.SetStateAction<Column[]>) => void
-}) {
+}>) {
 	return <>
         <RowLabel label="Attack" desc="Individual damage instances that contribute to the final calculated damage" />
 		{props.columns.map((column, colIndex) => <div key={colIndex} className="form-width column-attacks">

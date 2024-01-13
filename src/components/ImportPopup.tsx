@@ -8,9 +8,9 @@ import PopupHeader from "./PopupHeader";
 import ImportSVG from "../svgs/ImportSVG";
 import ImportArea from "./ImportArea";
 
-export default function ImportPopup(props: {
+export default function ImportPopup(props: Readonly<{
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-}) {
+}>) {
 	const ref = React.useRef<PopupActions>(null);
 	
 	return <Popup trigger={

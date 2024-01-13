@@ -8,11 +8,11 @@ import AddSVG from "../svgs/AddSVG";
 import SVGButton from "./SVGButton";
 import '../less/AttrStatInput.less';
 
-export default function AttrStatInput(props: {
+export default function AttrStatInput(props: Readonly<{
 	stat: Stat;
 	attack: Attack;
 	onChange: (name: keyof StatData, val?: string) => void,
-}) {
+}>) {
 	const activeAttributes = attributes.filter(attr => getAttrStat(props.stat.prop, attr) in props.attack.statData);
 	const inactiveAttributes = attributes.filter(attr => !(getAttrStat(props.stat.prop, attr) in props.attack.statData));
 	

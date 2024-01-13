@@ -1,9 +1,9 @@
 import { EquationOutput } from "../types/VariableOutput";
 import '../less/EquationLine.less';
 
-export default function EquationLine(props: {
+export default function EquationLine(props: Readonly<{
 	equation: EquationOutput
-}) {
+}>) {
 	return <div className="calc">
 		{props.equation.equation.map((entry, i) =>
 			<span key={i} className={`calc-${entry.type}`}>{entry.value}</span>

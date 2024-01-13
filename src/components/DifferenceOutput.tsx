@@ -1,9 +1,9 @@
 import Popup from "reactjs-popup";
 
-export default function DifferenceOutput(props: {
+export default function DifferenceOutput(props: Readonly<{
 	initial?: number;
 	value?: number
-}) {
+}>) {
 	if (!props.initial || !props.value)
 		return null;
 

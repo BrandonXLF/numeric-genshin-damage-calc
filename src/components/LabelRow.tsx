@@ -3,10 +3,10 @@ import Column from "../utils/Column";
 import FormInput from "./FormInput";
 import RowLabel from "./RowLabel";
 
-export default function LabelRow(props: {
+export default function LabelRow(props: Readonly<{
 	columns: Column[];
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-}) {
+}>) {
 	return <>
 		<RowLabel label="Label" />
 		{props.columns.map((column, i) => <FormInput

@@ -1,7 +1,7 @@
 import SelectOption from '../types/SelectOption';
 import '../less/FormInput.less';
 
-export default function SelectOptions(props: { options: SelectOption[] }) {
+export default function SelectOptions(props: Readonly<{ options: SelectOption[] }>) {
 	return <>{props.options.map(option => {
 		if ('label' in option)
 			return <optgroup key={`GROUP-${option.label}`} label={option.label}>

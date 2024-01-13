@@ -6,12 +6,12 @@ import SVGButton from "./SVGButton";
 import ColumnListUtils from "../utils/ColumnListUtils";
 import CopySVG from "../svgs/CopySVG";
 
-export default function RemoveColumnRow(props: {
+export default function RemoveColumnRow(props: Readonly<{
 	columns: Column[];
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
 	closedColumns: Column[];
 	setClosedColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-}) {
+}>) {
 	return <>
 		{props.columns.map((_, i) =>
 			<div key={i} className="column-top">

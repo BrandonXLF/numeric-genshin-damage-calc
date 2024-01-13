@@ -13,11 +13,11 @@ import SyncSVG from "../svgs/SyncSVG";
 import "../less/StatInputRow.less";
 import Attack from "../types/Attack";
 
-export default function StatInputRow(props: {
+export default function StatInputRow(props: Readonly<{
 	stat: Stat,
 	columns: Column[],
 	setColumns: (value: React.SetStateAction<Column[]>) => void
-}) {
+}>) {
 	let anyEnabled = false;
 
 	function updateAttack(attack: Attack, prop: keyof StatData, value?: string) {

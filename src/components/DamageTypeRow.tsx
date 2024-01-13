@@ -5,10 +5,10 @@ import RowLabel from "./RowLabel";
 import FormInput from "./FormInput";
 import '../less/DamageTypeRow.less';
 
-export default function DamageTypeRow(props: {
+export default function DamageTypeRow(props: Readonly<{
 	columns: Column[];
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-}) {
+}>) {
 	return <>
 		<RowLabel label="Reaction" />
 		{props.columns.map((column, i) => <FormInput

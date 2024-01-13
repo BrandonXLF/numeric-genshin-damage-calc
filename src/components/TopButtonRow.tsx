@@ -7,12 +7,12 @@ import '../less/TopButtonRow.less';
 import ImportPopup from "./ImportPopup";
 import ColumnListUtils from "../utils/ColumnListUtils";
 
-export default function TopButtonRow(props: {
+export default function TopButtonRow(props: Readonly<{
 	columns: Column[];
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
 	closedColumns: Column[];
 	setClosedColumns: React.Dispatch<React.SetStateAction<Column[]>>;
-}) {
+}>) {
 	return <div className="form-top">
 		<SVGButton
 			svg={<AddSVG className="pos" />}

@@ -5,12 +5,12 @@ import HeadingRow from "./HeadingRow";
 import StatInputRow from "./StatInputRow";
 import { useEffect, useRef } from "react";
 
-export default function CalculatorSection(props: {
+export default function CalculatorSection(props: Readonly<{
 	section: StatSection,
 	headerSpan: number,
 	columns: Column[],
 	setColumns: (value: React.SetStateAction<Column[]>) => void
-}) {
+}>) {
 	const heading = useRef<HTMLHeadingElement>(null);
 	const headingLevel = props.section.sub ? 3 : 2;
 	
