@@ -63,13 +63,13 @@ export function csvExport(columns: Column[]) {
 	rows.push(generateRow(
 		columns,
 		'Attack',
-		(_, atkIndex, col) => `${atkIndex + 1}/${col.attacks.length}`
+		(_, atkIndex, col) => `${atkIndex + 1} of ${col.attacks.length}`
 	));
 
 	rows.push(generateRow(
 		columns,
 		'Reaction',
-		atk => `${DamageCalculator.reactionTypes[atk.reactionType].reactions[atk.reaction].name} (ID: ${atk.reactionType}/${atk.reaction})`
+		atk => `${DamageCalculator.reactionTypes[atk.reactionType].reactions[atk.reaction].name} (ID: ${atk.reactionType}_${atk.reaction})`
 	));
 
 	statSections.forEach(statSection => {
