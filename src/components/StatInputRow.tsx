@@ -12,6 +12,7 @@ import { getAttrStat } from "../utils/attributes";
 import SyncSVG from "../svgs/SyncSVG";
 import "../less/StatInputRow.less";
 import Attack from "../types/Attack";
+import SVGButton from "./SVGButton";
 
 export default function StatInputRow(props: Readonly<{
 	stat: Stat,
@@ -68,6 +69,7 @@ export default function StatInputRow(props: Readonly<{
 	let statInputs = props.columns.map((column, colIndex) => {
 		const attack = column.active;
 		const atkIndex = column.activeIndex;
+		const synced = column.first.synced.includes(props.stat.prop);
 
 		let damageColumns = DamageCalculator.reactionTypes[attack.reactionType].groups;
 		let enabled = Boolean(props.stat.groups! & damageColumns);
@@ -95,16 +97,22 @@ export default function StatInputRow(props: Readonly<{
 				/>
 			}
 			{column.attacks.length > 1 &&
-				<SyncSVG
-					onClick={() => setSynced(
-						colIndex,
-						props.stat.prop,
-						!column.first.synced.includes(props.stat.prop),
-						attack.statData[props.stat.prop]
-					)}
-					className="sync-stat"
-					noSync={!column.first.synced.includes(props.stat.prop)}
-				/>
+				<div className="sync-btn-cnt">
+					<SVGButton
+						svg={<SyncSVG
+							className="sync-stat"
+							noSync={!synced}
+						/>}
+						label={synced ? 'Unsync' : 'Sync'}
+						hideLabel
+						onClick={() => setSynced(
+							colIndex,
+							props.stat.prop,
+							!synced,
+							attack.statData[props.stat.prop]
+						)}
+					/>
+					</div>
 			}
 		</div>;
 	});
