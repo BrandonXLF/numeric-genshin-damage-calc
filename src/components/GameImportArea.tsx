@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import '../less/ImportArea.less';
+import '../less/GameImportArea.less';
 import Column from "../utils/Column";
 import elements, { elementColors } from "../utils/elements";
 import SVGButton from "./SVGButton";
@@ -47,7 +47,7 @@ async function getIcon(avatarId: number) {
     return <img src={`https://enka.network/ui/${path}.png`} alt=""></img>;
 }
 
-export default function ImportArea(props: Readonly<{
+export default function GameImportArea(props: Readonly<{
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
 }>) {
     const [inProgressUID, setInProgressUID] = React.useState<string>(localStorage.getItem('GIDC-uid') ?? '');

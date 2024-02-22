@@ -136,9 +136,9 @@ export default class ColumnListUtils {
         return newColumns;
     }
 
-    static transfer(columns: Column[], column: Column) {
+    static transfer(columns: Column[], ...columnsToAdd: Column[]) {
         const newColumns = ColumnListUtils.clean(columns);
-        newColumns.push(column);
+        newColumns.push(...columnsToAdd);
 
         return newColumns;
     }

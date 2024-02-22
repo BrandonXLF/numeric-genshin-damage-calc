@@ -6,6 +6,7 @@ import LoadSavedPopup from "./LoadSavedPopup";
 import '../less/TopButtonRow.less';
 import ImportPopup from "./ImportPopup";
 import ColumnListUtils from "../utils/ColumnListUtils";
+import ExportPopup from "./ExportPopup";
 
 export default function TopButtonRow(props: Readonly<{
 	columns: Column[];
@@ -16,7 +17,7 @@ export default function TopButtonRow(props: Readonly<{
 	return <div className="form-top">
 		<SVGButton
 			svg={<AddSVG className="pos" />}
-			label="Add Column"
+			label="Add"
 			onClick={() => props.setColumns(columns => ColumnListUtils.add(columns))}
 		/>
 		<LoadSavedPopup
@@ -26,5 +27,6 @@ export default function TopButtonRow(props: Readonly<{
 			setClosedColumns={props.setClosedColumns}
 		/>
 		<ImportPopup setColumns={props.setColumns} />
+		<ExportPopup columns={props.columns} closedColumns={props.closedColumns} />
 	</div>;
 }

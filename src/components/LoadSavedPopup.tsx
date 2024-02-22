@@ -24,7 +24,7 @@ export default function LoadSavedPopup(props: Readonly<{
 	return <Popup trigger={
 		<SVGButton
 			svg={<LoadSVG />}
-			label="Load Saved"
+			label="Load"
 			disabled={!props.closedColumns.length}
 		/>
 	} ref={ref} modal>
