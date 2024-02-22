@@ -17,6 +17,9 @@ export default function ImportPopup(props: Readonly<{
 		<SVGButton svg={<ImportSVG />} label="Import" />
 	} ref={ref} modal>
 		<PopupHeader title="Import Stats" ref={ref} />
-		<ImportArea setColumns={props.setColumns} />
+		<ImportArea setColumns={columns => {
+			ref.current?.close();
+			props.setColumns(columns);
+		}} />
 	</Popup>
 }
