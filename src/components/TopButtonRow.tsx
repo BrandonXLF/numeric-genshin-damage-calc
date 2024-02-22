@@ -18,6 +18,7 @@ export default function TopButtonRow(props: Readonly<{
 		<SVGButton
 			svg={<AddSVG className="pos" />}
 			label="Add"
+			title="Add Column"
 			onClick={() => props.setColumns(columns => ColumnListUtils.add(columns))}
 		/>
 		<LoadSavedPopup

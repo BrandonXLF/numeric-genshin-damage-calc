@@ -39,7 +39,7 @@ export default function ExportPopup(props: Readonly<{
     }
 	
 	return <Popup trigger={
-		<SVGButton svg={<ExportSVG />} label="Export" />
+		<SVGButton svg={<ExportSVG />} label="Export" title="Export as CSV" />
 	} ref={ref} modal>
         <div className="export">
             <PopupHeader title="Export" ref={ref} />

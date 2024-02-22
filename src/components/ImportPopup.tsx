@@ -37,7 +37,7 @@ export default function ImportPopup(props: Readonly<{
 	}
 	
 	return <Popup trigger={
-		<SVGButton svg={<ImportSVG />} label="Import" />
+		<SVGButton svg={<ImportSVG />} label="Import" title="Import from CSV or In-Game" />
 	} ref={ref} modal onClose={() => setFileImportError(undefined)}>
 		<div className="import-popup">
 			<PopupHeader title="Import" ref={ref} />
