@@ -20,7 +20,7 @@ export default function CalculatorForm() {
 	
 	let columnDamages = useMemo(() => columns.map(column => {
 		let damages = column.attacks.map(
-			({statData, reactionType, reaction})=> new DamageCalculator(statData, reactionType, reaction).calculateDamage()
+			({statData, reactionType, reaction}) => new DamageCalculator(statData, reactionType, reaction).calculateDamage()
 		);
 
 		return { items: damages, activeIndex: column.activeIndex };
