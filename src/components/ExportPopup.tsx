@@ -5,7 +5,7 @@ import SVGButton from "./SVGButton";
 import '../less/ExportPopup.less';
 import Column from "../utils/Column";
 import PopupHeader from "./PopupHeader";
-import ExportSVG from "../svgs/ImportSVG";
+import ExportSVG from "../svgs/ExportSVG";
 import { csvExport } from "../utils/csv";
 
 export default function ExportPopup(props: Readonly<{
