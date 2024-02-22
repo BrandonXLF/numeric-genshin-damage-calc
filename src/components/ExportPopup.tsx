@@ -54,7 +54,7 @@ export default function ExportPopup(props: Readonly<{
             <div>
                 <SVGButton
                     svg={<ExportSVG />}
-                    label="Export"
+                    label="Export CSV"
                     onClick={runExport}
                     mini
                 />
