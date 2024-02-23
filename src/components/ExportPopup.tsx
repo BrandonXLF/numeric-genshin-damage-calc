@@ -49,7 +49,7 @@ export default function ExportPopup(props: Readonly<{
                     checked={includeClosed}
                     onChange={() => setIncludeClosed(!includeClosed)}
                 />
-                <span>Include Closed?</span>
+                <span>Include Closed Columns</span>
             </label>
             <div>
                 <SVGButton
