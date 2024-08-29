@@ -9,6 +9,7 @@ type SVGButtonProps = {
 	mini?: boolean;
 	disabled?: boolean;
 	title?: string;
+	style?: React.CSSProperties;
 };
 
 export default React.forwardRef<HTMLButtonElement, SVGButtonProps>((props, ref) =>
@@ -20,6 +21,7 @@ export default React.forwardRef<HTMLButtonElement, SVGButtonProps>((props, ref) 
 		aria-label={props.label}
 		title={props.title ?? (props.hideLabel ? props.label : undefined)}
 		ref={ref}
+		style={props.style}
 	>
 		{props?.svg}{
 			props.hideLabel ? '' : <> <span>{props.label}</span></>
