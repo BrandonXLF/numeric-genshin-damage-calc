@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import '../less/GameImportArea.less';
 import Column from "../utils/Column";
-import elements, { elementColors } from "../utils/elements";
+import elements, { elementColors, energyTypeElementMap } from "../utils/elements";
 import SVGButton from "./SVGButton";
-import ImportedCharacter, { EnkaBuild, ImportedIdentity } from "../types/ImportedCharacter";
+import ImportedCharacter, { EnkaBuild, EnkaShown, ImportedIdentity } from "../types/ImportedCharacter";
 import FormInput from "./FormInput";
 import SearchSVG from "../svgs/SearchSVG";
 import ColumnListUtils from "../utils/ColumnListUtils";
@@ -11,6 +11,7 @@ import StatIcon from "../svgs/StatIcon";
 
 let nameResourcesCache: [
     Record<string, {
+        Element: string,
         NameTextMapHash: string;
         SideIconName: string;
     } | undefined>,
@@ -51,7 +52,7 @@ export default function GameImportArea(props: Readonly<{
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
 }>) {
     const [inProgressUID, setInProgressUID] = React.useState<string>(localStorage.getItem('GIDC-uid') ?? '');
-    const [element, setElement] = React.useState<typeof elements[number]>(elements[0]);
+    const [element, setElement] = React.useState<typeof elements[number] | ''>('');
     const [uid, setUid] = React.useState<string | undefined>(undefined);
     const [profile, setProfile] = React.useState<ImportedIdentity | undefined>();
     const [builds, setBuilds] = React.useState<ImportedCharacter[] | undefined>(undefined);
@@ -89,13 +90,17 @@ export default function GameImportArea(props: Readonly<{
             }
   
             let enkaBuilds: EnkaBuild[] = data?.avatarInfoList || [];
+            let enkaShown: EnkaShown[] = data?.playerInfo?.showAvatarInfoList || [];
             let characterBuilds: ImportedCharacter[] = [];
 
-            for (const build of enkaBuilds) {
+            for (let i = 0; i < enkaBuilds.length; i++) {
+                const build = enkaBuilds[i];
+
                 characterBuilds.push({
                     ...build,
                     icon: await getIcon(build.avatarId),
-                    name: await getName(build.avatarId)
+                    name: await getName(build.avatarId),
+                    element: energyTypeElementMap[enkaShown[i].energyType]
                 });
             }
 
@@ -103,7 +108,8 @@ export default function GameImportArea(props: Readonly<{
 
             setProfile({
                 name: data.playerInfo.nickname,
-                icon: await getIcon(data.playerInfo.profilePicture.avatarId)
+                icon: await getIcon(data.playerInfo.profilePicture.avatarId),
+                element: 'Physical'
             })
         })();
     }, [uid])
@@ -134,18 +140,24 @@ export default function GameImportArea(props: Readonly<{
             <div>{profile.name}</div>
         </div>}
         <div className="flex-row">
-            <label htmlFor={elementSelectID}>Damage Type</label>
+            <label htmlFor={elementSelectID}>Damage Element</label>
             <FormInput
                 value={element}
                 onChange={val => setElement(val as typeof elements[number])}
-                style={{ color: elementColors[element] }}
+                style={{ color: elementColors[element || 'Physical'] }}
                 class="adaptive-width"
                 id={elementSelectID}
-                options={elements.map(element => ({
-                    name: element,
-                    value: element,
-                    style: { color: elementColors[element] }
-                }))}
+                options={[
+                    {
+                        name: 'Character',
+                        value: ''
+                    },
+                    ...elements.map(element => ({
+                        name: element,
+                        value: element,
+                        style: { color: elementColors[element] }
+                    }))
+                ]}
             />
         </div>
         {builds && builds.length > 0 && <>
@@ -160,6 +172,7 @@ export default function GameImportArea(props: Readonly<{
                         svg={build.icon}
                         label={build.name}
                         onClick={() => props.setColumns(columns => ColumnListUtils.import(columns, build, element))}
+                        style={{ color: elementColors[element || build.element] }}
                     />
                 </div>)}
             </div>

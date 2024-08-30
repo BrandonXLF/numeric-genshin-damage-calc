@@ -150,11 +150,15 @@ export default class ColumnListUtils {
         return newColumns;
     }
     
-    static import(columns: Column[], build: ImportedCharacter, element: typeof elements[number]) {
+    static import(columns: Column[], build: ImportedCharacter, element: typeof elements[number] | '') {
         const base: StoredAttack = {
             label: build.name,
             statData: {}
         };
+
+        if (!element) {
+            element = build.element;
+        }
 
         stats.forEach(stat => {
             if (!('map' in stat)) return;

@@ -12,3 +12,13 @@ export const elementColors: Record<typeof elements[number], string> = {
     Geo: '#ffcc66',
     Cryo: '#99ffff'
 }
+
+export const energyTypeElementMap: Record<number, typeof elements[number]>= {
+    1: 'Pyro',
+    2: 'Hydro',
+    3: 'Dendro',
+    4: 'Electro',
+    5: 'Cryo',
+    7: 'Anemo',
+    8: 'Geo'
+};
