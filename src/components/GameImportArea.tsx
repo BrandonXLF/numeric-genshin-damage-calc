@@ -9,28 +9,30 @@ import SearchSVG from "../svgs/SearchSVG";
 import ColumnListUtils from "../utils/ColumnListUtils";
 import StatIcon from "../svgs/StatIcon";
 
-let nameResourcesCache: [
+let nameResourcesPromise: Promise<[
     Record<string, {
         Element: string,
         NameTextMapHash: string;
         SideIconName: string;
     } | undefined>,
     { en: Record<string, string | undefined> }
-];
+]> | undefined;
 
-async function getNameResources() {
-    if (!nameResourcesCache) {
-        try {
-            nameResourcesCache = await Promise.all([
-                (await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json')).json(),
-                (await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json')).json()
-            ]);
-        } catch {
-            nameResourcesCache = [{}, {en: {}}];
-        }
+function getNameResources() {
+    if (!nameResourcesPromise) {
+        nameResourcesPromise = new Promise(async resolve => {
+            try {
+                resolve(Promise.all([
+                    (await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json')).json(),
+                    (await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json')).json()
+                ]));
+            } catch {
+                resolve([{}, {en: {}}]);
+            }
+        });
     }
 
-    return nameResourcesCache;
+    return nameResourcesPromise;
 }
 
 async function getName(avatarId: number) {
