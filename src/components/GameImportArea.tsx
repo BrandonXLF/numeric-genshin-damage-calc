@@ -3,52 +3,12 @@ import '../less/GameImportArea.less';
 import Column from "../utils/Column";
 import elements, { elementColors, energyTypeElementMap } from "../utils/elements";
 import SVGButton from "./SVGButton";
-import ImportedCharacter, { EnkaBuild, EnkaShown, ImportedIdentity } from "../types/ImportedCharacter";
+import ImportedCharacter, { EnkaBuild, EnkaShown } from "../types/ImportedCharacter";
 import FormInput from "./FormInput";
 import SearchSVG from "../svgs/SearchSVG";
 import ColumnListUtils from "../utils/ColumnListUtils";
-import StatIcon from "../svgs/StatIcon";
-
-let nameResourcesPromise: Promise<[
-    Record<string, {
-        Element: string,
-        NameTextMapHash: string;
-        SideIconName: string;
-    } | undefined>,
-    { en: Record<string, string | undefined> }
-]> | undefined;
-
-function getNameResources() {
-    if (!nameResourcesPromise) {
-        nameResourcesPromise = new Promise(async resolve => {
-            try {
-                resolve(Promise.all([
-                    (await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json')).json(),
-                    (await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json')).json()
-                ]));
-            } catch {
-                resolve([{}, {en: {}}]);
-            }
-        });
-    }
-
-    return nameResourcesPromise;
-}
-
-async function getName(avatarId: number) {
-    const [charInfos, loc] = await getNameResources();
-    const nameHash = charInfos[avatarId]?.NameTextMapHash;
-
-    return (nameHash && loc.en[nameHash]) || avatarId.toString();
-}
-
-async function getIcon(avatarId: number) {
-    const [charInfos,] = await getNameResources();
-    const path =  charInfos[avatarId]?.SideIconName.replace('_Side', '');
-
-    if (!path) return <StatIcon base="character" />;
-    return <img src={`https://enka.network/ui/${path}.png`} alt=""></img>;
-}
+import ProfilePhoto from "./ProfilePhoto";
+import { getIcon, getName } from "../utils/charInfo";
 
 export default function GameImportArea(props: Readonly<{
 	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
@@ -56,7 +16,7 @@ export default function GameImportArea(props: Readonly<{
     const [inProgressUID, setInProgressUID] = React.useState<string>(localStorage.getItem('GIDC-uid') ?? '');
     const [element, setElement] = React.useState<typeof elements[number] | ''>('');
     const [uid, setUid] = React.useState<string | undefined>(undefined);
-    const [profile, setProfile] = React.useState<ImportedIdentity | undefined>();
+    const [profile, setProfile] = React.useState<{ name: string; icon: JSX.Element; } | undefined>();
     const [builds, setBuilds] = React.useState<ImportedCharacter[] | undefined>(undefined);
     const [error, setError] = React.useState<string | undefined>(undefined);
     const elementSelectID = React.useId();
@@ -110,8 +70,7 @@ export default function GameImportArea(props: Readonly<{
 
             setProfile({
                 name: data.playerInfo.nickname,
-                icon: await getIcon(data.playerInfo.profilePicture.avatarId),
-                element: 'Physical'
+                icon: <ProfilePhoto def={data.playerInfo.profilePicture} />
             })
         })();
     }, [uid])
