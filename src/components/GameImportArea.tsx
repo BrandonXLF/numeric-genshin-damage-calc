@@ -111,7 +111,8 @@ export default function GameImportArea(props: Readonly<{
                 options={[
                     {
                         name: 'Character',
-                        value: ''
+                        value: '',
+                        style: { color: elementColors.Physical }
                     },
                     ...elements.map(element => ({
                         name: element,
