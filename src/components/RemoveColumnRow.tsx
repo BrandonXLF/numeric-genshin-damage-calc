@@ -4,7 +4,7 @@ import SaveSVG from "../svgs/SaveSVG";
 import Column from "../utils/Column";
 import SVGButton from "./SVGButton";
 import CopySVG from "../svgs/CopySVG";
-import { ColumnStateAction } from "../utils/columnListReducer";
+import { ColumnStateAction } from "../types/ColumnState";
 
 export default function RemoveColumnRow(props: Readonly<{
 	columns: Column[];

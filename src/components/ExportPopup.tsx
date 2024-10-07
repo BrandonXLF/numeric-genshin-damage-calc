@@ -6,7 +6,7 @@ import '../less/ExportPopup.less';
 import PopupHeader from "./PopupHeader";
 import ExportSVG from "../svgs/ExportSVG";
 import { csvExport } from "../utils/csv";
-import { ColumnState } from "../utils/columnListReducer";
+import ColumnState from "../types/ColumnState";
 
 export default function ExportPopup(props: Readonly<{
 	state: ColumnState;

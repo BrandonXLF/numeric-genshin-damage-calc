@@ -6,7 +6,7 @@ import AttackList from "./AttackList";
 import '../less/FormInput.less';
 import '../less/AttacksRow.less';
 import RowLabel from "./RowLabel";
-import { ColumnStateAction } from "../utils/columnListReducer";
+import { ColumnStateAction } from "../types/ColumnState";
 
 export default function AttacksRow(props: Readonly<{
 	columns: Column[],

@@ -6,7 +6,7 @@ import '../less/LoadSavedPopup.less';
 import LoadSVG from "../svgs/LoadSVG";
 import Column from "../utils/Column";
 import PopupHeader from "./PopupHeader";
-import { ColumnStateAction } from "../utils/columnListReducer";
+import { ColumnStateAction } from "../types/ColumnState";
 
 export default function LoadSavedPopup(props: Readonly<{
 	closedColumns: Column[];

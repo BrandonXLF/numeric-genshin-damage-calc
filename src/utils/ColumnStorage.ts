@@ -1,7 +1,7 @@
-import { StoredAttack } from "./Attack";
+import ColumnState from "../types/ColumnState";
+import { StoredAttack } from "../types/PartialAttack";
 import Column from "./Column";
 import ColumnList from "./ColumnList";
-import { ColumnState } from "./columnListReducer";
 
 export default class ColumnStorage {
 	static load(): ColumnState {

@@ -8,7 +8,7 @@ import PopupHeader from "./PopupHeader";
 import ImportSVG from "../svgs/ImportSVG";
 import GameImportArea from "./GameImportArea";
 import { csvImport } from "../utils/csv";
-import { ColumnStateAction } from "../utils/columnListReducer";
+import { ColumnStateAction } from "../types/ColumnState";
 
 export default function ImportPopup(props: Readonly<{
 	dispatch: React.Dispatch<ColumnStateAction>;

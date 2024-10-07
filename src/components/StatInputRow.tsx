@@ -11,7 +11,7 @@ import { getAttrStat } from "../utils/attributes";
 import SyncSVG from "../svgs/SyncSVG";
 import "../less/StatInputRow.less";
 import SVGButton from "./SVGButton";
-import { ColumnStateAction } from "../utils/columnListReducer";
+import { ColumnStateAction } from "../types/ColumnState";
 
 export default function StatInputRow(props: Readonly<{
 	stat: Stat,

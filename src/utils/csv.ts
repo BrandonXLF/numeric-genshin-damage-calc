@@ -1,5 +1,5 @@
 import { stringify } from "csv-stringify/browser/esm/sync";
-import Attack, { StoredAttack } from "./Attack";
+import Attack from "./Attack";
 import Stat, { StatType } from "../types/Stat";
 import Column from "./Column";
 import DamageCalculator from "./DamageCalculator";
@@ -9,6 +9,7 @@ import stats from "./stats";
 import { parse } from "csv-parse/browser/esm/sync";
 import attributes, { getAttrStat } from "./attributes";
 import statSections from "./statSections";
+import { StoredAttack } from "../types/PartialAttack";
 
 function generateRow(
     columns: Column[],

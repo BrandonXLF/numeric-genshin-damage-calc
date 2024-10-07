@@ -4,7 +4,7 @@ import Column from "../utils/Column";
 import RowLabel from "./RowLabel";
 import FormInput from "./FormInput";
 import '../less/DamageTypeRow.less';
-import { ColumnStateAction } from "../utils/columnListReducer";
+import { ColumnStateAction } from "../types/ColumnState";
 
 export default function DamageTypeRow(props: Readonly<{
 	columns: Column[];

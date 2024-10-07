@@ -4,7 +4,7 @@ import stats from "../utils/stats";
 import HeadingRow from "./HeadingRow";
 import StatInputRow from "./StatInputRow";
 import { useEffect, useRef } from "react";
-import { ColumnStateAction } from "../utils/columnListReducer";
+import { ColumnStateAction } from "../types/ColumnState";
 
 export default function CalculatorSection(props: Readonly<{
 	section: StatSectionDefinition,

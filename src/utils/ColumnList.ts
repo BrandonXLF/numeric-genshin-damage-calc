@@ -1,9 +1,11 @@
 import ImportedCharacter from "../types/ImportedCharacter";
-import Attack, { PartialAttack } from "../utils/Attack";
-import Column, { CopyMode } from "./Column";
+import Attack from "../utils/Attack";
+import Column from "./Column";
 import { StatType } from "../types/Stat";
 import elements from "./elements";
 import stats from "./stats";
+import PartialAttack from "../types/PartialAttack";
+import ColumnCopyMode from "../types/ColumnCopyMode";
 
 export default class ColumnList {
 	constructor(public readonly columns: Column[]) {}
@@ -116,7 +118,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, CopyMode.CopyAttacks);
+        const newColumn = new Column(oldColumn, ColumnCopyMode.CopyAttacks);
 		
         newColumn.addAttackFromBase(attack);
 		this.columns[colIndex] = newColumn;
@@ -128,7 +130,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, CopyMode.CopyAttacks);
+        const newColumn = new Column(oldColumn, ColumnCopyMode.CopyAttacks);
 		
 		newColumn.removeAttack(atkId);
 		this.columns[colIndex] = newColumn;
@@ -140,7 +142,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, CopyMode.CopyAttacks);
+        const newColumn = new Column(oldColumn, ColumnCopyMode.CopyAttacks);
 		
 		newColumn.setActiveAttack(atkId);
 		this.columns[colIndex] = newColumn;
@@ -152,7 +154,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, CopyMode.CopyAttacks);
+        const newColumn = new Column(oldColumn, ColumnCopyMode.CopyAttacks);
 
         const atkIndex = newColumn.attacks.findIndex(col => col.id === atkId);
         if (atkIndex === -1) return this;
@@ -170,7 +172,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, CopyMode.CopyDataAndId);
+        const newColumn = new Column(oldColumn, ColumnCopyMode.CopyDataAndId);
 
 		modifier(newColumn.attacks);
 		

@@ -2,7 +2,7 @@ import React from "react";
 import Column from "../utils/Column";
 import FormInput from "./FormInput";
 import RowLabel from "./RowLabel";
-import { ColumnStateAction } from "../utils/columnListReducer";
+import { ColumnStateAction } from "../types/ColumnState";
 
 export default function LabelRow(props: Readonly<{
 	columns: Column[];

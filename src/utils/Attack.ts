@@ -6,22 +6,7 @@ import stats from "../utils/stats";
 import attributes, { getAttrStat } from "../utils/attributes";
 import Damage from "../types/Damage";
 import IDGenerator from "./IDGenerator";
-
-export interface PartialAttack {
-	reactionType?: number;
-	reaction?: number;
-	label?: string;
-	statData?: Partial<Record<keyof StatData, string>>;
-	synced?: string[];
-	unmodified?: boolean;
-	shown?: boolean;
-	group?: number;
-}
-
-export interface StoredAttack extends PartialAttack {
-	shown?: boolean;
-	group?: number;
-}
+import PartialAttack, { StoredAttack } from "../types/PartialAttack";
 
 export default class Attack implements PartialAttack {
 	private readonly calculator = new DamageCalculator(this);

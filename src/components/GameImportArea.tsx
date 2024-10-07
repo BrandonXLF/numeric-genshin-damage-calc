@@ -7,7 +7,7 @@ import FormInput from "./FormInput";
 import SearchSVG from "../svgs/SearchSVG";
 import ProfilePhoto from "./ProfilePhoto";
 import { getIcon, getName } from "../utils/charInfo";
-import { ColumnStateAction } from "../utils/columnListReducer";
+import { ColumnStateAction } from "../types/ColumnState";
 
 export default function GameImportArea(props: Readonly<{
 	closeAndDispatch: React.Dispatch<ColumnStateAction>;

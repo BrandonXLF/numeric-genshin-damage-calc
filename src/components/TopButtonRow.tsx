@@ -5,7 +5,7 @@ import LoadSavedPopup from "./LoadSavedPopup";
 import '../less/TopButtonRow.less';
 import ImportPopup from "./ImportPopup";
 import ExportPopup from "./ExportPopup";
-import { ColumnState, ColumnStateAction } from "../utils/columnListReducer";
+import ColumnState, { ColumnStateAction } from '../types/ColumnState';
 
 export default function TopButtonRow(props: Readonly<{
 	state: ColumnState;
