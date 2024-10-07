@@ -1,7 +1,11 @@
 import Attack, { PartialAttack } from "./Attack";
 import IDGenerator from "./IDGenerator";
 
-type CopyMode = 'copyAttacks' | 'copyDataAndId' | 'copyNone';
+export enum CopyMode {
+    CopyNone,
+    CopyAttacks,
+    CopyDataAndId
+}
 
 export default class Column {
     attacks: Attack[] = [];
@@ -9,7 +13,7 @@ export default class Column {
 
     private _activeIndex = 0;
 
-    constructor(attacks: PartialAttack[] | Column = [], mode: CopyMode = 'copyNone') {
+    constructor(attacks: PartialAttack[] | Column = [], mode = CopyMode.CopyNone) {
         let fromColumn = false;
 
         if (attacks instanceof Column) {
@@ -19,10 +23,10 @@ export default class Column {
             attacks = attacks.attacks;
         }
 
-        if (mode === 'copyAttacks') {
+        if (mode === CopyMode.CopyAttacks) {
             this.attacks.push(...attacks as Attack[]);
         } else {
-            attacks.forEach(attack => this.addAttackFromBase(attack, mode === 'copyDataAndId'));
+            attacks.forEach(attack => this.addAttackFromBase(attack, mode === CopyMode.CopyDataAndId));
         }
         
         if (this.attacks.length === 0) this.addAttackFromBase();

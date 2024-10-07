@@ -1,6 +1,6 @@
 import ImportedCharacter from "../types/ImportedCharacter";
 import Attack, { PartialAttack } from "../utils/Attack";
-import Column from "./Column";
+import Column, { CopyMode } from "./Column";
 import { StatType } from "../types/Stat";
 import elements from "./elements";
 import stats from "./stats";
@@ -116,7 +116,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, 'copyAttacks');
+        const newColumn = new Column(oldColumn, CopyMode.CopyAttacks);
 		
         newColumn.addAttackFromBase(attack);
 		this.columns[colIndex] = newColumn;
@@ -128,7 +128,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, 'copyAttacks');
+        const newColumn = new Column(oldColumn, CopyMode.CopyAttacks);
 		
 		newColumn.removeAttack(atkId);
 		this.columns[colIndex] = newColumn;
@@ -140,7 +140,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, 'copyAttacks');
+        const newColumn = new Column(oldColumn, CopyMode.CopyAttacks);
 		
 		newColumn.setActiveAttack(atkId);
 		this.columns[colIndex] = newColumn;
@@ -152,7 +152,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, 'copyAttacks');
+        const newColumn = new Column(oldColumn, CopyMode.CopyAttacks);
 
         const atkIndex = newColumn.attacks.findIndex(col => col.id === atkId);
         if (atkIndex === -1) return this;
@@ -170,7 +170,7 @@ export default class ColumnList {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn, 'copyDataAndId');
+        const newColumn = new Column(oldColumn, CopyMode.CopyDataAndId);
 
 		modifier(newColumn.attacks);
 		
