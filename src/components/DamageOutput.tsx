@@ -9,12 +9,13 @@ export default function DamageOutput(props: Readonly<{
 	column: Column;
 	prop: keyof Damage;
 	value:  number;
+	error?: boolean;
 	initial?: number;
 }>) {
 	return <div className="damage-output">
-		<CalculationPopup column={props.column} prop={props.prop} />
+		<CalculationPopup column={props.column} prop={props.prop} error={props.error} />
 		{' '}
-		<output>{displayDamage(props.value)}</output>
+		<output>{props.error ? 'ERROR' : displayDamage(props.value)}</output>
 		{' '}
 		<DifferenceOutput initial={props.initial} value={props.value} />
 	</div>

@@ -12,11 +12,22 @@ export default function DamageOutputRow(props: Readonly<{
 	let hasValues = false;
 	
 	let damageOutputs = props.columns.map((column, i) => {
-		let value = column.attacks.reduce((prev, curr) => prev + (curr.damage[props.damageType.prop]?.value ?? NaN), 0);
+		let hadError = false;
+		let sum = 0;
+
+		for (let attack of column.attacks) {
+			let damage = attack.damage[props.damageType.prop]?.value;
+
+			if (Number.isNaN(damage)) {
+				hadError = true;
+			}
+
+			sum += damage ?? NaN;
+		}
 		
-		if (i === 0) initial = value;
+		if (i === 0) initial = sum;
 		
-		if (Number.isNaN(value)) {
+		if (Number.isNaN(sum) && !hadError) {
 			return <div key={column.id}>&mdash;</div>;
 		}
 		
@@ -26,7 +37,8 @@ export default function DamageOutputRow(props: Readonly<{
 			key={column.id}
 			column={column}
 			prop={props.damageType.prop}
-			value={value}
+			value={sum}
+			error={hadError}
 			initial={i !== 0 ? initial : undefined}
 		/>;
 	});

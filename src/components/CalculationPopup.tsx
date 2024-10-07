@@ -12,12 +12,13 @@ import Column from "../utils/Column";
 export default function CalculationPopup(props: Readonly<{
 	column: Column;
 	prop: keyof Damage;
+	error?: boolean;
 }>) {
 	const ref = React.useRef<PopupActions>(null);
 	const [shown, setShown] = React.useState(props.column.activeIndex);
 	
 	return <Popup trigger={
-		<SVGButton svg={<CalculatorSVG />} label="Show Calculations" hideLabel={true} mini={true} />
+		<SVGButton svg={<CalculatorSVG className={props.error ? 'neg' : ''} />} label="Show Calculations" hideLabel={true} mini={true} />
 	} ref={ref} modal onOpen={() => setShown(props.column.activeIndex)}>
 		<PopupHeader title="Calculations" ref={ref} />
 		<div className="calc">
