@@ -6,7 +6,7 @@ let profilePhotoPromise: Promise<Record<number, string | undefined>> | undefined
 
 function getProfilePhotos() {
     if (!profilePhotoPromise) {
-        profilePhotoPromise = new Promise(async resolve => {
+        profilePhotoPromise = (async () => {
             try {
                 let photoArray = await (await fetch('https://glcdn.githack.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/ProfilePictureExcelConfigData.json')).json()
                 let photoMap: Record<number, string | undefined> = {};
@@ -15,12 +15,11 @@ function getProfilePhotos() {
                     photoMap[profilePhoto.id] = profilePhoto.iconPath;
                 }
 
-                resolve(photoMap);
+                return photoMap;
             } catch {
-                resolve({});
+                return {};
             }
-        })
-        
+        })();
     }
 
     return profilePhotoPromise;
