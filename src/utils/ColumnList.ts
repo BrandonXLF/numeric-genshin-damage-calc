@@ -129,12 +129,8 @@ export default class ColumnList {
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
         const newColumn = new Column(oldColumn, 'copyAttacks');
-
-        const atkIndex = newColumn.attacks.findIndex(col => col.id === atkId);
-        if (atkIndex === -1) return this;
-        const attack = newColumn.attacks[atkIndex];
 		
-		newColumn.removeAttack(attack);
+		newColumn.removeAttack(atkId);
 		this.columns[colIndex] = newColumn;
 
         return this;
@@ -145,12 +141,8 @@ export default class ColumnList {
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
         const newColumn = new Column(oldColumn, 'copyAttacks');
-
-        const atkIndex = newColumn.attacks.findIndex(col => col.id === atkId);
-        if (atkIndex === -1) return this;
-        const attack = newColumn.attacks[atkIndex];
 		
-		newColumn.setActiveAttack(attack);
+		newColumn.setActiveAttack(atkId);
 		this.columns[colIndex] = newColumn;
 
         return this;

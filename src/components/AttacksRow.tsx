@@ -18,15 +18,15 @@ export default function AttacksRow(props: Readonly<{
             <AttackList
                 attacks={column.attacks}
                 active={column.activeIndex}
-                setActive={atkIndex => props.dispatch({
+                setActive={atkId => props.dispatch({
                     type: 'setActiveAttack',
                     colId: column.id,
-                    atkId: column.attacks[atkIndex].id
+                    atkId
                 })}
-                deleteAttack={atkIndex => props.dispatch({
+                deleteAttack={atkId => props.dispatch({
                     type: 'removeAttack',
                     colId: column.id,
-                    atkId: column.attacks[atkIndex].id
+                    atkId
                 })}
             />
             <SVGButton

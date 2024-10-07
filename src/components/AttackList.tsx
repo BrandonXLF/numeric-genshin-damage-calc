@@ -17,14 +17,14 @@ export default function AttackList(props: Readonly<{
             <SVGButton
                 mini
                 label={`#${i + 1}`}
-                onClick={() => props.setActive(i)}
+                onClick={() => props.setActive(attack.id)}
             />
             {props.deleteAttack && props.attacks.length > 1 && <SVGButton
                 svg={<DeleteSVG className="neg" />}
                 label="Delete Attack"
                 mini
                 hideLabel
-                onClick={() => props.deleteAttack!(i)}
+                onClick={() => props.deleteAttack!(attack.id)}
             />}
         </span>)}
 	</>;

@@ -5,12 +5,16 @@ type CopyMode = 'copyAttacks' | 'copyDataAndId' | 'copyNone';
 
 export default class Column {
     attacks: Attack[] = [];
-    activeIndex = 0;
     readonly id = IDGenerator.generate();
 
+    private _activeIndex = 0;
+
     constructor(attacks: PartialAttack[] | Column = [], mode: CopyMode = 'copyNone') {
+        let fromColumn = false;
+
         if (attacks instanceof Column) {
-            this.activeIndex = attacks.activeIndex;
+            fromColumn = true;
+            this._activeIndex = attacks.activeIndex;
             this.id = attacks.id;
             attacks = attacks.attacks;
         }
@@ -22,23 +26,30 @@ export default class Column {
         }
         
         if (this.attacks.length === 0) this.addAttackFromBase();
+
+        if (!fromColumn) {
+            this._activeIndex = 0;
+        }
     }
 
     addAttackFromBase(base?: PartialAttack, copyDataAndId = false) {
         this.attacks.push(Attack.fromBase(base, copyDataAndId));
-        this.activeIndex = this.attacks.length - 1;
+        this._activeIndex = this.attacks.length - 1;
     }
 
-    removeAttack(attack: Attack) {
-        this.attacks = this.attacks.filter(iteratedAttack => iteratedAttack !== attack);
-        this.activeIndex = Math.min(this.activeIndex, this.attacks.length - 1);
+    removeAttack(atkId: number) {
+        this.attacks = this.attacks.filter(atk => atk.id !== atkId);
+        this._activeIndex = Math.min(this.activeIndex, this.attacks.length - 1);
     }
 
-    setActiveAttack(attack: Attack) {
-        const atkIndex = this.attacks.indexOf(attack);
+    setActiveAttack(atkId: number) {
+        const atkIndex = this.attacks.findIndex(atk => atk.id === atkId);
         if (atkIndex === -1) return;
+        this._activeIndex = atkIndex;
+    }
 
-        this.activeIndex = atkIndex;
+    get activeIndex() {
+        return this._activeIndex;
     }
 
     get active() {
