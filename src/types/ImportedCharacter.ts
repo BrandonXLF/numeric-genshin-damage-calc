@@ -12,7 +12,7 @@ export interface EnkaShown {
 
 export interface ImportedIdentity {
     name: string;
-    icon: React.ReactNode;
+    icon: Promise<React.ReactNode>;
     element: typeof elements[number];
 }
 

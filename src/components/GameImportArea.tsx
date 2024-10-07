@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import '../less/GameImportArea.less';
-import elements, { elementColors, energyTypeElementMap } from "../utils/elements";
+import elements, { elementColors } from "../utils/elements";
 import SVGButton from "./SVGButton";
-import ImportedCharacter, { EnkaBuild, EnkaShown } from "../types/ImportedCharacter";
+import ImportedCharacter from "../types/ImportedCharacter";
 import FormInput from "./FormInput";
 import SearchSVG from "../svgs/SearchSVG";
-import ProfilePhoto from "./ProfilePhoto";
-import { getIcon, getName } from "../utils/charInfo";
 import { ColumnStateAction } from "../types/ColumnState";
+import EnkaImporter, { EnkaImporterError } from "../utils/EnkaImporter";
+import AsyncContent from "./AsyncContent";
 
 export default function GameImportArea(props: Readonly<{
 	closeAndDispatch: React.Dispatch<ColumnStateAction>;
@@ -15,8 +15,10 @@ export default function GameImportArea(props: Readonly<{
     const [inProgressUID, setInProgressUID] = React.useState<string>(localStorage.getItem('GIDC-uid') ?? '');
     const [element, setElement] = React.useState<typeof elements[number] | ''>('');
     const [uid, setUid] = React.useState<string | undefined>(undefined);
-    const [profile, setProfile] = React.useState<{ name: string; icon: JSX.Element; } | undefined>();
-    const [builds, setBuilds] = React.useState<ImportedCharacter[] | undefined>(undefined);
+    const [profile, setProfile] = React.useState<{
+        builds: ImportedCharacter[],
+        user: { name: string; icon: Promise<JSX.Element>; }
+    } | undefined>();
     const [error, setError] = React.useState<string | undefined>(undefined);
     const elementSelectID = React.useId();
 
@@ -24,55 +26,21 @@ export default function GameImportArea(props: Readonly<{
         setError(undefined);
 
         if (!uid) {
-            setBuilds(undefined);
             setProfile(undefined);
             return;
         }
 
         (async () => {
-            let res;
-
             try {
-                res = await fetch(`${process.env.REACT_APP_ENKA_PROXY}/uid/${uid}`);
-            } catch {
-                setError('Could not connect to Enka.Network. Please check your internet connection.');
-                setBuilds(undefined);
+                setProfile(await EnkaImporter.getProfile(uid));
+            } catch (e) {
+                if (!(e instanceof EnkaImporterError)) throw e;
+                
+                setError(e.message);
                 setProfile(undefined);
-                return;
             }
-
-            let data = await res.json();
-
-            if (!res.ok) {
-                setError(data?.message || `Enka.Network API error. Status code ${res.status}.`);
-                setBuilds(undefined);
-                setProfile(undefined);
-                return;
-            }
-  
-            let enkaBuilds: EnkaBuild[] = data?.avatarInfoList || [];
-            let enkaShown: EnkaShown[] = data?.playerInfo?.showAvatarInfoList || [];
-            let characterBuilds: ImportedCharacter[] = [];
-
-            for (let i = 0; i < enkaBuilds.length; i++) {
-                const build = enkaBuilds[i];
-
-                characterBuilds.push({
-                    ...build,
-                    icon: await getIcon(build.avatarId),
-                    name: await getName(build.avatarId),
-                    element: energyTypeElementMap[enkaShown[i].energyType]
-                });
-            }
-
-            setBuilds(characterBuilds);
-
-            setProfile({
-                name: data.playerInfo.nickname,
-                icon: <ProfilePhoto def={data.playerInfo.profilePicture} />
-            })
         })();
-    }, [uid])
+    }, [uid]);
 
     useEffect(() => localStorage.setItem('GIDC-uid', inProgressUID), [inProgressUID])
 	
@@ -96,8 +64,8 @@ export default function GameImportArea(props: Readonly<{
             </div>
         </div>
         {profile && <div className="flex-row nickname-row">
-            {profile.icon}
-            <div>{profile.name}</div>
+            <AsyncContent promise={profile.user.icon} />
+            <div>{profile.user.name}</div>
         </div>}
         <div className="flex-row">
             <label htmlFor={elementSelectID}>Damage Element</label>
@@ -121,16 +89,16 @@ export default function GameImportArea(props: Readonly<{
                 ]}
             />
         </div>
-        {builds && builds.length > 0 && <>
+        {profile?.builds && profile.builds.length > 0 && <>
             <div className="flex-row">
                 <div className="notice">
                     Choose a character to import their stats.
                 </div>
             </div>
             <div>
-                {builds.map(build => <div key={build.avatarId}>
+                {profile.builds.map(build => <div key={build.avatarId}>
                     <SVGButton
-                        svg={build.icon}
+                        svg={<AsyncContent promise={build.icon} />}
                         label={build.name}
                         onClick={() => props.closeAndDispatch({
                             type: 'import',
@@ -152,11 +120,11 @@ export default function GameImportArea(props: Readonly<{
         {error && <div className="flex-row">
             <div className="notice">{error}</div>
         </div>}
-        {!error && builds && builds.length === 0 && <div className="flex-row">
+        {!error && profile?.builds && profile.builds.length === 0 && <div className="flex-row">
             <div className="notice">
                 No builds found. Make sure character details are shown in-game.
             </div>
         </div>}
-        {!error && uid && !builds && <div>Loading...</div>}
+        {!error && uid && !profile?.builds && <div>Loading...</div>}
     </div>;
 }
