@@ -1,7 +1,7 @@
 import ImportedCharacter from "../types/ImportedCharacter";
 import Attack, { PartialAttack } from "../utils/Attack";
 import Column from "./Column";
-import { StatTypes } from "../types/Stat";
+import { StatType } from "../types/Stat";
 import elements from "./elements";
 import stats from "./stats";
 
@@ -82,7 +82,7 @@ export default class ColumnList {
 
             if (numVal === undefined) return;
 
-            if (stat.type === StatTypes.Percent) numVal *= 100;
+            if (stat.type === StatType.Percent) numVal *= 100;
             numVal = Math.round(numVal * 100) / 100;
 
             base.statData![stat.prop] = numVal.toString();

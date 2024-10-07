@@ -1,5 +1,5 @@
 import DamageCalculator from "../utils/DamageCalculator";
-import { StatTypes } from "../types/Stat";
+import { StatType } from "../types/Stat";
 import StatData from "../types/StatData";
 import evaluateExpression from "../utils/evalulateExpression";
 import stats from "../utils/stats";
@@ -91,9 +91,9 @@ export default class Attack implements PartialAttack {
 		return this._statData[name];
 	}
 
-	getStatValue(name: keyof StatData, statType: StatTypes) {
+	getStatValue(name: keyof StatData, statType: StatType) {
 		const value = evaluateExpression(this._statData[name] ?? '');
-		return statType === StatTypes.Percent ? value / 100 : value;
+		return statType === StatType.Percent ? value / 100 : value;
 	}
 
 	hasStat(name: keyof StatData) {

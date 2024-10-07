@@ -1,14 +1,14 @@
 import Damage from "../types/Damage";
-import DamageGroups from "../types/DamageGroups";
+import DamageGroup from "../types/DamageGroups";
 import ReactionType, { Reaction } from "../types/ReactionType";
 import EquationData, { EquationInfo } from "../types/EquationData";
 import VariableOutput, { EquationOutput } from "../types/VariableOutput";
-import RecordEntry, { RecordEntryTypes } from "../types/RecordEntry";
+import RecordEntry, { RecordEntryType } from "../types/RecordEntry";
 import ValueData from "../types/ValueData";
 import evaluateExpression from "./evalulateExpression";
 import stats from "./stats";
 import transformativeLevelMultipliers from "./transformativeLevelMultipliers";
-import Stat, { StatTypes } from "../types/Stat";
+import Stat, { StatType } from "../types/Stat";
 import attributes, { getAttrStat } from "./attributes";
 import MathComponent from "../types/MathComponent";
 import Attack from "./Attack";
@@ -19,7 +19,7 @@ export default class DamageCalculator {
 			name: 'No Reaction',
 			canCrit: true,
 			equation: 'generalDamage',
-			groups: DamageGroups.General,
+			groups: DamageGroup.General,
 			reactions: [
 				{ name: 'No Reaction' }
 			]
@@ -28,7 +28,7 @@ export default class DamageCalculator {
 			name: 'Amplifying',
 			canCrit: true,
 			equation: 'amplifyingReaction',
-			groups: DamageGroups.Reaction | DamageGroups.General,
+			groups: DamageGroup.Reaction | DamageGroup.General,
 			reactions: [
 				{ name: 'Pyro Melt', var: 2, color: '#ffcc66' },
 				{ name: 'Cyro Melt', var: 1.5, color: '#99ffff' },
@@ -40,7 +40,7 @@ export default class DamageCalculator {
 			name: 'Transformative',
 			canCrit: false,
 			equation: 'transformativeReaction',
-			groups: DamageGroups.Reaction,
+			groups: DamageGroup.Reaction,
 			reactions: [
 				{ name: 'Burgeon', var: 3, color: '#ff9b00' },
 				{ name: 'Hyperbloom', var: 3, color: '#e19bff' },
@@ -58,7 +58,7 @@ export default class DamageCalculator {
 			canCrit: true,
 			equation: 'generalDamage',
 			flatDamage: 'flatDamageAdded',
-			groups: DamageGroups.General | DamageGroups.Reaction,
+			groups: DamageGroup.General | DamageGroup.Reaction,
 			reactions: [
 				{ name: 'Spread', var: 1.25, color: '#00ea53' },
 				{ name: 'Aggravate', var: 1.15, color: '#e19bff' }
@@ -233,7 +233,7 @@ export default class DamageCalculator {
 		};
 	}
 	
-	private record(value: string, type: RecordEntryTypes): RecordEntry {
+	private record(value: string, type: RecordEntryType): RecordEntry {
 		return {
 			value: value,
 			type: type
@@ -243,7 +243,7 @@ export default class DamageCalculator {
 	private recordNumber(value: number): RecordEntry {
 		return {
 			value: Math.round(value * 1e4) / 1e4,
-			type: RecordEntryTypes.Value
+			type: RecordEntryType.Value
 		};
 	}
 	
@@ -262,7 +262,7 @@ export default class DamageCalculator {
 		
 		return {
 			label: [
-				this.record(`${valueInfo.name} `, RecordEntryTypes.Note),
+				this.record(`${valueInfo.name} `, RecordEntryType.Note),
 				this.recordNumber(valueInfo.value)
 			],
 			value: valueInfo.value
@@ -273,7 +273,7 @@ export default class DamageCalculator {
 		return this.variable(component) || {
 			value: component,
 			label: [
-				this.record(component.replace(/\*/g, '\u00D7'), RecordEntryTypes.Mathematical)
+				this.record(component.replace(/\*/g, '\u00D7'), RecordEntryType.Mathematical)
 			]
 		};
 	}
@@ -313,13 +313,13 @@ export default class DamageCalculator {
 		const value = evaluateExpression(mathExpr);
 		
 		const label = [
-			this.record(`${equationInfo.name} `, RecordEntryTypes.Note),
+			this.record(`${equationInfo.name} `, RecordEntryType.Note),
 			this.recordNumber(value)
 		];
 		
 		equation.unshift(
 			...label,
-			this.record(' = ', RecordEntryTypes.Mathematical)
+			this.record(' = ', RecordEntryType.Mathematical)
 		);
 		
 		return { label, value, equation, children };
@@ -338,7 +338,7 @@ export default class DamageCalculator {
 			},
 			transformativeLevelMultiplier: {
 				name: 'Level Multiplier',
-				value: transformativeLevelMultipliers[this.attack.getStatValue('characterLevel', StatTypes.Number)] ?? NaN
+				value: transformativeLevelMultipliers[this.attack.getStatValue('characterLevel', StatType.Number)] ?? NaN
 			}
 		} as ValueData;
 

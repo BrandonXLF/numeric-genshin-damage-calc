@@ -1,4 +1,4 @@
-import Stat, { StatTypes } from "../types/Stat";
+import Stat, { StatType } from "../types/Stat";
 import FormInput from "./FormInput";
 import MathIndicator from "./MathIndicator";
 import SelectOption from '../types/SelectOption';
@@ -12,7 +12,7 @@ export default function StatInput(props: Readonly<{
 	unitOptions?: SelectOption[];
 	onUnitChange?: (val: string) => void;
 }>) {
-	const percent = props.stat.type === StatTypes.Percent;
+	const percent = props.stat.type === StatType.Percent;
 	
 	return <FormInput
 		value={props.value}

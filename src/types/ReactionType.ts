@@ -1,4 +1,4 @@
-import DamageGroups from "./DamageGroups";
+import DamageGroup from "./DamageGroups";
 import EquationData from "./EquationData";
 import ValueData from "./ValueData";
 
@@ -13,7 +13,7 @@ type ReactionType = {
 	canCrit: boolean;
 	equation: keyof EquationData;
 	flatDamage?: keyof EquationData | keyof ValueData;
-	groups: DamageGroups;
+	groups: DamageGroup;
 	reactions: Reaction[];
 };
 

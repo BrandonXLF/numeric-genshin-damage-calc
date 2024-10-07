@@ -1,6 +1,6 @@
-import DamageGroups from "../types/DamageGroups";
-import Stat, { StatTypes } from "../types/Stat";
-import { StatSections } from "../types/StatSection";
+import DamageGroup from "../types/DamageGroups";
+import Stat, { StatType } from "../types/Stat";
+import { StatSection } from "../types/StatSectionDefinition";
 import StatIcon from "../svgs/StatIcon";
 
 const stats: Stat[] = [
@@ -8,9 +8,9 @@ const stats: Stat[] = [
 		name: 'Character Level',
 		prop: 'characterLevel',
 		default: 1,
-		type: StatTypes.Number,
-		section: StatSections.Character,
-		groups: DamageGroups.General | DamageGroups.Reaction,
+		type: StatType.Number,
+		section: StatSection.Character,
+		groups: DamageGroup.General | DamageGroup.Reaction,
 		icon: <StatIcon base="character" />,
 		map: 'char',
 		mapNumber: 4001
@@ -21,9 +21,9 @@ const stats: Stat[] = [
 		prop: 'talent',
 		usesAttrs: true,
 		default: 100,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterTalent,
-		groups: DamageGroups.General,
+		type: StatType.Percent,
+		section: StatSection.CharacterTalent,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="percent" />
 	},
 	{
@@ -31,9 +31,9 @@ const stats: Stat[] = [
 		desc: 'Multiplier that applies to the talent multipliers, increased by Xingqui\'s C4 and Yoimiya\'s skill for example',
 		prop: 'baseDamageMultiplier',
 		default: 100,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterTalent,
-		groups: DamageGroups.General,
+		type: StatType.Percent,
+		section: StatSection.CharacterTalent,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="percent" indicator="percent" />
 	},
 	{
@@ -42,9 +42,9 @@ const stats: Stat[] = [
 		prop: 'talentDamageBonus',
 		usesAttrs: true,
 		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterTalent,
-		groups: DamageGroups.General,
+		type: StatType.Percent,
+		section: StatSection.CharacterTalent,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
@@ -52,9 +52,9 @@ const stats: Stat[] = [
 		desc: 'Flat damage increases that are added to the talent damage, e.g. Yunjin\'s skill',
 		prop: 'flatDamage',
 		default: 0,
-		type: StatTypes.Number,
-		section: StatSections.CharacterTalent,
-		groups: DamageGroups.General,
+		type: StatType.Number,
+		section: StatSection.CharacterTalent,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
@@ -63,8 +63,8 @@ const stats: Stat[] = [
 		prop: 'baseTalentScale',
 		attr: 'ATK',
 		default: 500,
-		type: StatTypes.Number,
-		section: StatSections.CharacterStats,
+		type: StatType.Number,
+		section: StatSection.CharacterStats,
 		icon: <StatIcon base="damage" />,
 		map: 'fight',
 		mapNumber: 4
@@ -75,8 +75,8 @@ const stats: Stat[] = [
 		prop: 'bonusTalentScale',
 		attr: 'ATK',
 		default: 500,
-		type: StatTypes.Number,
-		section: StatSections.CharacterStats,
+		type: StatType.Number,
+		section: StatSection.CharacterStats,
 		icon: <StatIcon base="damage" indicator="increase" />,
 		map: 'fight',
 		mapNumber: 5
@@ -87,8 +87,8 @@ const stats: Stat[] = [
 		prop: 'additionalBonusTalentScale',
 		attr: 'ATK',
 		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterStats,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
 		icon: <StatIcon base="damage" indicator="increase" />,
 		map: 'fight',
 		mapNumber: 6
@@ -99,8 +99,8 @@ const stats: Stat[] = [
 		prop: 'baseDEF',
 		attr: 'DEF',
 		default: 500,
-		type: StatTypes.Number,
-		section: StatSections.CharacterStats,
+		type: StatType.Number,
+		section: StatSection.CharacterStats,
 		icon: <StatIcon base="def" />,
 		map: 'fight',
 		mapNumber: 7
@@ -111,8 +111,8 @@ const stats: Stat[] = [
 		prop: 'bonusDEF',
 		attr: 'DEF',
 		default: 500,
-		type: StatTypes.Number,
-		section: StatSections.CharacterStats,
+		type: StatType.Number,
+		section: StatSection.CharacterStats,
 		icon: <StatIcon base="def" indicator="increase" />,
 		map: 'fight',
 		mapNumber: 8
@@ -123,8 +123,8 @@ const stats: Stat[] = [
 		prop: 'additionalBonusDEF',
 		attr: 'DEF',
 		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterStats,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
 		icon: <StatIcon base="def" indicator="increase" />,
 		map: 'fight',
 		mapNumber: 9
@@ -135,8 +135,8 @@ const stats: Stat[] = [
 		prop: 'baseHP',
 		attr: 'HP',
 		default: 500,
-		type: StatTypes.Number,
-		section: StatSections.CharacterStats,
+		type: StatType.Number,
+		section: StatSection.CharacterStats,
 		icon: <StatIcon base="hp" />,
 		map: 'fight',
 		mapNumber: 1
@@ -147,8 +147,8 @@ const stats: Stat[] = [
 		prop: 'bonusHP',
 		attr: 'HP',
 		default: 500,
-		type: StatTypes.Number,
-		section: StatSections.CharacterStats,
+		type: StatType.Number,
+		section: StatSection.CharacterStats,
 		icon: <StatIcon base="hp" indicator="increase" />,
 		map: 'fight',
 		mapNumber: 2
@@ -159,8 +159,8 @@ const stats: Stat[] = [
 		prop: 'additionalBonusHP',
 		attr: 'HP',
 		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterStats,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
 		icon: <StatIcon base="hp" indicator="increase" />,
 		map: 'fight',
 		mapNumber: 3
@@ -171,9 +171,9 @@ const stats: Stat[] = [
 		prop: 'em',
 		attr: 'EM',
 		default: 0,
-		type: StatTypes.Number,
-		section: StatSections.CharacterStats,
-		groups: DamageGroups.Reaction,
+		type: StatType.Number,
+		section: StatSection.CharacterStats,
+		groups: DamageGroup.Reaction,
 		icon: <StatIcon base="em" />,
 		map: 'fight',
 		mapNumber: 28
@@ -183,9 +183,9 @@ const stats: Stat[] = [
 		desc: 'All damage bonuses added together, e.g. Goblet of Eonothem\'s main stat and Rust bow\'s passive',
 		prop: 'damageBonus',
 		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="damage" indicator="increase" />,
 		map: 'fight',
 		mapNumber: {
@@ -204,18 +204,18 @@ const stats: Stat[] = [
 		desc: 'All reaction damage bonuses added together besides the reaction bonus from EM, e.g. Crimson Witch 4-piece and Dragon\'s Bane\'s passive',
 		prop: 'reactionBonus',
 		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterStats,
-		groups: DamageGroups.Reaction,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
+		groups: DamageGroup.Reaction,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
 		name: 'CRIT Rate',
 		prop: 'critRate',
 		default: 5,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="critRate" />,
 		map: 'fight',
 		mapNumber: 20
@@ -224,9 +224,9 @@ const stats: Stat[] = [
 		name: 'CRIT DMG',
 		prop: 'critDamage',
 		default: 50,
-		type: StatTypes.Percent,
-		section: StatSections.CharacterStats,
-		groups: DamageGroups.General,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="critDmg" />,
 		map: 'fight',
 		mapNumber: 22
@@ -235,9 +235,9 @@ const stats: Stat[] = [
 		name: 'Enemy Level',
 		prop: 'enemyLevel',
 		default: 1,
-		type: StatTypes.Number,
-		section: StatSections.Enemy,
-		groups: DamageGroups.General,
+		type: StatType.Number,
+		section: StatSection.Enemy,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="enemy" />
 	},
 	{
@@ -245,9 +245,9 @@ const stats: Stat[] = [
 		desc: 'Defense decreasing effects, e.g. Razor\'s C4 or Klee\'s C2, use the word "decrease"',
 		prop: 'defenseDecrease',
 		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.Enemy,
-		groups: DamageGroups.General,
+		type: StatType.Percent,
+		section: StatSection.Enemy,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	},
 	{
@@ -255,9 +255,9 @@ const stats: Stat[] = [
 		desc: 'Defense ignore effects, e.g. Raiden\'s C2 and Yae Miko\'s C6, use the word "ignore"',
 		prop: 'defenseIgnore',
 		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.Enemy,
-		groups: DamageGroups.General,
+		type: StatType.Percent,
+		section: StatSection.Enemy,
+		groups: DamageGroup.General,
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	},
 	{
@@ -265,9 +265,9 @@ const stats: Stat[] = [
 		desc: <span>The resistance the enemy has for the element of the attack before any reductions, see <a href="https://genshin-impact.fandom.com/wiki/Resistance#Enemy_Resistances" target="genshin-wiki">the wiki</a></span>,
 		prop: 'resistance',
 		default: 10,
-		type: StatTypes.Percent,
-		section: StatSections.Enemy,
-		groups: DamageGroups.General | DamageGroups.Reaction,
+		type: StatType.Percent,
+		section: StatSection.Enemy,
+		groups: DamageGroup.General | DamageGroup.Reaction,
 		icon: <StatIcon base="shield" mask="enemySmall" />
 	},
 	{
@@ -275,9 +275,9 @@ const stats: Stat[] = [
 		desc: 'The total resistance reduction for the element of the attack, e.g. Superconduct and Viridescent Venerer',
 		prop: 'resistanceReduction',
 		default: 0,
-		type: StatTypes.Percent,
-		section: StatSections.Enemy,
-		groups:  DamageGroups.General | DamageGroups.Reaction,
+		type: StatType.Percent,
+		section: StatSection.Enemy,
+		groups:  DamageGroup.General | DamageGroup.Reaction,
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />,
 		map: 'fight',
 		mapNumber: {

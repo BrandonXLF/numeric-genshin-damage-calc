@@ -1,6 +1,6 @@
 import { stringify } from "csv-stringify/browser/esm/sync";
 import Attack, { StoredAttack } from "./Attack";
-import Stat, { StatTypes } from "../types/Stat";
+import Stat, { StatType } from "../types/Stat";
 import Column from "./Column";
 import DamageCalculator from "./DamageCalculator";
 import damageTypes from "./damageTypes";
@@ -33,7 +33,7 @@ function getStatLabel(stat: Stat, suffix?: string, prop?: string) {
 		label += ` ${suffix}`;
 	}
 
-	if (stat.type === StatTypes.Percent && !label.endsWith('%')) {
+	if (stat.type === StatType.Percent && !label.endsWith('%')) {
 		label += ' %';
 	}
 

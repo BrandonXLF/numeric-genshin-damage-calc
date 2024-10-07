@@ -1,4 +1,4 @@
-export enum RecordEntryTypes {
+export enum RecordEntryType {
 	Note = 'note',
 	Value = 'value',
 	Mathematical = 'math'
@@ -6,7 +6,7 @@ export enum RecordEntryTypes {
 
 type RecordEntry = {
 	value: React.ReactNode;
-	type: RecordEntryTypes;
+	type: RecordEntryType;
 }
 
 export default RecordEntry;

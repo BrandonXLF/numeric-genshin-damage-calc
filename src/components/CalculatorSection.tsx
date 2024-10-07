@@ -1,5 +1,5 @@
 import Column from "../utils/Column";
-import StatSection from "../types/StatSection";
+import StatSectionDefinition from "../types/StatSectionDefinition";
 import stats from "../utils/stats";
 import HeadingRow from "./HeadingRow";
 import StatInputRow from "./StatInputRow";
@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 import { ColumnStateAction } from "../utils/columnListReducer";
 
 export default function CalculatorSection(props: Readonly<{
-	section: StatSection,
+	section: StatSectionDefinition,
 	headerSpan: number,
 	columns: Column[],
 	dispatch: React.Dispatch<ColumnStateAction>;

@@ -1,23 +1,23 @@
-import StatSection, { StatSections } from "../types/StatSection";
+import StatSectionDefinition, { StatSection } from "../types/StatSectionDefinition";
 
-const statSections: StatSection[] = [
+const statSections: StatSectionDefinition[] = [
 	{
 		name: 'Character',
-		value: StatSections.Character
+		value: StatSection.Character
 	},
 	{
 		name: 'Talent',
 		sub: true,
-		value: StatSections.CharacterTalent
+		value: StatSection.CharacterTalent
 	},
 	{
 		name: 'Stats',
 		sub: true,
-		value: StatSections.CharacterStats
+		value: StatSection.CharacterStats
 	},
 	{
 		name: 'Enemy',
-		value: StatSections.Enemy
+		value: StatSection.Enemy
 	}
 ];
 

@@ -1,9 +1,9 @@
 import attributes from "../utils/attributes";
 import elements from "../utils/elements";
-import DamageGroups from "./DamageGroups";
+import DamageGroup from "./DamageGroups";
 import DisplayedProp from "./DisplayedProp";
 import StatData from "./StatData";
-import { StatSections } from "./StatSection";
+import { StatSection } from "./StatSectionDefinition";
 
 type MapInfo =
 	| {
@@ -18,9 +18,9 @@ type MapInfo =
 type Stat = DisplayedProp<StatData> & (MapInfo | {}) & {
 	attr?: typeof attributes[number];
 	default: number;
-	type: StatTypes;
-	section: StatSections;
-	groups?: DamageGroups;
+	type: StatType;
+	section: StatSection;
+	groups?: DamageGroup;
 	/**
 	 * True if the stat is a series of multipliers that are multiplied with in-game attributes (ATK etc.)
 	*/
@@ -28,7 +28,7 @@ type Stat = DisplayedProp<StatData> & (MapInfo | {}) & {
 	icon: React.ReactNode;
 };
 
-export enum StatTypes {
+export enum StatType {
 	Number,
 	Percent
 }
