@@ -26,14 +26,14 @@ export default function StatInputRow(props: Readonly<{
 		if (column.first.synced.includes(prop)) {
 			props.dispatch({
 				type: 'modifyAttacks',
-				column: column,
+				colId: column.id,
 				modifier: attacks => attacks.forEach(attack => attack.setStat(prop, value))
 			});
 		} else {
 			props.dispatch({
 				type: 'modifyAttack',
-				column: column,
-				attack: column.attacks[atkIndex],
+				colId: column.id,
+				atkId: column.attacks[atkIndex].id,
 				modifier: attack => attack.setStat(prop, value)
 			});
 		}
@@ -42,7 +42,7 @@ export default function StatInputRow(props: Readonly<{
 	function setSynced(colIndex: number, prop: keyof StatData, synced: boolean, value?: string) {	
 		props.dispatch({
 			type: 'modifyAttacks',
-			column: props.columns[colIndex],
+			colId: props.columns[colIndex].id,
 			modifier: attacks => {
 				if (synced) {
 					if (!attacks[0].synced.includes(prop))
@@ -73,7 +73,7 @@ export default function StatInputRow(props: Readonly<{
 		
 		anyEnabled = anyEnabled || enabled;
 
-		return <div key={colIndex} className="stat-input-row">
+		return <div key={column.id} className="stat-input-row">
 			{'usesAttrs' in props.stat && enabled
 				? <AttrStatInput
 					stat={props.stat}

@@ -16,40 +16,40 @@ export type ColumnStateAction = {
 	type: 'addEmpty'
 } | {
 	type: 'duplicate',
-	column: Column
+	colId: number
 } | {
 	type: 'remove',
-	column: Column
+	colId: number
 } | {
 	type: 'load',
-	column: Column
+	colId: number
 } | {
 	type: 'unload',
-	column: Column
+	colId: number
 } | {
 	type: 'import',
 	build: ImportedCharacter,
 	element: typeof elements[number] | ''
 } | {
 	type: 'setActiveAttack',
-	column: Column,
-	attack: Attack
+	colId: number,
+	atkId: number,
 } | {
 	type: 'addAttackFromBase',
-	column: Column,
-	attack: Attack
+	colId: number,
+	attack: Attack,
 } | {
 	type: 'removeAttack',
-	column: Column,
-	attack: Attack
+	colId: number,
+	atkId: number
 } | {
 	type: 'modifyAttack',
-	column: Column,
-	attack: Attack,
+	colId: number,
+	atkId: number,
 	modifier: (column: Attack) => void
 } | {
 	type: 'modifyAttacks',
-	column: Column,
+	colId: number,
 	modifier: (column: Attack[]) => void
 };
 
@@ -64,36 +64,36 @@ export default function columnListReducer(oldState: ColumnState, action: ColumnS
 			state.shown = state.shown.clone().addEmpty();
 			break;
 		case 'duplicate':
-			state.shown = state.shown.clone().duplicate(action.column);
+			state.shown = state.shown.clone().duplicate(action.colId);
 			break;
 		case 'remove':
-			state.shown = state.shown.clone().remove(action.column, true);
+			[state.shown,] = state.shown.clone().remove(action.colId, true);
 			break;
 		case 'load':
-			state.shown = state.shown.clone().add(action.column);
-			state.closed = state.closed.clone().remove(action.column);
+			state.shown = state.shown.clone();
+			state.closed = state.closed.clone().transfer(action.colId, state.shown);
 			break;
 		case 'unload':
-			state.closed = state.closed.clone().add(action.column);
-			state.shown = state.shown.clone().remove(action.column, true);
+			state.closed = state.closed.clone();
+			state.shown = state.shown.clone().transfer(action.colId, state.closed, true);
 			break;
 		case 'import':
 			state.shown = state.shown.clone().import(action.build, action.element);
 			break;
 		case 'addAttackFromBase':
-			state.shown = state.shown.clone().addAttackFromBase(action.column, action.attack);
+			state.shown = state.shown.clone().addAttackFromBase(action.colId, action.attack);
 			break;
 		case 'removeAttack':
-			state.shown = state.shown.clone().removeAttack(action.column, action.attack);
+			state.shown = state.shown.clone().removeAttack(action.colId, action.atkId);
 			break;
 		case 'setActiveAttack':
-			state.shown = state.shown.clone().setActiveAttack(action.column, action.attack);
+			state.shown = state.shown.clone().setActiveAttack(action.colId, action.atkId);
 			break;
 		case 'modifyAttack':
-			state.shown = state.shown.clone().transformAttack(action.column, action.attack, action.modifier);
+			state.shown = state.shown.clone().transformAttack(action.colId, action.atkId, action.modifier);
 			break;
 		case 'modifyAttacks':
-			state.shown = state.shown.clone().transformAttacks(action.column, action.modifier);
+			state.shown = state.shown.clone().transformAttacks(action.colId, action.modifier);
 	}
 
 	return state;

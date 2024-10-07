@@ -1,10 +1,11 @@
-import DamageCalculator from "./DamageCalculator";
+import DamageCalculator from "../utils/DamageCalculator";
 import { StatTypes } from "../types/Stat";
 import StatData from "../types/StatData";
-import evaluateExpression from "./evalulateExpression";
-import stats, { statTypes } from "./stats";
-import attributes, { getAttrStat } from "./attributes";
+import evaluateExpression from "../utils/evalulateExpression";
+import stats, { statTypes } from "../utils/stats";
+import attributes, { getAttrStat } from "../utils/attributes";
 import Damage from "../types/Damage";
+import IDGenerator from "./IDGenerator";
 
 export interface PartialAttack {
 	reactionType?: number;
@@ -33,20 +34,22 @@ export default class Attack implements PartialAttack {
         private _label: string,
         private _statData: StatData,
         private _synced: string[],
-        private _unmodified: boolean = true
+        private _unmodified: boolean = true,
+		public readonly id = IDGenerator.generate()
     ) {}
 	
-	static fromBase(base?: PartialAttack, copyData = false) {
+	static fromBase(base?: PartialAttack, copyDataAndId = false) {
         let attack = new this(
             base?.reactionType ?? 0,
 			base?.reaction ?? 0,
             base?.label ?? '',
-			copyData ? {...(base as Attack).statData} : {} as StatData,
+			copyDataAndId ? {...(base as Attack).statData} : {} as StatData,
             base?.synced ? [...base.synced] : [],
-            base === undefined ? true : (base.unmodified ?? false)
+            base === undefined ? true : (base.unmodified ?? false),
+			copyDataAndId ? (base as Attack).id : undefined
         );
         
-		if (copyData) {
+		if (copyDataAndId) {
 			return attack;
 		}
 

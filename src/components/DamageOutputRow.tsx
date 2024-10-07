@@ -17,13 +17,13 @@ export default function DamageOutputRow(props: Readonly<{
 		if (i === 0) initial = value;
 		
 		if (Number.isNaN(value)) {
-			return <div key={i}>&mdash;</div>;
+			return <div key={column.id}>&mdash;</div>;
 		}
 		
 		hasValues = true;
 		
 		return <DamageOutput
-			key={i}
+			key={column.id}
 			column={column}
 			prop={props.damageType.prop}
 			value={value}

@@ -1,28 +1,31 @@
 import Attack, { PartialAttack } from "./Attack";
+import IDGenerator from "./IDGenerator";
 
-type CopyMode = 'copyAttacks' | 'copyData' | 'copyNone';
+type CopyMode = 'copyAttacks' | 'copyDataAndId' | 'copyNone';
 
 export default class Column {
     attacks: Attack[] = [];
     activeIndex = 0;
+    readonly id = IDGenerator.generate();
 
     constructor(attacks: PartialAttack[] | Column = [], mode: CopyMode = 'copyNone') {
         if (attacks instanceof Column) {
             this.activeIndex = attacks.activeIndex;
+            this.id = attacks.id;
             attacks = attacks.attacks;
         }
 
         if (mode === 'copyAttacks') {
             this.attacks.push(...attacks as Attack[]);
         } else {
-            attacks.forEach(attack => this.addAttackFromBase(attack, mode === 'copyData'));
+            attacks.forEach(attack => this.addAttackFromBase(attack, mode === 'copyDataAndId'));
         }
         
         if (this.attacks.length === 0) this.addAttackFromBase();
     }
 
-    addAttackFromBase(base?: PartialAttack, copyData = false) {
-        this.attacks.push(Attack.fromBase(base, copyData));
+    addAttackFromBase(base?: PartialAttack, copyDataAndId = false) {
+        this.attacks.push(Attack.fromBase(base, copyDataAndId));
         this.activeIndex = this.attacks.length - 1;
     }
 

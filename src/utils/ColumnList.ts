@@ -1,5 +1,5 @@
 import ImportedCharacter from "../types/ImportedCharacter";
-import Attack, { StoredAttack } from "./Attack";
+import Attack, { PartialAttack, StoredAttack } from "../utils/Attack";
 import Column from "./Column";
 import { StatTypes } from "../types/Stat";
 import elements from "./elements";
@@ -38,16 +38,17 @@ export default class ColumnList {
 		return this;
     }
 
-	addWithAttack(attack: Attack) {
+	addWithAttack(attack: PartialAttack) {
         this.clean();
         this.columns.push(new Column([attack]));
 
 		return this;
     }
 
-    duplicate(column: Column) {
-        const index = this.columns.indexOf(column);
+    duplicate(colId: number) {
+        const index = this.columns.findIndex(col => col.id === colId);
         if (index === -1) return this;
+        const column = this.columns[index];
 
         this.columns.splice(index + 1, 0, new Column(column.attacks));
 
@@ -87,83 +88,97 @@ export default class ColumnList {
             base.statData![stat.prop] = numVal.toString();
         });
 
-		return this.addWithAttack(base as Attack);
+		return this.addWithAttack(base);
     }
 
-    remove(column: Column, keepOne = false) {
-		const removeIndex = this.columns.findIndex(iteratedColumn => iteratedColumn === column);
-        if (removeIndex === -1) return this;
+    remove(colId: number, keepOne = false) {
+        const removeIndex = this.columns.findIndex(col => col.id === colId);
+        if (removeIndex === -1) return [this, undefined] as const;
+        const columns = this.columns[removeIndex];
 
 		this.columns.splice(removeIndex, 1);
 
         if (keepOne && !this.columns.length)
 			this.columns.push(new Column());
 
-		return this;
+		return [this, columns] as const;
     }
 
-    addAttackFromBase(column: Column, base: Attack) {
-        const index = this.columns.indexOf(column);
-        if (index === -1) return this;
-
-        const newColumn = new Column(column, 'copyAttacks');
-        newColumn.addAttackFromBase(base);
-
-        this.columns.splice(index, 1, newColumn);
-
+    transfer(colId: number, target: ColumnList, keepOne = false) {
+        const [, removed] = this.remove(colId, keepOne);
+        if (!removed) return this;
+        
+        target.add(removed);
         return this;
     }
 
-    removeAttack(column: Column, attack: Attack) {
-        const index = this.columns.indexOf(column);
-        if (index === -1) return this;
-
-        const newColumn = new Column(column, 'copyAttacks');
-        newColumn.removeAttack(attack);
-
-        this.columns.splice(index, 1, newColumn);
-
-        return this;
-    }
-
-    setActiveAttack(column: Column, attack: Attack) {
-        const colIndex = this.columns.indexOf(column);
+    addAttackFromBase(colId: number, attack: PartialAttack) {
+        const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
-
-        const atkIndex = column.attacks.indexOf(attack);
-        if (atkIndex === -1) return this;
-
-        const newColumn = new Column(column, 'copyAttacks');
-        newColumn.setActiveAttack(attack);
-
-        this.columns.splice(colIndex, 1, newColumn);
+        const oldColumn = this.columns[colIndex];
+        const newColumn = new Column(oldColumn, 'copyAttacks');
+		
+        newColumn.addAttackFromBase(attack);
+		this.columns[colIndex] = newColumn;
 
         return this;
     }
 
-	transformAttack(column: Column, attack: Attack, modifier: (attack: Attack) => void) {
-        const colIndex = this.columns.indexOf(column);
+    removeAttack(colId: number, atkId: number) {
+        const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
         const newColumn = new Column(oldColumn, 'copyAttacks');
 
-        const atkIndex = newColumn.attacks.indexOf(attack);
+        const atkIndex = newColumn.attacks.findIndex(col => col.id === atkId);
         if (atkIndex === -1) return this;
-        const newAttack = Attack.fromBase(newColumn.attacks[atkIndex], true);
+        const attack = newColumn.attacks[atkIndex];
 		
-        modifier(newAttack);
-        
-        newColumn.attacks[atkIndex] = newAttack;
+		newColumn.addAttackFromBase(attack);
+		this.columns[colIndex] = newColumn;
+
+        return this;
+    }
+
+	setActiveAttack(colId: number, atkId: number) {
+        const colIndex = this.columns.findIndex(col => col.id === colId);
+        if (colIndex === -1) return this;
+        const oldColumn = this.columns[colIndex];
+        const newColumn = new Column(oldColumn, 'copyAttacks');
+
+        const atkIndex = newColumn.attacks.findIndex(col => col.id === atkId);
+        if (atkIndex === -1) return this;
+        const attack = newColumn.attacks[atkIndex];
+		
+		newColumn.setActiveAttack(attack);
 		this.columns[colIndex] = newColumn;
 
         return this;
 	}
 
-	transformAttacks(column: Column, modifier: (attack: Attack[]) => void) {
-        const colIndex = this.columns.indexOf(column);
+	transformAttack(colId: number, atkId: number, modifier: (attack: Attack) => void) {
+        const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn.attacks, 'copyData');
+        const newColumn = new Column(oldColumn, 'copyAttacks');
+
+        const atkIndex = newColumn.attacks.findIndex(col => col.id === atkId);
+        if (atkIndex === -1) return this;
+        const attack = Attack.fromBase(newColumn.attacks[atkIndex], true);
+		
+        modifier(attack);
+        
+        newColumn.attacks[atkIndex] = attack;
+		this.columns[colIndex] = newColumn;
+
+        return this;
+	}
+
+	transformAttacks(colId: number, modifier: (attack: Attack[]) => void) {
+        const colIndex = this.columns.findIndex(col => col.id === colId);
+        if (colIndex === -1) return this;
+        const oldColumn = this.columns[colIndex];
+        const newColumn = new Column(oldColumn, 'copyDataAndId');
 
 		modifier(newColumn.attacks);
 		

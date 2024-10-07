@@ -12,8 +12,8 @@ export default function DamageTypeRow(props: Readonly<{
 }>) {
 	return <>
 		<RowLabel label="Reaction" />
-		{props.columns.map((column, i) => <FormInput
-			key={i}
+		{props.columns.map(column => <FormInput
+			key={column.id}
 			class="damage-type"
 			value={`${column.active.reactionType},${column.active.reaction}`}
 			style={{
@@ -21,8 +21,8 @@ export default function DamageTypeRow(props: Readonly<{
 			}} 
 			onChange={value => props.dispatch({
 				type: 'modifyAttack',
-				column: props.columns[i],
-				attack: column.active,
+				colId: column.id,
+				atkId: column.active.id,
 				modifier: attack => {
 					[
 						attack.reactionType,

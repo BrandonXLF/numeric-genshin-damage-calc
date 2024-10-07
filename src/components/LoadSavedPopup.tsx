@@ -29,12 +29,12 @@ export default function LoadSavedPopup(props: Readonly<{
 	} ref={ref} modal>
 		<PopupHeader title="Load Columns" ref={ref} />
 		<div className="load-saved">
-			{props.closedColumns.map((column, i) => <div key={i}>
+			{props.closedColumns.map((column, i) => <div key={column.id}>
 				<SVGButton
 					label={column.first.label || `Saved Column ${i + 1}`}
 					onClick={() => props.dispatch({
 						type: 'load',
-						column: props.closedColumns[i]
+						colId: column.id
 					})}
 				/>
 			</div>)}

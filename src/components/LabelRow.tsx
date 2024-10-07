@@ -10,13 +10,13 @@ export default function LabelRow(props: Readonly<{
 }>) {
 	return <>
 		<RowLabel label="Label" />
-		{props.columns.map((column, i) => <FormInput
-			key={i}
+		{props.columns.map(column => <FormInput
+			key={column.id}
 			value={column.first.label}
 			onChange={value => props.dispatch({
 				type: 'modifyAttack',
-				column: props.columns[i],
-				attack: column.first,
+				colId: column.id,
+				atkId: column.first.id,
 				modifier: attack => {
 					attack.label = value;
 				}

@@ -14,19 +14,19 @@ export default function AttacksRow(props: Readonly<{
 }>) {
 	return <>
         <RowLabel label="Attack" desc="Individual damage instances that contribute to the final calculated damage" />
-		{props.columns.map((column, colIndex) => <div key={colIndex} className="form-width column-attacks">
+		{props.columns.map(column => <div key={column.id} className="form-width column-attacks">
             <AttackList
                 attacks={column.attacks}
                 active={column.activeIndex}
                 setActive={atkIndex => props.dispatch({
                     type: 'setActiveAttack',
-                    column,
-                    attack: column.attacks[atkIndex]
+                    colId: column.id,
+                    atkId: column.attacks[atkIndex].id
                 })}
                 deleteAttack={atkIndex => props.dispatch({
                     type: 'removeAttack',
-                    column,
-                    attack: column.attacks[atkIndex]
+                    colId: column.id,
+                    atkId: column.attacks[atkIndex].id
                 })}
             />
             <SVGButton
@@ -36,7 +36,7 @@ export default function AttacksRow(props: Readonly<{
                 hideLabel
                 onClick={() => props.dispatch({
                     type: 'addAttackFromBase',
-                    column,
+                    colId: column.id,
                     attack: column.last
                 })}
             />
