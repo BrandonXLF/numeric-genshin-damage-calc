@@ -13,8 +13,19 @@ export default function AttrStatInput(props: Readonly<{
 	attack: Attack;
 	onChange: (name: keyof StatData, val?: string) => void,
 }>) {
-	const activeAttributes = attributes.filter(attr => getAttrStat(props.stat.prop, attr) in props.attack.statData);
-	const inactiveAttributes = attributes.filter(attr => !(getAttrStat(props.stat.prop, attr) in props.attack.statData));
+	const [
+		activeAttributes,
+		inactiveAttributes
+	] = attributes.reduce(
+		(accum, attr) => {
+			accum[(getAttrStat(props.stat.prop, attr) in props.attack.statData) ? 0 : 1].push(attr);
+			return accum;
+		},
+		[
+			[] as (typeof attributes)[number][],
+			[] as (typeof attributes)[number][]
+		]
+	);
 	
 	if (!activeAttributes.length) {
 		const attr = inactiveAttributes.shift()!;
