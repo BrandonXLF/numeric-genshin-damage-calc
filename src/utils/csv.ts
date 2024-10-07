@@ -7,9 +7,9 @@ import damageTypes from "./damageTypes";
 import displayDamage from "./displayDamage";
 import stats from "./stats";
 import { parse } from "csv-parse/browser/esm/sync";
-import ColumnListUtils from "./ColumnListUtils";
 import attributes, { getAttrStat } from "./attributes";
 import statSections from "./statSections";
+import ColumnList from "./ColumnList";
 
 function generateRow(
     columns: Column[],
@@ -155,7 +155,7 @@ export function csvImport(str: string) {
 		storedAttack.statData = Object.fromEntries(Object.entries(object).filter(([,val]) => val !== '-'));
 
 		storedColumns[storedColumns.length - 1].attacks.push(
-			ColumnListUtils.createAttack(storedAttack)
+			ColumnList.createAttack(storedAttack)
 		);
 
 		lastAttackNum = attackNum;

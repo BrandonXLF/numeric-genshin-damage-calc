@@ -35,7 +35,7 @@ export default function AttacksRow(props: Readonly<{
                 mini
                 hideLabel
                 onClick={() => props.dispatch({
-                    type: 'addAttack',
+                    type: 'addAttackFromBase',
                     column,
                     attack: column.last
                 })}

@@ -14,10 +14,11 @@ export default function LabelRow(props: Readonly<{
 			key={i}
 			value={column.first.label}
 			onChange={value => props.dispatch({
-				type: 'modify',
+				type: 'modifyAttack',
 				column: props.columns[i],
-				modifier: column => {
-					column.first.label = value;
+				attack: column.first,
+				modifier: attack => {
+					attack.label = value;
 				}
 			})}
 		/>)}

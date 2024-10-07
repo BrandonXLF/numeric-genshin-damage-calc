@@ -18,7 +18,7 @@ export default function TopButtonRow(props: Readonly<{
 			title="Add Column"
 			onClick={() => props.dispatch({type: 'addEmpty'})}
 		/>
-		<LoadSavedPopup closedColumns={props.state.closed} dispatch={props.dispatch} />
+		<LoadSavedPopup closedColumns={props.state.closed.columns} dispatch={props.dispatch} />
 		<ImportPopup dispatch={props.dispatch} />
 		<ExportPopup state={props.state} />
 	</div>;

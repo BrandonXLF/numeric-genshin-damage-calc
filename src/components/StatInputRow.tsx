@@ -36,13 +36,13 @@ export default function StatInputRow(props: Readonly<{
 	
 	function onChange(colIndex: number, atkIndex: number, prop: keyof StatData, value?: string) {
 		props.dispatch({
-			type: 'modify',
+			type: 'modifyAttacks',
 			column: props.columns[colIndex],
-			modifier: (column: Column) => {
-				if (column.first.synced.includes(prop)) {
-					column.attacks.forEach(attack => updateAttack(attack, prop, value));
+			modifier: attacks => {
+				if (attacks[0].synced.includes(prop)) {
+					attacks.forEach(attack => updateAttack(attack, prop, value));
 				} else {
-					updateAttack(column.attacks[atkIndex], prop, value);
+					updateAttack(attacks[atkIndex], prop, value);
 				}
 			}
 		});
@@ -50,16 +50,16 @@ export default function StatInputRow(props: Readonly<{
 
 	function setSynced(colIndex: number, prop: keyof StatData, synced: boolean, value?: StatValue) {	
 		props.dispatch({
-			type: 'modify',
+			type: 'modifyAttacks',
 			column: props.columns[colIndex],
-			modifier: column => {
-				if (synced && !column.first.synced.includes(prop)) {
-					column.first.synced.push(prop);
+			modifier: attacks => {
+				if (synced && !attacks[0].synced.includes(prop)) {
+					attacks[0].synced.push(prop);
 					return;
 				}
 		
 				if (synced) {
-					column.attacks.forEach(attack => {
+					attacks.forEach(attack => {
 						attack.statData[prop] = value as StatValue;
 						attack.unmodified = false;
 					});
@@ -67,7 +67,7 @@ export default function StatInputRow(props: Readonly<{
 					return;
 				}
 				
-				column.first.synced = column.first.synced.filter(syncedProp => syncedProp !== prop);
+				attacks[0].synced = attacks[0].synced.filter(syncedProp => syncedProp !== prop);
 			}
 		});
 	}

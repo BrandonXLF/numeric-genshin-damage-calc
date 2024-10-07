@@ -1,12 +1,12 @@
 import Attack from "../types/Attack";
 import ImportedCharacter from "../types/ImportedCharacter";
 import Column from "./Column";
-import ColumnListUtils from "./ColumnListUtils";
+import ColumnList from "./ColumnList";
 import elements from "./elements";
 
 export interface ColumnState {
-	shown: Column[];
-	closed: Column[];
+	shown: ColumnList;
+	closed: ColumnList;
 }
 
 export type ColumnStateAction = {
@@ -35,7 +35,7 @@ export type ColumnStateAction = {
 	column: Column,
 	attack: Attack
 } | {
-	type: 'addAttack',
+	type: 'addAttackFromBase',
 	column: Column,
 	attack: Attack
 } | {
@@ -43,9 +43,14 @@ export type ColumnStateAction = {
 	column: Column,
 	attack: Attack
 } | {
-	type: 'modify',
+	type: 'modifyAttack',
 	column: Column,
-	modifier: (column: Column) => void
+	attack: Attack,
+	modifier: (column: Attack) => void
+} | {
+	type: 'modifyAttacks',
+	column: Column,
+	modifier: (column: Attack[]) => void
 };
 
 export default function columnListReducer(oldState: ColumnState, action: ColumnStateAction) {
@@ -53,39 +58,42 @@ export default function columnListReducer(oldState: ColumnState, action: ColumnS
 
 	switch (action.type) {
 		case 'add':
-			state.shown = ColumnListUtils.transfer(state.shown, ...action.columns);
+			state.shown = state.shown.clone().add(...action.columns);
 			break;
 		case 'addEmpty':
-			state.shown = ColumnListUtils.add(state.shown);
+			state.shown = state.shown.clone().addEmpty();
 			break;
 		case 'duplicate':
-			state.shown =  ColumnListUtils.duplicate(state.shown, action.column);
+			state.shown = state.shown.clone().duplicate(action.column);
 			break;
 		case 'remove':
-			state.shown =  ColumnListUtils.remove(state.shown, action.column, true);
+			state.shown = state.shown.clone().remove(action.column, true);
 			break;
 		case 'load':
-			state.shown = ColumnListUtils.transfer(state.shown, action.column);
-			state.closed =  ColumnListUtils.remove(state.closed, action.column);
+			state.shown = state.shown.clone().add(action.column);
+			state.closed = state.closed.clone().remove(action.column);
 			break;
 		case 'unload':
-			state.closed = ColumnListUtils.transfer(state.closed, action.column);
-			state.shown =  ColumnListUtils.remove(state.shown, action.column, true);
+			state.closed = state.closed.clone().add(action.column);
+			state.shown = state.shown.clone().remove(action.column, true);
 			break;
 		case 'import':
-			state.shown = ColumnListUtils.import(state.shown, action.build, action.element);
+			state.shown = state.shown.clone().import(action.build, action.element);
 			break;
-		case 'addAttack':
-			state.shown = ColumnListUtils.addAttack(state.shown, action.column, action.attack);
+		case 'addAttackFromBase':
+			state.shown = state.shown.clone().addAttackFromBase(action.column, action.attack);
 			break;
 		case 'removeAttack':
-			state.shown = ColumnListUtils.removeAttack(state.shown, action.column, action.attack);
+			state.shown = state.shown.clone().removeAttack(action.column, action.attack);
 			break;
 		case 'setActiveAttack':
-			state.shown = ColumnListUtils.setActiveAttack(state.shown, action.column, action.attack);
+			state.shown = state.shown.clone().setActiveAttack(action.column, action.attack);
 			break;
-		case 'modify':
-			state.shown = ColumnListUtils.modify(state.shown, action.column, action.modifier);
+		case 'modifyAttack':
+			state.shown = state.shown.clone().transformAttack(action.column, action.attack, action.modifier);
+			break;
+		case 'modifyAttacks':
+			state.shown = state.shown.clone().transformAttacks(action.column, action.modifier);
 	}
 
 	return state;

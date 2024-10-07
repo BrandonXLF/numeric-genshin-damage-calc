@@ -20,12 +20,13 @@ export default function DamageTypeRow(props: Readonly<{
 				color: DamageCalculator.reactionTypes[column.active.reactionType].reactions[column.active.reaction]?.color ?? 'white'
 			}} 
 			onChange={value => props.dispatch({
-				type: 'modify',
+				type: 'modifyAttack',
 				column: props.columns[i],
-				modifier: column => {
+				attack: column.active,
+				modifier: attack => {
 					[
-						column.active.reactionType,
-						column.active.reaction
+						attack.reactionType,
+						attack.reaction
 					] = value.split(',').map(Number);
 				}
 			})}

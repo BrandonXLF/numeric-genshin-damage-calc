@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useReducer } from "react";
-import DamageCalculator from "../utils/DamageCalculator";
 import DamageOutputRow from "./DamageOutputRow";
 import DamageTypeRow from "./DamageTypeRow";
 import HeadingRow from "./HeadingRow";
@@ -11,28 +10,22 @@ import statSections from "../utils/statSections";
 import CalculatorSection from "./CalculatorSection";
 import LabelRow from "./LabelRow";
 import damageTypes from "../utils/damageTypes";
-import ColumnListUtils from "../utils/ColumnListUtils";
 import columnListReducer from "../utils/columnListReducer";
+import ColumnStorage from "../utils/ColumnStorage";
+import DamageCalculator from "../utils/DamageCalculator";
 
 export default function CalculatorForm() {
-	let [columnState, dispatchColumnState] = useReducer(columnListReducer, {
-		shown: ColumnListUtils.loadFromStorage(true, true),
-		closed: ColumnListUtils.loadFromStorage(false)
-	});
-	const columns = columnState.shown;
-	
-	let columnDamages = useMemo(() => columns.map(column => {
+	let [columnState, dispatchColumnState] = useReducer(columnListReducer, undefined, () => ColumnStorage.load());
+	useEffect(() => ColumnStorage.save(columnState), [columnState]);
+
+	const columns = columnState.shown.columns;
+	const columnDamages = useMemo(() => columns.map(column => {
 		let damages = column.attacks.map(
 			({statData, reactionType, reaction}) => new DamageCalculator(statData, reactionType, reaction).calculateDamage()
 		);
 
 		return { items: damages, activeIndex: column.activeIndex };
 	}), [columns]);
-	
-	useEffect(
-		() => ColumnListUtils.saveToStorage(columns, columnState.closed),
-		[columns, columnState.closed]
-	);
 
 	return <section className="form-section">
 		<TopButtonRow state={columnState} dispatch={dispatchColumnState} />

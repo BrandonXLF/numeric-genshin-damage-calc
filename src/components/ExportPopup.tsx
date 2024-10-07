@@ -17,8 +17,8 @@ export default function ExportPopup(props: Readonly<{
     function runExport() {
         const str = csvExport(
             includeClosed
-                ? [...props.state.shown, ...props.state.closed]
-                : props.state.shown
+                ? [...props.state.shown.columns, ...props.state.closed.columns]
+                : props.state.shown.columns
         );
 
         const blob = new Blob([str], {
