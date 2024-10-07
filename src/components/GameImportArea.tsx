@@ -9,12 +9,14 @@ import { ColumnStateAction } from "../types/ColumnState";
 import EnkaImporter, { EnkaImporterError } from "../utils/EnkaImporter";
 import AsyncContent from "./AsyncContent";
 
+type UIDSearchInstance = {uid: string};
+
 export default function GameImportArea(props: Readonly<{
 	closeAndDispatch: React.Dispatch<ColumnStateAction>;
 }>) {
     const [inProgressUID, setInProgressUID] = React.useState<string>(localStorage.getItem('GIDC-uid') ?? '');
     const [element, setElement] = React.useState<typeof elements[number] | ''>('');
-    const [uid, setUid] = React.useState<string | undefined>(undefined);
+    const [uid, setUid] = React.useState<UIDSearchInstance | undefined>(undefined);
     const [profile, setProfile] = React.useState<{
         builds: ImportedCharacter[],
         user: { name: string; icon: Promise<JSX.Element>; }
@@ -32,7 +34,7 @@ export default function GameImportArea(props: Readonly<{
 
         (async () => {
             try {
-                setProfile(await EnkaImporter.getProfile(uid));
+                setProfile(await EnkaImporter.getProfile(uid.uid));
             } catch (e) {
                 if (!(e instanceof EnkaImporterError)) throw e;
                 
@@ -58,7 +60,10 @@ export default function GameImportArea(props: Readonly<{
                 <SVGButton
                     svg={<SearchSVG />}
                     label="Search"
-                    onClick={() => setUid(inProgressUID)}
+                    onClick={() => {
+                        setUid({uid: inProgressUID});
+                        setProfile(undefined);
+                    }}
                     mini
                 />
             </div>
@@ -125,6 +130,6 @@ export default function GameImportArea(props: Readonly<{
                 No builds found. Make sure character details are shown in-game.
             </div>
         </div>}
-        {!error && uid && !profile?.builds && <div>Loading...</div>}
+        {!error && uid && !profile && <div>Loading...</div>}
     </div>;
 }
