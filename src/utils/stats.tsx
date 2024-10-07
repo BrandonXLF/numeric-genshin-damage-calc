@@ -295,8 +295,4 @@ const stats: Stat[] = [
 
 export const attrStats = stats.filter(stat => stat.usesAttrs);
 
-export const statTypes = Object.fromEntries(
-	stats.map(stat => [stat.prop, stat.type])
-);
-
 export default stats;

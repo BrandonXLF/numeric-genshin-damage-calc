@@ -8,7 +8,7 @@ import ValueData from "../types/ValueData";
 import evaluateExpression from "./evalulateExpression";
 import stats from "./stats";
 import transformativeLevelMultipliers from "./transformativeLevelMultipliers";
-import Stat from "../types/Stat";
+import Stat, { StatTypes } from "../types/Stat";
 import attributes, { getAttrStat } from "./attributes";
 import MathComponent from "../types/MathComponent";
 import Attack from "./Attack";
@@ -199,7 +199,7 @@ export default class DamageCalculator {
 
 		attributes.forEach(attr => {
 			const attrStat = getAttrStat(stat.prop, attr);
-			const value = this.attack.getStatValue(attrStat);
+			const value = this.attack.getStatValue(attrStat, stat.type);
 			const varName = `${stat.prop}${attr}Scaling` as keyof ValueData;
 			const eqName = `${stat.prop}${attr}` as keyof EquationData;
 			
@@ -338,7 +338,7 @@ export default class DamageCalculator {
 			},
 			transformativeLevelMultiplier: {
 				name: 'Level Multiplier',
-				value: transformativeLevelMultipliers[this.attack.getStatValue('characterLevel')] ?? NaN
+				value: transformativeLevelMultipliers[this.attack.getStatValue('characterLevel', StatTypes.Number)] ?? NaN
 			}
 		} as ValueData;
 
@@ -348,7 +348,7 @@ export default class DamageCalculator {
 
 			this.values![stat.prop] = {
 				name: stat.name,
-				value: this.attack.getStatValue(stat.prop)
+				value: this.attack.getStatValue(stat.prop, stat.type)
 			};
 		});
 
