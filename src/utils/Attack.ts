@@ -53,6 +53,8 @@ export default class Attack implements PartialAttack {
 			return attack;
 		}
 
+		let unmodified = attack.unmodified;
+
         stats.forEach(stat => {
             if (stat.usesAttrs) {
                 let anyFound = false;
@@ -81,6 +83,7 @@ export default class Attack implements PartialAttack {
             attack.setStat(stat.prop, value ?? stat.default.toString());
         });
         
+		attack._unmodified = unmodified;
         return attack;
     }
 
