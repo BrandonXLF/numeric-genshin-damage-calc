@@ -44,7 +44,7 @@ export default class Attack implements PartialAttack {
 			base?.reaction ?? 0,
             base?.label ?? '',
 			copyDataAndId ? {...(base as Attack).statData} : {} as StatData,
-            base?.synced ? [...base.synced] : [],
+            base?.synced ? [...base.synced] : ['characterLevel'],
             base === undefined ? true : (base.unmodified ?? false),
 			copyDataAndId ? (base as Attack).id : undefined
         );
