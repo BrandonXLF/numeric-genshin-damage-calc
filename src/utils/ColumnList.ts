@@ -158,7 +158,7 @@ export default class ColumnList {
 
         const atkIndex = newColumn.attacks.findIndex(col => col.id === atkId);
         if (atkIndex === -1) return this;
-        const attack = Attack.fromBase(newColumn.attacks[atkIndex], true);
+        const attack = new Attack(newColumn.attacks[atkIndex], true);
 		
         modifier(attack);
         

@@ -33,7 +33,7 @@ export default class Column {
     }
 
     addAttackFromBase(base?: PartialAttack, copyDataAndId = false) {
-        this.attacks.push(Attack.fromBase(base, copyDataAndId));
+        this.attacks.push(new Attack(base, copyDataAndId));
         this._activeIndex = this.attacks.length - 1;
     }
 

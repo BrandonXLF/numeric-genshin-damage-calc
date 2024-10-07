@@ -9,36 +9,32 @@ import IDGenerator from "./IDGenerator";
 import PartialAttack, { StoredAttack } from "../types/PartialAttack";
 
 export default class Attack implements PartialAttack {
-	private readonly calculator = new DamageCalculator(this);
+	readonly id: number;
+    
+    private readonly calculator = new DamageCalculator(this);
 	private dmgCache?: Damage;
-	private invalidateDmgCache = true;
-
-    constructor(
-        private _reactionType: number,
-        private _reaction: number,
-        private _label: string,
-        private _statData: StatData,
-        private _synced: string[],
-        private _unmodified: boolean = true,
-		public readonly id = IDGenerator.generate()
-    ) {}
 	
-	static fromBase(base?: PartialAttack, copyDataAndId = false) {
-        let attack = new this(
-            base?.reactionType ?? 0,
-			base?.reaction ?? 0,
-            base?.label ?? '',
-			copyDataAndId ? {...(base as Attack).statData} : {} as StatData,
-            base?.synced ? [...base.synced] : ['characterLevel'],
-            base === undefined ? true : (base.unmodified ?? false),
-			copyDataAndId ? (base as Attack).id : undefined
-        );
+    private invalidateDmgCache = true;
+    private _reactionType: number;
+    private _reaction: number;
+    private _label: string;
+    private _statData: StatData;
+    private _synced: string[];
+    private _unmodified: boolean = true;
+
+    constructor(base?: PartialAttack, copyDataAndId = false) {
+        this._reactionType = base?.reactionType ?? 0;
+        this._reaction = base?.reaction ?? 0;
+        this._label = base?.label ?? '';
+        this._statData = copyDataAndId ? {...(base as Attack).statData} : {} as StatData;
+        this._synced = base?.synced ? [...base.synced] : ['characterLevel'];
+        this._unmodified = base === undefined ? true : (base.unmodified ?? false);
+        
+        this.id = copyDataAndId ? (base as Attack).id : IDGenerator.generate();
         
 		if (copyDataAndId) {
-			return attack;
+			return;
 		}
-
-		let unmodified = attack.unmodified;
 
         stats.forEach(stat => {
             if (stat.usesAttrs) {
@@ -52,8 +48,7 @@ export default class Attack implements PartialAttack {
                     
                     if (!value) return;
                 
-                    attack.setStat(prop, value);
-   
+                    this._statData[prop] = value;
                     anyFound = true;
                 });
                 
@@ -65,11 +60,8 @@ export default class Attack implements PartialAttack {
                 ? base.getStat(stat.prop)
                 : base?.statData?.[stat.prop];
 
-            attack.setStat(stat.prop, value ?? stat.default.toString());
+            this._statData[stat.prop] = value ?? stat.default.toString();
         });
-        
-		attack._unmodified = unmodified;
-        return attack;
     }
 
     getStat(name: keyof StatData) {
