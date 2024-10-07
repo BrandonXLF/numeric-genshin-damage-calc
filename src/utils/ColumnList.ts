@@ -28,7 +28,7 @@ export default class ColumnList {
 		return this.columns.slice(0, this.cleanLength);
 	}
 
-	add(...columns: Column[]) {
+	add(...columns: [Column, ...Column[]]) {
         this.clean();
 		this.columns.push(...columns);
 
