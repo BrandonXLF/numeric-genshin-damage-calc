@@ -4,12 +4,13 @@ import stats from "../utils/stats";
 import HeadingRow from "./HeadingRow";
 import StatInputRow from "./StatInputRow";
 import { useEffect, useRef } from "react";
+import { ColumnStateAction } from "../utils/columnListReducer";
 
 export default function CalculatorSection(props: Readonly<{
 	section: StatSection,
 	headerSpan: number,
 	columns: Column[],
-	setColumns: (value: React.SetStateAction<Column[]>) => void
+	dispatch: React.Dispatch<ColumnStateAction>;
 }>) {
 	const heading = useRef<HTMLHeadingElement>(null);
 	const headingLevel = props.section.sub ? 3 : 2;
@@ -23,7 +24,7 @@ export default function CalculatorSection(props: Readonly<{
 	return <>
 		<HeadingRow ref={heading} title={props.section.name} span={props.headerSpan} level={headingLevel} />
 		{stats.filter(stat => stat.section === props.section.value).map(stat =>
-			<StatInputRow key={stat.prop} stat={stat} columns={props.columns} setColumns={props.setColumns} />
+			<StatInputRow key={stat.prop} stat={stat} columns={props.columns} dispatch={props.dispatch} />
 		)}
 	</>;
 }

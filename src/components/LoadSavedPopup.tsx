@@ -6,13 +6,11 @@ import '../less/LoadSavedPopup.less';
 import LoadSVG from "../svgs/LoadSVG";
 import Column from "../utils/Column";
 import PopupHeader from "./PopupHeader";
-import ColumnListUtils from "../utils/ColumnListUtils";
+import { ColumnStateAction } from "../utils/columnListReducer";
 
 export default function LoadSavedPopup(props: Readonly<{
-	columns: Column[];
-	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
 	closedColumns: Column[];
-	setClosedColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+	dispatch: React.Dispatch<ColumnStateAction>;
 }>) {
 	const ref = React.useRef<PopupActions>(null);
 	
@@ -34,12 +32,10 @@ export default function LoadSavedPopup(props: Readonly<{
 			{props.closedColumns.map((column, i) => <div key={i}>
 				<SVGButton
 					label={column.first.label || `Saved Column ${i + 1}`}
-					onClick={() => {
-						let chosenColumn = props.closedColumns[i];
-
-						props.setColumns(columns => ColumnListUtils.transfer(columns, chosenColumn));
-						props.setClosedColumns(closedColumns => ColumnListUtils.remove(closedColumns, chosenColumn));
-					}}
+					onClick={() => props.dispatch({
+						type: 'load',
+						column: props.closedColumns[i]
+					})}
 				/>
 			</div>)}
 		</div>

@@ -13,11 +13,12 @@ import SyncSVG from "../svgs/SyncSVG";
 import "../less/StatInputRow.less";
 import Attack from "../types/Attack";
 import SVGButton from "./SVGButton";
+import { ColumnStateAction } from "../utils/columnListReducer";
 
 export default function StatInputRow(props: Readonly<{
 	stat: Stat,
 	columns: Column[],
-	setColumns: (value: React.SetStateAction<Column[]>) => void
+	dispatch: React.Dispatch<ColumnStateAction>;
 }>) {
 	let anyEnabled = false;
 
@@ -28,42 +29,47 @@ export default function StatInputRow(props: Readonly<{
 		if (value === undefined)
 			delete attack.statData[prop];
 		else
-			attack.statData[prop]!.number = value;
+			attack.statData[prop].number = value;
 
 		attack.unmodified = false;
 	}
 	
 	function onChange(colIndex: number, atkIndex: number, prop: keyof StatData, value?: string) {
-		const newColumns = [...props.columns];
-		const column = newColumns[colIndex];
-		
-		if (column.first.synced.includes(prop)) {
-			column.attacks.forEach(attack => updateAttack(attack, prop, value));
-		} else {
-			updateAttack(column.attacks[atkIndex], prop, value);
-		}
-		
-		props.setColumns(newColumns);
+		props.dispatch({
+			type: 'modify',
+			column: props.columns[colIndex],
+			modifier: (column: Column) => {
+				if (column.first.synced.includes(prop)) {
+					column.attacks.forEach(attack => updateAttack(attack, prop, value));
+				} else {
+					updateAttack(column.attacks[atkIndex], prop, value);
+				}
+			}
+		});
 	}
 
-	function setSynced(colIndex: number, prop: keyof StatData, synced: boolean, value?: StatValue) {
-		let newColumns = [...props.columns];
+	function setSynced(colIndex: number, prop: keyof StatData, synced: boolean, value?: StatValue) {	
+		props.dispatch({
+			type: 'modify',
+			column: props.columns[colIndex],
+			modifier: column => {
+				if (synced && !column.first.synced.includes(prop)) {
+					column.first.synced.push(prop);
+					return;
+				}
 		
-		if (synced && !newColumns[colIndex].first.synced.includes(prop)) {
-			newColumns[colIndex].first.synced.push(prop);
-		}
+				if (synced) {
+					column.attacks.forEach(attack => {
+						attack.statData[prop] = value as StatValue;
+						attack.unmodified = false;
+					});
 
-		if (synced)
-			newColumns[colIndex].attacks.forEach(attack => {
-				attack.statData[prop] = value as StatValue;
-				attack.unmodified = false;
-			});
-		
-		if (!synced) {
-			newColumns[colIndex].first.synced = newColumns[colIndex].first.synced.filter(syncedProp => syncedProp !== prop);
-		}
-
-		props.setColumns(newColumns);
+					return;
+				}
+				
+				column.first.synced = column.first.synced.filter(syncedProp => syncedProp !== prop);
+			}
+		});
 	}
 	
 	let statInputs = props.columns.map((column, colIndex) => {

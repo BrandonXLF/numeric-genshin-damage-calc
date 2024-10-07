@@ -3,22 +3,22 @@ import Popup from "reactjs-popup";
 import { PopupActions } from "reactjs-popup/dist/types";
 import SVGButton from "./SVGButton";
 import '../less/ExportPopup.less';
-import Column from "../utils/Column";
 import PopupHeader from "./PopupHeader";
 import ExportSVG from "../svgs/ExportSVG";
 import { csvExport } from "../utils/csv";
+import { ColumnState } from "../utils/columnListReducer";
 
 export default function ExportPopup(props: Readonly<{
-	columns: Column[],
-    closedColumns: Column[]
+	state: ColumnState;
 }>) {
 	const ref = React.useRef<PopupActions>(null);
     const [includeClosed, setIncludeClosed] = useState(false);
 
     function runExport() {
-        const str = csvExport(includeClosed
-            ? [...props.columns, ...props.closedColumns]
-            : props.columns
+        const str = csvExport(
+            includeClosed
+                ? [...props.state.shown, ...props.state.closed]
+                : props.state.shown
         );
 
         const blob = new Blob([str], {

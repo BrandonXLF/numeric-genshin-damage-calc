@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
 import '../less/GameImportArea.less';
-import Column from "../utils/Column";
 import elements, { elementColors, energyTypeElementMap } from "../utils/elements";
 import SVGButton from "./SVGButton";
 import ImportedCharacter, { EnkaBuild, EnkaShown } from "../types/ImportedCharacter";
 import FormInput from "./FormInput";
 import SearchSVG from "../svgs/SearchSVG";
-import ColumnListUtils from "../utils/ColumnListUtils";
 import ProfilePhoto from "./ProfilePhoto";
 import { getIcon, getName } from "../utils/charInfo";
+import { ColumnStateAction } from "../utils/columnListReducer";
 
 export default function GameImportArea(props: Readonly<{
-	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+	closeAndDispatch: React.Dispatch<ColumnStateAction>;
 }>) {
     const [inProgressUID, setInProgressUID] = React.useState<string>(localStorage.getItem('GIDC-uid') ?? '');
     const [element, setElement] = React.useState<typeof elements[number] | ''>('');
@@ -133,7 +132,11 @@ export default function GameImportArea(props: Readonly<{
                     <SVGButton
                         svg={build.icon}
                         label={build.name}
-                        onClick={() => props.setColumns(columns => ColumnListUtils.import(columns, build, element))}
+                        onClick={() => props.closeAndDispatch({
+                            type: 'import',
+                            build: build,
+                            element: element
+                        })}
                         style={{ color: elementColors[element || build.element] }}
                     />
                 </div>)}

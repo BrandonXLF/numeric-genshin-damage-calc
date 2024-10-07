@@ -237,4 +237,9 @@ export default class ColumnListUtils {
 
         return newColumns;
     }
+
+    static modify(columns: Column[], column: Column, modifier: (column: Column) => void) {
+        modifier(column);   
+        return [...columns];
+    }
 }

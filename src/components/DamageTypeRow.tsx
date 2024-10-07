@@ -4,10 +4,11 @@ import Column from "../utils/Column";
 import RowLabel from "./RowLabel";
 import FormInput from "./FormInput";
 import '../less/DamageTypeRow.less';
+import { ColumnStateAction } from "../utils/columnListReducer";
 
 export default function DamageTypeRow(props: Readonly<{
 	columns: Column[];
-	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+	dispatch: React.Dispatch<ColumnStateAction>;
 }>) {
 	return <>
 		<RowLabel label="Reaction" />
@@ -16,20 +17,18 @@ export default function DamageTypeRow(props: Readonly<{
 			class="damage-type"
 			value={`${column.active.reactionType},${column.active.reaction}`}
 			style={{
-				color: DamageCalculator.reactionTypes[column.active.reactionType].reactions[column.active.reaction].color ?? 'white'
+				color: DamageCalculator.reactionTypes[column.active.reactionType].reactions[column.active.reaction]?.color ?? 'white'
 			}} 
-			onChange={value => {
-				let newColumns = [...props.columns];
-				
-				[
-					newColumns[i].active.reactionType,
-					newColumns[i].active.reaction
-				] = value.split(',').map(Number);
-				
-				newColumns[i].active.unmodified = false;
-			
-				props.setColumns(newColumns);
-			}}
+			onChange={value => props.dispatch({
+				type: 'modify',
+				column: props.columns[i],
+				modifier: column => {
+					[
+						column.active.reactionType,
+						column.active.reaction
+					] = value.split(',').map(Number);
+				}
+			})}
 			options={
 				DamageCalculator.reactionTypes.map((damageType, i) => ({
 					label: damageType.name,

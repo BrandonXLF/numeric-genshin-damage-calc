@@ -7,11 +7,11 @@ import Column from "../utils/Column";
 import PopupHeader from "./PopupHeader";
 import ImportSVG from "../svgs/ImportSVG";
 import GameImportArea from "./GameImportArea";
-import ColumnListUtils from "../utils/ColumnListUtils";
 import { csvImport } from "../utils/csv";
+import { ColumnStateAction } from "../utils/columnListReducer";
 
 export default function ImportPopup(props: Readonly<{
-	setColumns: React.Dispatch<React.SetStateAction<Column[]>>;
+	dispatch: React.Dispatch<ColumnStateAction>;
 }>) {
 	const ref = React.useRef<PopupActions>(null);
 	const [fileImportError, setFileImportError] = useState<string | undefined>();
@@ -33,7 +33,10 @@ export default function ImportPopup(props: Readonly<{
 		}
 		
 		ref.current?.close();
-		props.setColumns(columns => ColumnListUtils.transfer(columns, ...importedColumns));
+		props.dispatch({
+			type: 'add',
+			columns: importedColumns
+		});
 	}
 	
 	return <Popup trigger={
@@ -48,9 +51,9 @@ export default function ImportPopup(props: Readonly<{
 			{fileImportError && <div>Error: {fileImportError}</div>}
 			<hr className="import-sep" />
 			<h3>In-Game Stats</h3>
-			<GameImportArea setColumns={columns => {
+			<GameImportArea closeAndDispatch={action => {
 				ref.current?.close();
-				props.setColumns(columns);
+				props.dispatch(action);
 			}} />
 		</div>
 	</Popup>
