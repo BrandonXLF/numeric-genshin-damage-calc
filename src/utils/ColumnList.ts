@@ -134,7 +134,7 @@ export default class ColumnList {
         if (atkIndex === -1) return this;
         const attack = newColumn.attacks[atkIndex];
 		
-		newColumn.addAttackFromBase(attack);
+		newColumn.removeAttack(attack);
 		this.columns[colIndex] = newColumn;
 
         return this;
