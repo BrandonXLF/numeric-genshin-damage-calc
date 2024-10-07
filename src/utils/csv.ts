@@ -1,4 +1,4 @@
-import { stringify } from "csv-stringify/browser/esm/sync";
+import { stringify } from "csv-stringify/dist/esm/sync";
 import Attack from "./Attack";
 import Stat, { StatType } from "../types/Stat";
 import Column from "./Column";
@@ -6,7 +6,7 @@ import DamageCalculator from "./DamageCalculator";
 import damageTypes from "./damageTypes";
 import displayDamage from "./displayDamage";
 import stats from "./stats";
-import { parse } from "csv-parse/browser/esm/sync";
+import { parse } from "csv-parse/dist/esm/sync";
 import attributes, { getAttrStat } from "./attributes";
 import statSections from "./statSections";
 import { StoredAttack } from "../types/PartialAttack";
@@ -102,6 +102,8 @@ export function csvExport(columns: Column[]) {
 				if (atkIndex !== 0) return '';
 
 				const damage = column.attacks.reduce((prev, curr) => prev + (curr.damage[damageType.prop]?.value ?? NaN), 0);
+
+				if (Number.isNaN(damage)) return '\u2014';
 				return displayDamage(damage);
 			}
 		));

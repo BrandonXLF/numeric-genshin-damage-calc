@@ -23,7 +23,7 @@
 	"scripts": {
 		"start": "react-scripts-less start",
 		"build": "react-scripts-less build",
-		"test": "react-scripts-less test --transformIgnorePatterns \"node_modules/(?!fparser)/\""
+		"test": "react-scripts-less test --transformIgnorePatterns \"node_modules/(?!fparser|csv-stringify)/\""
 	},
 	"eslintConfig": {
 		"extends": [
