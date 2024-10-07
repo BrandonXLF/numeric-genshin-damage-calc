@@ -19,7 +19,6 @@ type StatData = {
 	talentDamageBonusDEF?: string;
 	talentDamageBonusHP?: string;
 	talentDamageBonusEM?: string;
-	talentScale: string;
 	baseDamageMultiplier: string;
 	flatDamage: string;
 	damageBonus: string;
