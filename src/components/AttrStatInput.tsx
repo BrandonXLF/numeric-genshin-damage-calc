@@ -1,7 +1,6 @@
 import StatInput from "./StatInput";
-import Attack from "../types/Attack";
+import Attack from "../utils/Attack";
 import Stat from "../types/Stat";
-import StatValue from "../utils/StatValue";
 import StatData from "../types/StatData";
 import attributes, { getAttrStat } from "../utils/attributes";
 import AddSVG from "../svgs/AddSVG";
@@ -18,7 +17,7 @@ export default function AttrStatInput(props: Readonly<{
 		inactiveAttributes
 	] = attributes.reduce(
 		(accum, attr) => {
-			accum[(getAttrStat(props.stat.prop, attr) in props.attack.statData) ? 0 : 1].push(attr);
+			accum[props.attack.hasStat(getAttrStat(props.stat.prop, attr)) ? 0 : 1].push(attr);
 			return accum;
 		},
 		[
@@ -31,13 +30,13 @@ export default function AttrStatInput(props: Readonly<{
 		const attr = inactiveAttributes.shift()!;
 
 		activeAttributes.push(attr);
-		props.attack.statData[getAttrStat(props.stat.prop, attr)] = new StatValue(props.stat.default.toString(), props.stat.type);
+		props.attack.setStat(getAttrStat(props.stat.prop, attr), props.stat.default.toString());
 	}
 	
 	return <div className="attr-inputs">
 		{activeAttributes.map(attr =>  {
 			const prop = getAttrStat(props.stat.prop, attr);
-			const value = props.attack.statData[prop]!.number;
+			const value = props.attack.getStat(prop) ?? '';
 			
 			const types: { name: string; value?: string; disabled?: boolean; }[] = attributes.map(optionAttr => ({
 				name: optionAttr,
@@ -55,10 +54,16 @@ export default function AttrStatInput(props: Readonly<{
 				unit={attr}
 				unitOptions={types}
 				onUnitChange={newAttr => {
-					props.onChange(prop);
+					props.onChange(prop, undefined);
 					
 					if (newAttr)
-						props.onChange(getAttrStat(props.stat.prop, newAttr as typeof attributes[keyof typeof attributes]), value);
+						props.onChange(
+							getAttrStat(
+								props.stat.prop,
+								newAttr as typeof attributes[keyof typeof attributes]
+							),
+							value
+						);
 				}}
 			/>
 		})}

@@ -1,54 +1,12 @@
 import ImportedCharacter from "../types/ImportedCharacter";
-import Attack, { StoredAttack } from "../types/Attack";
+import Attack, { StoredAttack } from "./Attack";
 import Column from "./Column";
 import { StatTypes } from "../types/Stat";
 import elements from "./elements";
 import stats from "./stats";
-import StatData from "../types/StatData";
-import attributes, { getAttrStat } from "./attributes";
-import StatValue from "./StatValue";
 
 export default class ColumnList {
 	constructor(public readonly columns: Column[]) {}
-
-    static createAttack(base?: StoredAttack) {
-        let out: Attack = {
-            reaction: base?.reaction ?? 0,
-            reactionType: base?.reactionType ?? 0,
-            label: base?.label ?? '',
-            statData: {} as StatData,
-            synced: base?.synced ?? [],
-            unmodified: base === undefined ? true : (base?.unmodified ?? false)
-        };
-        
-        stats.forEach(stat => {
-            if (stat.usesAttrs) {
-                let anyFound = false;
-                
-                attributes.forEach(attr => {
-                    const prop = getAttrStat(stat.prop, attr);
-                    const value = base?.statData?.[prop];
-                    
-                    if (!value) return;
-                
-                    out.statData[prop] = new StatValue(typeof value === 'string' ? value : value.number, stat.type);
-                    anyFound = true;
-                });
-                
-                if (anyFound)
-                    return;
-            }
-            
-            const value = base?.statData?.[stat.prop];
-            
-            out.statData[stat.prop] = new StatValue(
-                typeof value === 'string' ? value : value?.number ?? stat.default.toString(),
-                stat.type
-            );
-        });
-        
-        return out;
-    }
 
 	private get cleanLength() {
         let cleanLength = this.columns.length;
@@ -148,10 +106,8 @@ export default class ColumnList {
         const index = this.columns.indexOf(column);
         if (index === -1) return this;
 
-        const newColumn = new Column(
-            [...column.attacks, ColumnList.createAttack(base)],
-            column.attacks.length
-        );
+        const newColumn = new Column(column, 'copyAttacks');
+        newColumn.addAttackFromBase(base);
 
         this.columns.splice(index, 1, newColumn);
 
@@ -162,8 +118,8 @@ export default class ColumnList {
         const index = this.columns.indexOf(column);
         if (index === -1) return this;
 
-        const newItems = column.attacks.filter(iteratedAttack => iteratedAttack !== attack);
-        const newColumn = new Column(newItems, Math.min(column.activeIndex, newItems.length - 1));
+        const newColumn = new Column(column, 'copyAttacks');
+        newColumn.removeAttack(attack);
 
         this.columns.splice(index, 1, newColumn);
 
@@ -177,7 +133,8 @@ export default class ColumnList {
         const atkIndex = column.attacks.indexOf(attack);
         if (atkIndex === -1) return this;
 
-        const newColumn = new Column([...column.attacks], atkIndex);
+        const newColumn = new Column(column, 'copyAttacks');
+        newColumn.setActiveAttack(attack);
 
         this.columns.splice(colIndex, 1, newColumn);
 
@@ -188,11 +145,11 @@ export default class ColumnList {
         const colIndex = this.columns.indexOf(column);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn.attacks, oldColumn.activeIndex);
+        const newColumn = new Column(oldColumn, 'copyAttacks');
 
         const atkIndex = newColumn.attacks.indexOf(attack);
         if (atkIndex === -1) return this;
-        const newAttack = ColumnList.createAttack(newColumn.attacks[atkIndex]);
+        const newAttack = Attack.fromBase(newColumn.attacks[atkIndex], true);
 		
         modifier(newAttack);
         
@@ -206,7 +163,7 @@ export default class ColumnList {
         const colIndex = this.columns.indexOf(column);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
-        const newColumn = new Column(oldColumn.attacks, oldColumn.activeIndex);
+        const newColumn = new Column(oldColumn.attacks, 'copyData');
 
 		modifier(newColumn.attacks);
 		

@@ -1,5 +1,5 @@
 import { stringify } from "csv-stringify/browser/esm/sync";
-import Attack, { StoredAttack } from "../types/Attack";
+import Attack, { StoredAttack } from "./Attack";
 import Stat, { StatTypes } from "../types/Stat";
 import Column from "./Column";
 import DamageCalculator from "./DamageCalculator";
@@ -9,7 +9,6 @@ import stats from "./stats";
 import { parse } from "csv-parse/browser/esm/sync";
 import attributes, { getAttrStat } from "./attributes";
 import statSections from "./statSections";
-import ColumnList from "./ColumnList";
 
 function generateRow(
     columns: Column[],
@@ -83,29 +82,25 @@ export function csvExport(columns: Column[]) {
 					rows.push(generateRow(
 						columns,
 						getStatLabel(stat, attr, attrStat),
-						atk => '' + (atk.statData[attrStat]?.number ?? '-')
+						atk => '' + (atk.getStat(attrStat) ?? '-')
 					));
 				});
 			} else {
-				rows.push(generateRow(columns, getStatLabel(stat), atk => '' + atk.statData[stat.prop]?.number));
+				rows.push(generateRow(columns, getStatLabel(stat), atk => '' + atk.getStat(stat.prop)));
 			}
 		});
 	});
 
 	addSectionTitle('Damage');
 
-	const columnDamages = columns.map(column => column.attacks.map(
-		({statData, reactionType, reaction}) => new DamageCalculator(statData, reactionType, reaction).calculateDamage()
-	));
-
 	damageTypes.forEach(damageType => {
 		rows.push(generateRow(
 			columns,
 			damageType.name,
-			(_, atkIndex, _2, colIndex) => {
+			(_, atkIndex, column, _2) => {
 				if (atkIndex !== 0) return '';
 
-				const damage = columnDamages[colIndex].reduce((prev, curr) => prev + (curr[damageType.prop]?.value ?? NaN), 0);
+				const damage = column.attacks.reduce((prev, curr) => prev + (curr.damage[damageType.prop]?.value ?? NaN), 0);
 				return displayDamage(damage);
 			}
 		));
@@ -127,7 +122,7 @@ export function csvImport(str: string) {
 		});
 	});
 
-	const storedColumns: Column[] = [];
+	const storedAttackGroups: StoredAttack[][] = [];
 
 	let lastAttackNum: number | undefined;
 
@@ -140,7 +135,7 @@ export function csvImport(str: string) {
 		}
 
 		if (!lastAttackNum || attackNum <= lastAttackNum) {
-			storedColumns.push(new Column([]));
+			storedAttackGroups.push([]);
 		}
 
 		const reactionMatch = /\(ID: (\d+)\D(\d+)\)/.exec(object.Reaction);
@@ -154,12 +149,10 @@ export function csvImport(str: string) {
 		storedAttack.label = object.Label;
 		storedAttack.statData = Object.fromEntries(Object.entries(object).filter(([,val]) => val !== '-'));
 
-		storedColumns[storedColumns.length - 1].attacks.push(
-			ColumnList.createAttack(storedAttack)
-		);
+		storedAttackGroups[storedAttackGroups.length - 1].push(storedAttack);
 
 		lastAttackNum = attackNum;
 	});
 
-	return storedColumns;
+	return storedAttackGroups.map(attacks => new Column(attacks));
 }

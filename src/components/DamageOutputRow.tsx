@@ -1,17 +1,18 @@
 import Damage from "../types/Damage";
 import DisplayedProp from "../types/DisplayedProp";
+import Column from "../utils/Column";
 import DamageOutput from "./DamageOutput";
 import RowLabel from "./RowLabel";
 
 export default function DamageOutputRow(props: Readonly<{
 	damageType: DisplayedProp<Damage>;
-	columnDamages: { items: Damage[]; activeIndex: number; }[];
+	columns: Column[];
 }>) {
 	let initial: number | undefined;
 	let hasValues = false;
 	
-	let damageOutputs = props.columnDamages.map((damages, i) => {
-		let value = damages.items.reduce((prev, curr) => prev + (curr[props.damageType.prop]?.value ?? NaN), 0);
+	let damageOutputs = props.columns.map((column, i) => {
+		let value = column.attacks.reduce((prev, curr) => prev + (curr.damage[props.damageType.prop]?.value ?? NaN), 0);
 		
 		if (i === 0) initial = value;
 		
@@ -23,8 +24,7 @@ export default function DamageOutputRow(props: Readonly<{
 		
 		return <DamageOutput
 			key={i}
-			damages={damages.items}
-			current={damages.activeIndex}
+			column={column}
 			prop={props.damageType.prop}
 			value={value}
 			initial={i !== 0 ? initial : undefined}

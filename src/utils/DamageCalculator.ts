@@ -1,10 +1,9 @@
 import Damage from "../types/Damage";
 import DamageGroups from "../types/DamageGroups";
-import ReactionType from "../types/ReactionType";
+import ReactionType, { Reaction } from "../types/ReactionType";
 import EquationData, { EquationInfo } from "../types/EquationData";
 import VariableOutput, { EquationOutput } from "../types/VariableOutput";
 import RecordEntry, { RecordEntryTypes } from "../types/RecordEntry";
-import StatData from "../types/StatData";
 import ValueData from "../types/ValueData";
 import evaluateExpression from "./evalulateExpression";
 import stats from "./stats";
@@ -12,9 +11,10 @@ import transformativeLevelMultipliers from "./transformativeLevelMultipliers";
 import Stat from "../types/Stat";
 import attributes, { getAttrStat } from "./attributes";
 import MathComponent from "../types/MathComponent";
+import Attack from "./Attack";
 
 export default class DamageCalculator {
-	static reactionTypes: ReactionType[] = [
+	static readonly reactionTypes: ReactionType[] = [
 		{
 			name: 'No Reaction',
 			canCrit: true,
@@ -66,21 +66,11 @@ export default class DamageCalculator {
 		}
 	];
 	
-	private reactionType = DamageCalculator.reactionTypes[this.reactionTypeIndex];
-	private reaction = this.reactionType.reactions[this.reactionIndex];
-	private mainEquation = this.reactionType.equation;
-	private flatDamage = this.reactionType.flatDamage ?? 'flatDamageBasic';
-
-	private values = {
-		baseMultiplier: {
-			name: 'Reaction Multiplier',
-			value: this.reaction.var ?? 1
-		},
-		transformativeLevelMultiplier: {
-			name: 'Level Multiplier',
-			value: transformativeLevelMultipliers[this.statData.characterLevel.value] ?? NaN
-		}
-	} as ValueData;
+	private reactionType?: ReactionType;
+	private reaction?: Reaction;
+	private mainEquation?: keyof EquationData;
+	private flatDamage?: keyof EquationData | keyof ValueData;
+	private values?: ValueData;
 	
 	/**
 	 * @see {@link https://library.keqingmains.com/combat-mechanics/damage/damage-formula KQM Damage Formula} for formula
@@ -108,7 +98,7 @@ export default class DamageCalculator {
 		},
 		trueDamage: {
 			name: 'Outgoing DMG',
-			expr: `(baseDamage + ${this.flatDamage}) * (1 + damageBonus)`
+			expr: () => `(baseDamage + ${this.flatDamage}) * (1 + damageBonus)`
 		},
 		enemyResistance: {
 			name: 'Enemy RES',
@@ -194,42 +184,28 @@ export default class DamageCalculator {
 		},
 		critHit: {
 			name: 'CRIT Hit',
-			expr: `${this.mainEquation} * (1 + critDamage)`
+			expr: () => `${this.mainEquation} * (1 + critDamage)`
 		},
 		avgDamage: {
 			name: 'Average DMG',
-			expr: `${this.mainEquation} * critBonus`
+			expr: () => `${this.mainEquation} * critBonus`
 		}
 	};
 	
-	constructor(
-		private statData: StatData,
-		private reactionTypeIndex: number,
-		private reactionIndex: number
-	) {
-		stats.forEach(stat => {
-			if ('usesAttrs' in stat)
-				return this.populateAttrStat(stat);
-
-			this.values[stat.prop] = {
-				name: stat.name,
-				value: this.statData[stat.prop]?.value || 0
-			};
-		});
-	}
+	constructor(private readonly attack: Attack) {}
 
 	private populateAttrStat(stat: Stat) {
 		let subEquations: (keyof EquationData)[] = [];
 
 		attributes.forEach(attr => {
 			const attrStat = getAttrStat(stat.prop, attr);
-			const value = this.statData[attrStat]?.value;
+			const value = this.attack.getStatValue(attrStat);
 			const varName = `${stat.prop}${attr}Scaling` as keyof ValueData;
 			const eqName = `${stat.prop}${attr}` as keyof EquationData;
 			
 			if (!value) return;
 			
-			this.values[varName] = {
+			this.values![varName] = {
 				name: `${attr} ${stat.name} Scaling`,
 				value: value
 			};
@@ -243,7 +219,7 @@ export default class DamageCalculator {
 		});
 		
 		if (!subEquations.length) {
-			this.values[stat.prop] = {
+			this.values![stat.prop] = {
 				name: stat.name,
 				value: 0
 			};
@@ -274,7 +250,7 @@ export default class DamageCalculator {
 	private variable(name: keyof ValueData | keyof EquationData): VariableOutput
 	private variable(name: string): VariableOutput | undefined
 	private variable(name: string) {
-		if (name in this.values)
+		if (name in this.values!)
 			return this.value(name as keyof ValueData);
 		
 		if (name in this.equations)
@@ -282,7 +258,7 @@ export default class DamageCalculator {
 	}
 	
 	private value(name: keyof ValueData): VariableOutput {
-		const valueInfo = this.values[name];
+		const valueInfo = this.values![name];
 		
 		return {
 			label: [
@@ -350,6 +326,32 @@ export default class DamageCalculator {
 	}
 	
 	calculateDamage(): Damage {
+		this.reactionType = DamageCalculator.reactionTypes[this.attack.reactionType];
+		this.reaction = this.reactionType.reactions[this.attack.reaction];
+		this.mainEquation = this.reactionType.equation;
+		this.flatDamage = this.reactionType.flatDamage ?? 'flatDamageBasic';
+
+		this.values = {
+			baseMultiplier: {
+				name: 'Reaction Multiplier',
+				value: this.reaction.var ?? 1
+			},
+			transformativeLevelMultiplier: {
+				name: 'Level Multiplier',
+				value: transformativeLevelMultipliers[this.attack.getStatValue('characterLevel')] ?? NaN
+			}
+		} as ValueData;
+
+		stats.forEach(stat => {
+			if ('usesAttrs' in stat)
+				return this.populateAttrStat(stat);
+
+			this.values![stat.prop] = {
+				name: stat.name,
+				value: this.attack.getStatValue(stat.prop)
+			};
+		});
+
 		if (this.reactionType.canCrit)
 			return {
 				nonCrit: this.equation(this.reactionType.equation),

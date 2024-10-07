@@ -5,13 +5,11 @@ import Column from "../utils/Column";
 import RowLabel from "./RowLabel";
 import Stat from "../types/Stat";
 import React from 'react';
-import StatValue from "../utils/StatValue";
 import StatData from "../types/StatData";
 import { attrStats } from "../utils/stats";
 import { getAttrStat } from "../utils/attributes";
 import SyncSVG from "../svgs/SyncSVG";
 import "../less/StatInputRow.less";
-import Attack from "../types/Attack";
 import SVGButton from "./SVGButton";
 import { ColumnStateAction } from "../utils/columnListReducer";
 
@@ -22,48 +20,35 @@ export default function StatInputRow(props: Readonly<{
 }>) {
 	let anyEnabled = false;
 
-	function updateAttack(attack: Attack, prop: keyof StatData, value?: string) {
-		if (!attack.statData[prop])
-			attack.statData[prop] = new StatValue(value ?? '', props.stat.type);
-		
-		if (value === undefined)
-			delete attack.statData[prop];
-		else
-			attack.statData[prop].number = value;
-
-		attack.unmodified = false;
-	}
-	
 	function onChange(colIndex: number, atkIndex: number, prop: keyof StatData, value?: string) {
-		props.dispatch({
-			type: 'modifyAttacks',
-			column: props.columns[colIndex],
-			modifier: attacks => {
-				if (attacks[0].synced.includes(prop)) {
-					attacks.forEach(attack => updateAttack(attack, prop, value));
-				} else {
-					updateAttack(attacks[atkIndex], prop, value);
-				}
-			}
-		});
+		const column = props.columns[colIndex];
+
+		if (column.first.synced.includes(prop)) {
+			props.dispatch({
+				type: 'modifyAttacks',
+				column: column,
+				modifier: attacks => attacks.forEach(attack => attack.setStat(prop, value))
+			});
+		} else {
+			props.dispatch({
+				type: 'modifyAttack',
+				column: column,
+				attack: column.attacks[atkIndex],
+				modifier: attack => attack.setStat(prop, value)
+			});
+		}
 	}
 
-	function setSynced(colIndex: number, prop: keyof StatData, synced: boolean, value?: StatValue) {	
+	function setSynced(colIndex: number, prop: keyof StatData, synced: boolean, value?: string) {	
 		props.dispatch({
 			type: 'modifyAttacks',
 			column: props.columns[colIndex],
 			modifier: attacks => {
-				if (synced && !attacks[0].synced.includes(prop)) {
-					attacks[0].synced.push(prop);
-					return;
-				}
-		
 				if (synced) {
-					attacks.forEach(attack => {
-						attack.statData[prop] = value as StatValue;
-						attack.unmodified = false;
-					});
+					if (!attacks[0].synced.includes(prop))
+						attacks[0].synced.push(prop);
 
+					attacks.forEach(attack => attack.setStat(prop, value));
 					return;
 				}
 				
@@ -83,7 +68,7 @@ export default function StatInputRow(props: Readonly<{
 		if (!enabled && 'attr' in props.stat)
 			enabled = attrStats.some(stat =>
 				(stat.groups! & damageColumns) &&
-				parseInt(attack.statData[getAttrStat(stat.prop, props.stat.attr!)]?.number ?? '')
+				parseInt(attack.getStat(getAttrStat(stat.prop, props.stat.attr!)) ?? '')
 			);
 		
 		anyEnabled = anyEnabled || enabled;
@@ -93,11 +78,11 @@ export default function StatInputRow(props: Readonly<{
 				? <AttrStatInput
 					stat={props.stat}
 					attack={attack}
-					onChange={(props, value) => onChange(colIndex, atkIndex, props, value)}
+					onChange={(prop, value) => onChange(colIndex, atkIndex, prop, value)}
 				/>
 				: <StatInput
 					stat={props.stat}
-					value={attack.statData[props.stat.prop]?.number ?? ''}
+					value={attack.getStat(props.stat.prop) ?? ''}
 					disabled={!enabled}
 					onChange={value => onChange(colIndex, atkIndex, props.stat.prop, value)}
 				/>
@@ -115,7 +100,7 @@ export default function StatInputRow(props: Readonly<{
 							colIndex,
 							props.stat.prop,
 							!synced,
-							attack.statData[props.stat.prop]
+							attack.getStat(props.stat.prop)
 						)}
 					/>
 					</div>

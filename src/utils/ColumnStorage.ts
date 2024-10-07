@@ -1,4 +1,4 @@
-import { StoredAttack } from "../types/Attack";
+import { StoredAttack } from "./Attack";
 import Column from "./Column";
 import ColumnList from "./ColumnList";
 import { ColumnState } from "./columnListReducer";
@@ -27,8 +27,8 @@ export default class ColumnStorage {
 		if (!shownGroups.length)
 			shownGroups.push([{}]);
 
-		const shown = new ColumnList(shownGroups.map(group => new Column(group.map(ColumnList.createAttack))));
-		const closed = new ColumnList(closedGroups.map(group => new Column(group.map(ColumnList.createAttack))))
+		const shown = new ColumnList(shownGroups.map(group => new Column(group)));
+		const closed = new ColumnList(closedGroups.map(group => new Column(group)))
 
 		return {
 			shown,
@@ -47,7 +47,7 @@ export default class ColumnStorage {
         const itemLists = columnList.cleanedColumns.map(column => column.attacks);
 
         const processedItemLists = itemLists.map((items, itemsIndex) => items.map((attack, atkIndex) => {
-            const storedAttack: StoredAttack = {...attack};
+            const storedAttack = attack.toObject();
 
             if (items.length > 1)
                 storedAttack.group = itemsIndex;

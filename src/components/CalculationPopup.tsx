@@ -7,23 +7,23 @@ import Damage from "../types/Damage";
 import AttackList from "./AttackList";
 import EquationLine from "./EquationLine";
 import PopupHeader from "./PopupHeader";
+import Column from "../utils/Column";
 
 export default function CalculationPopup(props: Readonly<{
-	damages: Damage[];
-	current: number;
+	column: Column;
 	prop: keyof Damage;
 }>) {
 	const ref = React.useRef<PopupActions>(null);
-	const [shown, setShown] = React.useState(props.current);
+	const [shown, setShown] = React.useState(props.column.activeIndex);
 	
 	return <Popup trigger={
 		<SVGButton svg={<CalculatorSVG />} label="Show Calculations" hideLabel={true} mini={true} />
-	} ref={ref} modal onOpen={() => setShown(props.current)}>
+	} ref={ref} modal onOpen={() => setShown(props.column.activeIndex)}>
 		<PopupHeader title="Calculations" ref={ref} />
 		<div className="calc">
 			<span>Attack: </span>
-			<AttackList attacks={props.damages} active={shown} setActive={setShown} />
+			<AttackList attacks={props.column.attacks} active={shown} setActive={setShown} />
 		</div>
-		<EquationLine equation={props.damages[shown][props.prop]!} />
+		<EquationLine equation={props.column.attacks[shown].damage[props.prop]!} />
 	</Popup>
 }

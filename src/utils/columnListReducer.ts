@@ -1,4 +1,4 @@
-import Attack from "../types/Attack";
+import Attack from "./Attack";
 import ImportedCharacter from "../types/ImportedCharacter";
 import Column from "./Column";
 import ColumnList from "./ColumnList";

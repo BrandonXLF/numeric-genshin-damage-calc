@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import DamageOutputRow from "./DamageOutputRow";
 import DamageTypeRow from "./DamageTypeRow";
 import HeadingRow from "./HeadingRow";
@@ -12,20 +12,12 @@ import LabelRow from "./LabelRow";
 import damageTypes from "../utils/damageTypes";
 import columnListReducer from "../utils/columnListReducer";
 import ColumnStorage from "../utils/ColumnStorage";
-import DamageCalculator from "../utils/DamageCalculator";
 
 export default function CalculatorForm() {
 	let [columnState, dispatchColumnState] = useReducer(columnListReducer, undefined, () => ColumnStorage.load());
 	useEffect(() => ColumnStorage.save(columnState), [columnState]);
 
 	const columns = columnState.shown.columns;
-	const columnDamages = useMemo(() => columns.map(column => {
-		let damages = column.attacks.map(
-			({statData, reactionType, reaction}) => new DamageCalculator(statData, reactionType, reaction).calculateDamage()
-		);
-
-		return { items: damages, activeIndex: column.activeIndex };
-	}), [columns]);
 
 	return <section className="form-section">
 		<TopButtonRow state={columnState} dispatch={dispatchColumnState} />
@@ -43,7 +35,7 @@ export default function CalculatorForm() {
 				)}
 				<HeadingRow title="Damage" span={columns.length + 1} />
 				{damageTypes.map(damageType =>
-					<DamageOutputRow key={damageType.prop} damageType={damageType} columnDamages={columnDamages} />
+					<DamageOutputRow key={damageType.prop} damageType={damageType} columns={columns} />
 				)}
 			</form>
 		</div>
