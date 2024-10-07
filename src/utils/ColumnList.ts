@@ -1,5 +1,5 @@
 import ImportedCharacter from "../types/ImportedCharacter";
-import Attack, { PartialAttack, StoredAttack } from "../utils/Attack";
+import Attack, { PartialAttack } from "../utils/Attack";
 import Column from "./Column";
 import { StatTypes } from "../types/Stat";
 import elements from "./elements";
@@ -56,7 +56,7 @@ export default class ColumnList {
     }
     
     import(build: ImportedCharacter, element: typeof elements[number] | '') {
-        const base: StoredAttack = {
+        const base: PartialAttack = {
             label: build.name,
             statData: {}
         };
