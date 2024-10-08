@@ -109,11 +109,11 @@ export default class ColumnList {
 		return [this, columns] as const;
     }
 
-    transfer(colId: number, target: ColumnList, keepOne = false) {
+    transfer(colId: number, to: ColumnList, keepOne = false) {
         const [, removed] = this.remove(colId, keepOne);
         if (!removed) return this;
         
-        target.add(removed);
+        to.add(removed);
         return this;
     }
 
