@@ -91,7 +91,7 @@ export default class EnkaImporter {
 		let res;
 
 		try {
-			res = await fetch(`${process.env.REACT_APP_ENKA_PROXY}/uid/${uid}`);
+			res = await fetch(`${import.meta.env.VITE_ENKA_PROXY}/uid/${uid}`);
 		} catch {
 			throw new EnkaImporterError('Could not connect to Enka.Network. Please check your internet connection.');
 		}
