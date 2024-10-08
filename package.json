@@ -1,36 +1,51 @@
 {
 	"name": "numeric-genshin-damage-calc",
-	"version": "1.0.0",
+	"version": "0.0.0",
 	"private": true,
+	"type": "module",
 	"dependencies": {
 		"csv-parse": "^5.5.3",
 		"csv-stringify": "^6.4.5",
 		"fparser": "^3.0.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-scripts-less": "^5.0.4",
 		"reactjs-popup": "^2.0.5",
-		"typescript": "^5.5.4"
+		"typescript": "^5.6.2"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.25.7",
+		"@babel/preset-env": "^7.25.7",
+		"@babel/preset-react": "^7.25.7",
 		"@babel/preset-typescript": "^7.25.7",
+		"@eslint/js": "^9.12.0",
 		"@types/fparser": "^2.0.0",
 		"@types/jest": "^29.5.13",
-		"@types/node": "^18.7.6",
-		"@types/react": "^18.0.17",
-		"@types/react-dom": "^18.0.6"
+		"@types/react": "^18.3.11",
+		"@types/react-dom": "^18.0.6",
+		"@vitejs/plugin-react-swc": "^3.5.0",
+		"babel-jest": "^29.7.0",
+		"eslint": "^9.12.0",
+		"eslint-plugin-react-hooks": "^5.1.0-rc.0",
+		"eslint-plugin-react-refresh": "^0.4.12",
+		"globals": "^15.10.0",
+		"jest": "^29.7.0",
+		"less": "^4.2.0",
+		"react-test-renderer": "^18.3.1",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.5.3",
+		"typescript-eslint": "^8.7.0",
+		"vite": "^5.4.8"
 	},
 	"scripts": {
-		"start": "react-scripts-less start",
-		"build": "react-scripts-less build",
-		"test": "react-scripts-less test --transformIgnorePatterns \"node_modules/(?!fparser|csv-stringify)/\""
+		"start": "vite",
+		"build": "tsc -b && vite build",
+		"test": "jest"
 	},
 	"eslintConfig": {
 		"extends": [
 			"react-app"
 		]
 	},
-	"homepage": ".",
 	"browserslist": {
 		"production": [
 			">0.2%",
