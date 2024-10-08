@@ -10,7 +10,7 @@ export default class Column {
     private _activeAttackIdx = 0;
 
     /**
-     * @param baseAttacks Array of attacks to base the column's attacks on.
+     * @param baseAttacks Array of attacks or column to base the column's attacks on.
      * @param mode The copying mode to use for attacks:
      * * `CopyNone` - Copy nothing. Default.
      * * `CopyAttacks` - Directly copy the base attacks.
