@@ -199,7 +199,7 @@ export default class DamageCalculator {
 
 		attributes.forEach(attr => {
 			const attrStat = getAttrStat(stat.prop, attr);
-			const value = this.attack.getStatValue(attrStat, stat.type);
+			const value = this.attack.getStatAsNumber(attrStat, stat.type);
 			const varName = `${stat.prop}${attr}Scaling` as keyof ValueData;
 			const eqName = `${stat.prop}${attr}` as keyof EquationData;
 			
@@ -325,6 +325,9 @@ export default class DamageCalculator {
 		return { label, value, equation, children };
 	}
 	
+	/**
+	 * Main function. Calculate the damage for the current state of {@link attack}.
+	 */
 	calculateDamage(): Damage {
 		this.reactionType = DamageCalculator.reactionTypes[this.attack.reactionType];
 		this.reaction = this.reactionType.reactions[this.attack.reaction];
@@ -338,7 +341,7 @@ export default class DamageCalculator {
 			},
 			transformativeLevelMultiplier: {
 				name: 'Level Multiplier',
-				value: transformativeLevelMultipliers[this.attack.getStatValue('characterLevel', StatType.Number)] ?? NaN
+				value: transformativeLevelMultipliers[this.attack.getStatAsNumber('characterLevel', StatType.Number)] ?? NaN
 			}
 		} as ValueData;
 
@@ -348,7 +351,7 @@ export default class DamageCalculator {
 
 			this.values![stat.prop] = {
 				name: stat.name,
-				value: this.attack.getStatValue(stat.prop, stat.type)
+				value: this.attack.getStatAsNumber(stat.prop, stat.type)
 			};
 		});
 

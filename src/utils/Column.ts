@@ -7,49 +7,56 @@ export default class Column {
     attacks: Attack[] = [];
     readonly id = IDGenerator.generate();
 
-    private _activeIndex = 0;
+    private _activeAttackIdx = 0;
 
-    constructor(attacks: PartialAttack[] | Column = [], mode = ColumnCopyMode.CopyNone) {
+    /**
+     * @param baseAttacks Array of attacks to base the column's attacks on.
+     * @param mode The copying mode to use for attacks:
+     * * `CopyNone` - Copy nothing. Default.
+     * * `CopyAttacks` - Directly copy the base attacks.
+     * * `CopyDataAndId` - Copy stat data without verification and IDs.
+     */
+    constructor(baseAttacks: PartialAttack[] | Column = [], mode = ColumnCopyMode.CopyNone) {
         let fromColumn = false;
 
-        if (attacks instanceof Column) {
+        if (baseAttacks instanceof Column) {
             fromColumn = true;
-            this._activeIndex = attacks.activeIndex;
-            this.id = attacks.id;
-            attacks = attacks.attacks;
+            this._activeAttackIdx = baseAttacks.activeIndex;
+            this.id = baseAttacks.id;
+            baseAttacks = baseAttacks.attacks;
         }
 
         if (mode === ColumnCopyMode.CopyAttacks) {
-            this.attacks.push(...attacks as Attack[]);
+            this.attacks.push(...baseAttacks as Attack[]);
         } else {
-            attacks.forEach(attack => this.addAttackFromBase(attack, mode === ColumnCopyMode.CopyDataAndId));
+            baseAttacks.forEach(attack => this.addAttackFromBase(attack, mode === ColumnCopyMode.CopyDataAndId));
         }
         
         if (this.attacks.length === 0) this.addAttackFromBase();
 
         if (!fromColumn) {
-            this._activeIndex = 0;
+            this._activeAttackIdx = 0;
         }
     }
 
     addAttackFromBase(base?: PartialAttack, copyDataAndId = false) {
         this.attacks.push(new Attack(base, copyDataAndId));
-        this._activeIndex = this.attacks.length - 1;
+        this._activeAttackIdx = this.attacks.length - 1;
     }
 
     removeAttack(atkId: number) {
         this.attacks = this.attacks.filter(atk => atk.id !== atkId);
-        this._activeIndex = Math.min(this.activeIndex, this.attacks.length - 1);
+        this._activeAttackIdx = Math.min(this.activeIndex, this.attacks.length - 1);
     }
 
     setActiveAttack(atkId: number) {
         const atkIndex = this.attacks.findIndex(atk => atk.id === atkId);
         if (atkIndex === -1) return;
-        this._activeIndex = atkIndex;
+        this._activeAttackIdx = atkIndex;
     }
 
     get activeIndex() {
-        return this._activeIndex;
+        return this._activeAttackIdx;
     }
 
     get active() {

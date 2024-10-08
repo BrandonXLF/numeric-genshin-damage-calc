@@ -7,8 +7,6 @@ interface PartialAttack {
 	statData?: Partial<Record<keyof StatData, string>>;
 	synced?: string[];
 	unmodified?: boolean;
-	shown?: boolean;
-	group?: number;
 }
 
 export interface StoredAttack extends PartialAttack {

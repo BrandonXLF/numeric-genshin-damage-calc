@@ -38,16 +38,16 @@ export default class ColumnStorage {
 
 	static save({shown, closed}: ColumnState) {
 		localStorage.setItem('GIDC-data', JSON.stringify([
-			...ColumnStorage.encodeForStorage(shown, true),
-            ...ColumnStorage.encodeForStorage(closed, false)
+			...ColumnStorage.encodeList(shown, true),
+            ...ColumnStorage.encodeList(closed, false)
 		]));
 	}
 
-    private static encodeForStorage(columnList: ColumnList, shown: boolean): StoredAttack[] {
+    private static encodeList(columnList: ColumnList, shown: boolean): StoredAttack[] {
         const itemLists = columnList.cleanedColumns.map(column => column.attacks);
 
         const processedItemLists = itemLists.map((items, itemsIndex) => items.map((attack, atkIndex) => {
-            const storedAttack = attack.toObject();
+            const storedAttack = attack.toObject() as StoredAttack;
 
             if (items.length > 1)
                 storedAttack.group = itemsIndex;

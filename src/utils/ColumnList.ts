@@ -20,15 +20,25 @@ export default class ColumnList {
 		return cleanLength;
 	}
 
+    /**
+     * Remove unmodified columns at the end of the columns array.
+     */
     private clean() {
         this.columns.splice(this.cleanLength);
     }
 
+    /**
+     * Return a slice of the columns array without unmodified columns at the end.
+     */
 	get cleanedColumns() {
 		return this.columns.slice(0, this.cleanLength);
 	}
 
-	add(...columns: [Column, ...Column[]]) {
+    /**
+     * Clean and add items to the column array.
+     * To add an empty column, use {@link addEmpty}.
+     */
+	add(...columns: Column[]) {
         this.clean();
 		this.columns.push(...columns);
 
@@ -37,13 +47,6 @@ export default class ColumnList {
 
     addEmpty() {
         this.columns.push(new Column());
-		return this;
-    }
-
-	addWithAttack(attack: PartialAttack) {
-        this.clean();
-        this.columns.push(new Column([attack]));
-
 		return this;
     }
 
@@ -90,7 +93,7 @@ export default class ColumnList {
             base.statData![stat.prop] = numVal.toString();
         });
 
-		return this.addWithAttack(base);
+		return this.add(new Column([base]));
     }
 
     remove(colId: number, keepOne = false) {
@@ -114,18 +117,24 @@ export default class ColumnList {
         return this;
     }
 
-    addAttackFromBase(colId: number, attack: PartialAttack) {
+    /**
+     * Copy the given column and add attack based on the given based to it.
+    */
+    addAttackFromBase(colId: number, base: PartialAttack) {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
         const oldColumn = this.columns[colIndex];
         const newColumn = new Column(oldColumn, ColumnCopyMode.CopyAttacks);
 		
-        newColumn.addAttackFromBase(attack);
+        newColumn.addAttackFromBase(base);
 		this.columns[colIndex] = newColumn;
 
         return this;
     }
 
+    /**
+     * Copy the given column and remove the provided attack from it.
+    */
     removeAttack(colId: number, atkId: number) {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
@@ -138,6 +147,9 @@ export default class ColumnList {
         return this;
     }
 
+    /**
+     * Copy the given column and set the its active attack to `atkId`.
+    */
 	setActiveAttack(colId: number, atkId: number) {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
@@ -150,6 +162,9 @@ export default class ColumnList {
         return this;
 	}
 
+    /**
+     * Duplicate the provided column and and run a modifier on it.
+     */
 	transformAttack(colId: number, atkId: number, modifier: (attack: Attack) => void) {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;
@@ -168,6 +183,9 @@ export default class ColumnList {
         return this;
 	}
 
+    /**
+     * Duplicate the provided column and all attacks and run a modifier on them.
+     */
 	transformAttacks(colId: number, modifier: (attack: Attack[]) => void) {
         const colIndex = this.columns.findIndex(col => col.id === colId);
         if (colIndex === -1) return this;

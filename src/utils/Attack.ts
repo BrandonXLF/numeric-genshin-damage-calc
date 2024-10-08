@@ -6,15 +6,15 @@ import stats from "../utils/stats";
 import attributes, { getAttrStat } from "../utils/attributes";
 import Damage from "../types/Damage";
 import IDGenerator from "./IDGenerator";
-import PartialAttack, { StoredAttack } from "../types/PartialAttack";
+import PartialAttack from "../types/PartialAttack";
 
 export default class Attack implements PartialAttack {
 	readonly id: number;
-    
+
     private readonly calculator = new DamageCalculator(this);
 	private dmgCache?: Damage;
-	
     private invalidateDmgCache = true;
+
     private _reactionType: number;
     private _reaction: number;
     private _label: string;
@@ -22,6 +22,10 @@ export default class Attack implements PartialAttack {
     private _synced: string[];
     private _unmodified: boolean = true;
 
+    /**
+     * @param base The attack to base this one of off, all data is deeply copied.
+     * @param copyDataAndId Copy the stat data without verification and the ID.
+     */
     constructor(base?: PartialAttack, copyDataAndId = false) {
         this._reactionType = base?.reactionType ?? 0;
         this._reaction = base?.reaction ?? 0;
@@ -68,7 +72,7 @@ export default class Attack implements PartialAttack {
 		return this._statData[name];
 	}
 
-	getStatValue(name: keyof StatData, statType: StatType) {
+	getStatAsNumber(name: keyof StatData, statType: StatType) {
 		const value = evaluateExpression(this._statData[name] ?? '');
 		return statType === StatType.Percent ? value / 100 : value;
 	}
@@ -143,7 +147,10 @@ export default class Attack implements PartialAttack {
         return this._unmodified;
     }
 
-	toObject(): StoredAttack {
+    /**
+     * @returns An object representation of this attack. `statData` and `synced` are readonly!
+     */
+	toObject(): Readonly<PartialAttack> {
 		return {
 			reactionType: this.reactionType,
 			reaction: this.reaction,
