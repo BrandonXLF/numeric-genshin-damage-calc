@@ -39,7 +39,8 @@
 	"scripts": {
 		"start": "vite",
 		"build": "tsc -b && vite build",
-		"test": "jest --watch"
+		"test": "jest",
+		"test:watch": "jest --watch"
 	},
 	"eslintConfig": {
 		"extends": [
