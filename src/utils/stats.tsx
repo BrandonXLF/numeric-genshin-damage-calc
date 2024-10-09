@@ -271,7 +271,7 @@ const stats: Stat[] = [
 		icon: <StatIcon base="shield" mask="enemySmall" />
 	},
 	{
-		name: 'RES Reduction',
+		name: 'RES Decrease',
 		desc: 'The total resistance reduction for the element of the attack, e.g. Superconduct and Viridescent Venerer',
 		prop: 'resistanceReduction',
 		default: 0,

@@ -77,7 +77,7 @@ it('exports correctly', () => {
 		['DEF Decrease % (defenseDecrease)', '0', '0', '0'],
 		['DEF Ignore % (defenseIgnore)', '0', '0', '0'],
 		['Base RES % (resistance)', '10', '10', '10'],
-		['RES Reduction % (resistanceReduction)', '0', '0', '0'],
+		['RES Decrease % (resistanceReduction)', '0', '0', '0'],
 		['', '', '', ''],
 		['Damage', '', '', ''],
 		['CRIT Hit', '1350', '', '\u2014'],
