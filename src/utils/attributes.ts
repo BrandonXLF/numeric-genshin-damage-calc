@@ -8,7 +8,7 @@ const attributes = ['ATK', 'DEF', 'HP', 'EM'] as const;
  * @param attr The attribute.
  * @returns The name of the property.
  */
-export function getAttrStat(prop: keyof StatData, attr: typeof attributes[keyof typeof attributes]) {
+export function getAttrStat(prop: keyof StatData, attr: typeof attributes[number]) {
 	return prop + (attr === 'ATK' ? '' : attr) as keyof StatData;
 }
 

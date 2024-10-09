@@ -60,7 +60,7 @@ export default function AttrStatInput(props: Readonly<{
 						props.onChange(
 							getAttrStat(
 								props.stat.prop,
-								newAttr as typeof attributes[keyof typeof attributes]
+								newAttr as typeof attributes[number]
 							),
 							value
 						);
