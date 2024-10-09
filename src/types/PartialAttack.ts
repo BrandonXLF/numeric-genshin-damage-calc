@@ -5,7 +5,7 @@ interface PartialAttack {
 	reaction?: number;
 	label?: string;
 	statData?: Partial<Record<keyof StatData, string>>;
-	synced?: string[];
+	synced?: (keyof StatData)[];
 	unmodified?: boolean;
 }
 

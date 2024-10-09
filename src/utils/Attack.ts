@@ -19,7 +19,7 @@ export default class Attack implements PartialAttack {
     private _reaction: number;
     private _label: string;
     private _statData: StatData;
-    private _synced: string[];
+    private _synced: (keyof StatData)[];
     private _unmodified: boolean = true;
 
     /**
@@ -138,7 +138,7 @@ export default class Attack implements PartialAttack {
         return this._synced;
     }
 
-    set synced(synced: string[]) {
+    set synced(synced: (keyof StatData)[]) {
         this._synced = synced;
 		this._unmodified = false;
     }
