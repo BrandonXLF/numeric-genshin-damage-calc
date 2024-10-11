@@ -5,7 +5,7 @@ import { csvExport, csvImport } from "../csv"
 const columnList = new ColumnList([]);
 
 columnList.addEmpty();
-columnList.columns[0].addAttackFromBase();
+columnList.columns[0].addAttack();
 columnList.columns[0].first.label = 'No-Reaction';
 
 // Set the modified flag

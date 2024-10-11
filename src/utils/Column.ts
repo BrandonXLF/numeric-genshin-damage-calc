@@ -11,36 +11,32 @@ export default class Column {
 
     /**
      * @param baseAttacks Array of attacks or column to base the column's attacks on.
+     *     If a column is provided, the ID and active index are also copied.
      * @param mode The copying mode to use for attacks:
-     * * `CopyNone` - Copy nothing. Default.
-     * * `CopyAttacks` - Directly copy the base attacks.
-     * * `CopyDataAndId` - Copy stat data without verification and IDs.
+     * - `CopyNone` - Copy nothing. Default.
+     * - `CopyAttacks` - Directly copy the base attacks.
+     * - `CopyDataAndId` - Copy stat data without verification and IDs.
      */
-    constructor(baseAttacks: PartialAttack[] | Column = [], mode = ColumnCopyMode.CopyNone) {
-        let fromColumn = false;
-
+    constructor(baseAttacks: (PartialAttack | undefined)[] | Column = [], mode = ColumnCopyMode.CopyNone) {
         if (baseAttacks instanceof Column) {
-            fromColumn = true;
             this._activeAttackIdx = baseAttacks.activeIndex;
             this.id = baseAttacks.id;
             baseAttacks = baseAttacks.attacks;
         }
 
+        // Ensure there is at least one attack
+        if (!baseAttacks.length) baseAttacks.push(undefined);
+
         if (mode === ColumnCopyMode.CopyAttacks) {
             this.attacks.push(...baseAttacks as Attack[]);
         } else {
-            baseAttacks.forEach(attack => this.addAttackFromBase(attack, mode === ColumnCopyMode.CopyDataAndId));
-        }
-        
-        if (this.attacks.length === 0) this.addAttackFromBase();
-
-        if (!fromColumn) {
-            this._activeAttackIdx = 0;
+            const copyDataAndId = mode === ColumnCopyMode.CopyDataAndId;
+            baseAttacks.forEach(base => this.attacks.push(new Attack(base, copyDataAndId)));
         }
     }
 
-    addAttackFromBase(base?: PartialAttack, copyDataAndId = false) {
-        this.attacks.push(new Attack(base, copyDataAndId));
+    addAttack(base?: PartialAttack) {
+        this.attacks.push(new Attack(base));
         this._activeAttackIdx = this.attacks.length - 1;
     }
 

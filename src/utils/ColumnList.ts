@@ -126,7 +126,7 @@ export default class ColumnList {
         const oldColumn = this.columns[colIndex];
         const newColumn = new Column(oldColumn, ColumnCopyMode.CopyAttacks);
 		
-        newColumn.addAttackFromBase(base);
+        newColumn.addAttack(base);
 		this.columns[colIndex] = newColumn;
 
         return this;
