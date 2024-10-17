@@ -23,7 +23,7 @@ export default class Attack implements PartialAttack {
     private _unmodified: boolean = true;
 
     /**
-     * @param base The attack to base this one of off, all data is deeply copied.
+     * @param base The attack to base this one off of. All data is deeply copied.
      * @param copyDataAndId Copy the stat data without verification and the ID.
      */
     constructor(base?: PartialAttack, copyDataAndId = false) {
