@@ -11,7 +11,8 @@ import PartialAttack from "../types/PartialAttack";
 export default class Attack implements PartialAttack {
 	readonly id: number;
 
-    private readonly calculator = new DamageCalculator(this);
+    private readonly valueCache: Map<keyof StatData, number> = new Map();
+	private readonly calculator = new DamageCalculator(this);
 	private dmgCache?: Damage;
     private invalidateDmgCache = true;
 
@@ -73,7 +74,12 @@ export default class Attack implements PartialAttack {
 	}
 
 	getStatAsNumber(name: keyof StatData, statType: StatType) {
-		const value = evaluateExpression(this._statData[name] ?? '');
+		if (!this.valueCache.has(name)) {
+			const computed = evaluateExpression(this._statData[name] ?? '');
+			this.valueCache.set(name, computed);
+		}		
+
+		const value = this.valueCache.get(name)!;
 		return statType === StatType.Percent ? value / 100 : value;
 	}
 
@@ -88,6 +94,7 @@ export default class Attack implements PartialAttack {
 			this._statData[name] = value;
 		}
 
+		this.valueCache.delete(name);
 		this._unmodified = false;
 		this.invalidateDmgCache = true;
 	}
