@@ -68,7 +68,7 @@ export default function StatInputRow(props: Readonly<{
 		if (!enabled && 'attr' in props.stat)
 			enabled = attrStats.some(stat =>
 				(stat.groups! & damageColumns) &&
-				parseInt(attack.getStat(getAttrStat(stat.prop, props.stat.attr!)) ?? '')
+				attack.getStatAsNumber(getAttrStat(stat.prop, props.stat.attr!), stat.type)
 			);
 		
 		anyEnabled = anyEnabled || enabled;
