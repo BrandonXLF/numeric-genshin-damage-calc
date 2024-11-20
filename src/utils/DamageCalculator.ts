@@ -285,7 +285,7 @@ export default class DamageCalculator {
 		this.values = {
 			baseMultiplier: {
 				name: 'Reaction Multiplier',
-				value: this.reaction.var ?? 1
+				value: this.reaction.multiplier ?? 1
 			},
 			transformativeLevelMultiplier: {
 				name: 'Level Multiplier',
