@@ -196,7 +196,7 @@ const stats: Stat[] = [
 			Dendro: 43,
 			Anemo: 44,
 			Geo: 45,
-			Cryo: 46
+			Cyro: 46
 		}
 	},
 	{
@@ -288,7 +288,7 @@ const stats: Stat[] = [
 			Dendro: 53,
 			Anemo: 54,
 			Geo: 55,
-			Cryo: 56
+			Cyro: 56
 		}
 	}
 ];
