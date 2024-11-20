@@ -4,7 +4,7 @@ import ValueData from "./ValueData";
 
 export type Reaction = {
 	name: string;
-	var?: number;
+	multiplier?: number;
 	color?: string;
 };
 
