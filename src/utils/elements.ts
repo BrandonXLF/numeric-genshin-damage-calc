@@ -1,4 +1,4 @@
-const elements = ['Physical', 'Pyro', 'Electro', 'Hydro', 'Dendro', 'Anemo', 'Cryo', 'Geo'] as const;
+const elements = ['Physical', 'Pyro', 'Electro', 'Hydro', 'Dendro', 'Anemo', 'Cyro', 'Geo'] as const;
 
 export default elements;
 
@@ -10,7 +10,7 @@ export const elementColors: Record<typeof elements[number], string> = {
     Dendro: '#00ea53',
     Anemo: '#66ffcc',
     Geo: '#ffcc66',
-    Cryo: '#99ffff'
+    Cyro: '#99ffff'
 }
 
 export const energyTypeElementMap: Record<number, typeof elements[number]>= {
@@ -18,7 +18,7 @@ export const energyTypeElementMap: Record<number, typeof elements[number]>= {
     2: 'Hydro',
     3: 'Dendro',
     4: 'Electro',
-    5: 'Cryo',
+    5: 'Cyro',
     7: 'Anemo',
     8: 'Geo'
 };
