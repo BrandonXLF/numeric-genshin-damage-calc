@@ -30,10 +30,10 @@ export default class DamageCalculator {
 			equation: 'amplifyingReaction',
 			groups: DamageGroup.Reaction | DamageGroup.General,
 			reactions: new Map([
-				[0, { name: 'Pyro Melt', var: 2, color: '#ffcc66' }],
-				[1, { name: 'Cyro Melt', var: 1.5, color: '#99ffff' }],
-				[2, { name: 'Pyro Vaporize', var: 1.5, color: '#ffcc66' }],
-				[3, { name: 'Hydro Vaporize', var: 2, color: '#33ccff' }]
+				[0, { name: 'Melt (Pyro)', var: 2, color: '#ffcc66' }],
+				[3, { name: 'Vaporize (Hydro)', var: 2, color: '#33ccff' }],
+				[1, { name: 'Melt (Cyro)', var: 1.5, color: '#99ffff' }],
+				[2, { name: 'Vaporize (Pyro)', var: 1.5, color: '#ffcc66' }],
 			])
 		}],
 		[2, {
