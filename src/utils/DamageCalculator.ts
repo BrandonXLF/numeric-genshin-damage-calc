@@ -44,12 +44,12 @@ export default class DamageCalculator {
 			reactions: [
 				{ name: 'Burgeon', var: 3, color: '#ff9b00' },
 				{ name: 'Hyperbloom', var: 3, color: '#e19bff' },
-				{ name: 'Overloaded', var: 2, color: '#ff809b' },
+				{ name: 'Overloaded', var: 2.75, color: '#ff809b' },
 				{ name: 'Bloom', var: 2, color: '#00ea53' },
-				{ name: 'Shatter', var: 1.5 },
-				{ name: 'Electro-Charged', var: 1.2, color: '#e19bff' },
+				{ name: 'Shatter', var: 3 },
+				{ name: 'Electro-Charged', var: 2, color: '#e19bff' },
 				{ name: 'Swirl', var: 0.6, color: '#66ffcc' },
-				{ name: 'Superconduct', var: 0.5, color: '#b4b4ff' },
+				{ name: 'Superconduct', var: 1.5, color: '#b4b4ff' },
 				{ name: 'Burning', var: 0.25, color: '#ff9b00' }
 			]
 		},
