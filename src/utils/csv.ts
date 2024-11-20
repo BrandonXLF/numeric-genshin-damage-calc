@@ -10,6 +10,7 @@ import { parse } from "csv-parse/browser/esm/sync";
 import attributes, { getAttrStat } from "./attributes";
 import statSections from "./statSections";
 import { StoredAttack } from "../types/PartialAttack";
+import reactionTypes from "./reactionTypes";
 
 function generateRow(
     columns: Column[],
@@ -69,7 +70,7 @@ export function csvExport(columns: Column[]) {
 	rows.push(generateRow(
 		columns,
 		'Reaction',
-		atk => `${DamageCalculator.reactionTypes.get(atk.reactionType)!.reactions.get(atk.reaction)!.name} (ID: ${atk.reactionType}_${atk.reaction})`
+		atk => `${reactionTypes.get(atk.reactionType)!.reactions.get(atk.reaction)!.name} (ID: ${atk.reactionType}_${atk.reaction})`
 	));
 
 	statSections.forEach(statSection => {
