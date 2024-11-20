@@ -1,6 +1,5 @@
 import StatInput from "./StatInput";
 import AttrStatInput from "./AttrStatInput";
-import DamageCalculator from "../utils/DamageCalculator";
 import Column from "../utils/Column";
 import RowLabel from "./RowLabel";
 import Stat from "../types/Stat";
@@ -12,6 +11,7 @@ import SyncSVG from "../svgs/SyncSVG";
 import "../less/StatInputRow.less";
 import SVGButton from "./SVGButton";
 import { ColumnStateAction } from "../types/ColumnState";
+import reactionTypes from "../utils/reactionTypes";
 
 export default function StatInputRow(props: Readonly<{
 	stat: Stat,
@@ -62,7 +62,7 @@ export default function StatInputRow(props: Readonly<{
 		const atkIndex = column.activeIndex;
 		const synced = column.first.synced.includes(props.stat.prop);
 
-		let damageColumns = DamageCalculator.reactionTypes.get(attack.reactionType)!.groups;
+		let damageColumns = reactionTypes.get(attack.reactionType)!.groups;
 		let enabled = Boolean(props.stat.groups! & damageColumns);
 		
 		if (!enabled && 'attr' in props.stat)
