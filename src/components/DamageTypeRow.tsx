@@ -1,5 +1,4 @@
 import React from "react";
-import DamageCalculator from "../utils/DamageCalculator";
 import Column from "../utils/Column";
 import RowLabel from "./RowLabel";
 import FormInput from "./FormInput";
