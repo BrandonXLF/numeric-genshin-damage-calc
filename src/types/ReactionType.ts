@@ -1,3 +1,4 @@
+import elements from "../utils/elements";
 import DamageGroup from "./DamageGroups";
 import EquationData from "./EquationData";
 import ValueData from "./ValueData";
@@ -5,7 +6,8 @@ import ValueData from "./ValueData";
 export type Reaction = {
 	name: string;
 	multiplier?: number;
-	color?: string;
+	color: string;
+	element: typeof elements[number] | 'Varies';
 };
 
 type ReactionType = {
@@ -15,6 +17,7 @@ type ReactionType = {
 	flatDamage?: keyof EquationData | keyof ValueData;
 	groups: DamageGroup;
 	reactions: Map<number, Reaction>;
+	desc: string;
 };
 
 export default ReactionType;

@@ -4,6 +4,7 @@ import RowLabel from "./RowLabel";
 import FormInput from "./FormInput";
 import '../less/DamageTypeRow.less';
 import { ColumnStateAction } from "../types/ColumnState";
+import ReactionDesc from "./ReactionDesc";
 import reactionTypes from "../utils/reactionTypes";
 
 export default function DamageTypeRow(props: Readonly<{
@@ -11,7 +12,7 @@ export default function DamageTypeRow(props: Readonly<{
 	dispatch: React.Dispatch<ColumnStateAction>;
 }>) {
 	return <>
-		<RowLabel label="Reaction" />
+		<RowLabel label="Reaction" desc={<ReactionDesc />} wide />
 		{props.columns.map(column => <FormInput
 			key={column.id}
 			class="damage-type"
@@ -33,9 +34,9 @@ export default function DamageTypeRow(props: Readonly<{
 			options={
 				[...reactionTypes.entries().map(([id, damageType]) => ({
 					label: damageType.name,
-					options: [...damageType.reactions.entries().map(([subId, damageSubType]) => ({
+					options: [...damageType.reactions.entries().map(([subID, damageSubType]) => ({
 						name: damageSubType.name,
-						value: `${id},${subId}`,
+						value: `${id},${subID}`,
 						style: { color: damageSubType.color ?? 'white' }
 					}))]
 				}))]
