@@ -62,7 +62,7 @@ export default function StatInputRow(props: Readonly<{
 		const atkIndex = column.activeIndex;
 		const synced = column.first.synced.includes(props.stat.prop);
 
-		let damageColumns = DamageCalculator.reactionTypes[attack.reactionType].groups;
+		let damageColumns = DamageCalculator.reactionTypes.get(attack.reactionType)!.groups;
 		let enabled = Boolean(props.stat.groups! & damageColumns);
 		
 		if (!enabled && 'attr' in props.stat)

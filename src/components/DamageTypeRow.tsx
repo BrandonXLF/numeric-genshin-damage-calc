@@ -17,7 +17,7 @@ export default function DamageTypeRow(props: Readonly<{
 			class="damage-type"
 			value={`${column.active.reactionType},${column.active.reaction}`}
 			style={{
-				color: DamageCalculator.reactionTypes[column.active.reactionType].reactions[column.active.reaction]?.color ?? 'white'
+				color: DamageCalculator.reactionTypes.get(column.active.reactionType)!.reactions.get(column.active.reaction)?.color ?? 'white'
 			}} 
 			onChange={value => props.dispatch({
 				type: 'modifyAttack',
@@ -31,14 +31,14 @@ export default function DamageTypeRow(props: Readonly<{
 				}
 			})}
 			options={
-				DamageCalculator.reactionTypes.map((damageType, i) => ({
+				[...DamageCalculator.reactionTypes.entries().map(([id, damageType]) => ({
 					label: damageType.name,
-					options: damageType.reactions.map((damageSubType, j) => ({
+					options: [...damageType.reactions.entries().map(([subId, damageSubType]) => ({
 						name: damageSubType.name,
-						value: `${i},${j}`,
+						value: `${id},${subId}`,
 						style: { color: damageSubType.color ?? 'white' }
-					}))
-				}))
+					}))]
+				}))]
 			}
 		/>
 	)}</>;

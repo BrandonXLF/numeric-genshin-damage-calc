@@ -14,7 +14,7 @@ type ReactionType = {
 	equation: keyof EquationData;
 	flatDamage?: keyof EquationData | keyof ValueData;
 	groups: DamageGroup;
-	reactions: Reaction[];
+	reactions: Map<number, Reaction>;
 };
 
 export default ReactionType;

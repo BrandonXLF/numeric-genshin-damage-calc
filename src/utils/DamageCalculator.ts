@@ -14,57 +14,57 @@ import MathComponent from "../types/MathComponent";
 import Attack from "./Attack";
 
 export default class DamageCalculator {
-	static readonly reactionTypes: ReactionType[] = [
-		{
+	static readonly reactionTypes = new Map<number, ReactionType>([
+		[0, {
 			name: 'No Reaction',
 			canCrit: true,
 			equation: 'generalDamage',
 			groups: DamageGroup.General,
-			reactions: [
-				{ name: 'No Reaction' }
-			]
-		},
-		{
+			reactions: new Map([
+				[0, { name: 'No Reaction' }]
+			])
+		}],
+		[1, {
 			name: 'Amplifying',
 			canCrit: true,
 			equation: 'amplifyingReaction',
 			groups: DamageGroup.Reaction | DamageGroup.General,
-			reactions: [
-				{ name: 'Pyro Melt', var: 2, color: '#ffcc66' },
-				{ name: 'Cyro Melt', var: 1.5, color: '#99ffff' },
-				{ name: 'Pyro Vaporize', var: 1.5, color: '#ffcc66' },
-				{ name: 'Hydro Vaporize', var: 2, color: '#33ccff' }
-			]
-		},
-		{
+			reactions: new Map([
+				[0, { name: 'Pyro Melt', var: 2, color: '#ffcc66' }],
+				[1, { name: 'Cyro Melt', var: 1.5, color: '#99ffff' }],
+				[2, { name: 'Pyro Vaporize', var: 1.5, color: '#ffcc66' }],
+				[3, { name: 'Hydro Vaporize', var: 2, color: '#33ccff' }]
+			])
+		}],
+		[2, {
 			name: 'Transformative',
 			canCrit: false,
 			equation: 'transformativeReaction',
 			groups: DamageGroup.Reaction,
-			reactions: [
-				{ name: 'Burgeon', var: 3, color: '#ff9b00' },
-				{ name: 'Hyperbloom', var: 3, color: '#e19bff' },
-				{ name: 'Shatter', var: 3 },
-				{ name: 'Overloaded', var: 2.75, color: '#ff809b' },
-				{ name: 'Bloom', var: 2, color: '#00ea53' },
-				{ name: 'Electro-Charged', var: 2, color: '#e19bff' },
-				{ name: 'Superconduct', var: 1.5, color: '#b4b4ff' },
-				{ name: 'Swirl', var: 0.6, color: '#66ffcc' },
-				{ name: 'Burning', var: 0.25, color: '#ff9b00' }
-			]
-		},
-		{
+			reactions: new Map([
+				[0, { name: 'Burgeon', var: 3, color: '#ff9b00' }],
+				[1, { name: 'Hyperbloom', var: 3, color: '#e19bff' }],
+				[4, { name: 'Shatter', var: 3 }],
+				[2, { name: 'Overloaded', var: 2.75, color: '#ff809b' }],
+				[3, { name: 'Bloom', var: 2, color: '#00ea53' }],
+				[5, { name: 'Electro-Charged', var: 2, color: '#e19bff' }],
+				[7, { name: 'Superconduct', var: 1.5, color: '#b4b4ff' }],
+				[6, { name: 'Swirl', var: 0.6, color: '#66ffcc' }],
+				[8, { name: 'Burning', var: 0.25, color: '#ff9b00' }]
+			])
+		}],
+		[3, {
 			name: 'Additive',
 			canCrit: true,
 			equation: 'generalDamage',
 			flatDamage: 'flatDamageAdded',
 			groups: DamageGroup.General | DamageGroup.Reaction,
-			reactions: [
-				{ name: 'Spread', var: 1.25, color: '#00ea53' },
-				{ name: 'Aggravate', var: 1.15, color: '#e19bff' }
-			]
-		}
-	];
+			reactions: new Map([
+				[0, { name: 'Spread', var: 1.25, color: '#00ea53' }],
+				[1, { name: 'Aggravate', var: 1.15, color: '#e19bff' }]
+			])
+		}]
+	]);
 	
 	private reactionType?: ReactionType;
 	private reaction?: Reaction;
@@ -329,8 +329,8 @@ export default class DamageCalculator {
 	 * Main function. Calculate the damage for the current state of {@link attack}.
 	 */
 	calculateDamage(): Damage {
-		this.reactionType = DamageCalculator.reactionTypes[this.attack.reactionType];
-		this.reaction = this.reactionType.reactions[this.attack.reaction];
+		this.reactionType = DamageCalculator.reactionTypes.get(this.attack.reactionType)!;
+		this.reaction = this.reactionType.reactions.get(this.attack.reaction)!;
 		this.mainEquation = this.reactionType.equation;
 		this.flatDamage = this.reactionType.flatDamage ?? 'flatDamageBasic';
 

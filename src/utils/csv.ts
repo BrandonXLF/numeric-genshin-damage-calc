@@ -69,7 +69,7 @@ export function csvExport(columns: Column[]) {
 	rows.push(generateRow(
 		columns,
 		'Reaction',
-		atk => `${DamageCalculator.reactionTypes[atk.reactionType].reactions[atk.reaction].name} (ID: ${atk.reactionType}_${atk.reaction})`
+		atk => `${DamageCalculator.reactionTypes.get(atk.reactionType)!.reactions.get(atk.reaction)!.name} (ID: ${atk.reactionType}_${atk.reaction})`
 	));
 
 	statSections.forEach(statSection => {
