@@ -201,7 +201,7 @@ const stats: Stat[] = [
 	},
 	{
 		name: 'Reaction Bonus',
-		desc: 'All reaction damage bonuses added together besides the reaction bonus from EM, e.g. Crimson Witch 4-piece and Dragon\'s Bane\'s passive',
+		desc: 'All reaction damage bonuses added together besides the reaction bonus from EM, e.g. Crimson Witch 4-piece and Nilou\'s 4th ascension passive',
 		prop: 'reactionBonus',
 		default: 0,
 		type: StatType.Percent,
