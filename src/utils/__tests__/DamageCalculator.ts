@@ -39,7 +39,7 @@ it('computers amplifying reaction damage', () => {
 	const attack = new Attack({
 		reactionType: 1,
 		reaction: 0,
-		label: 'Pyro Melt',
+		label: 'Melt (Pyro)',
 		statData
 	});
 
@@ -48,11 +48,11 @@ it('computers amplifying reaction damage', () => {
 	expect(attack.damage.avgDmg.value).toBeCloseTo(31660.77);
 });
 
-it('computers transformation reaction damage', () => {
+it('computers transformative reaction damage', () => {
 	const attack = new Attack({
 		reactionType: 2,
 		reaction: 3,
-		label: 'Pyro Melt',
+		label: 'Bloom',
 		statData: {
 			...statData,
 			characterLevel: '90',
@@ -99,4 +99,48 @@ it('computes multi-stat talents', () => {
 	expect(attack.damage.crit?.value).toBeCloseTo(31062.28);
 	expect(attack.damage.nonCrit?.value).toBeCloseTo(12424.91);
 	expect(attack.damage.avgDmg.value).toBeCloseTo(27334.81);
+});
+
+it('computes secondary transformative reaction damage', () => {
+	const attack = new Attack({
+		reactionType: 2,
+		reaction: 6,
+		secondaryType: 1,
+		secondary: 2,
+		label: 'Vaporized (Pyro) Swirl',
+		statData: {
+			...statData,
+			characterLevel: '72',
+			em: '236',
+			reactionBonus: '0',
+			resistance: '10',
+			resistanceReduction: '35'
+		}
+	});
+
+	expect(attack.damage.crit?.value).toBe(undefined);
+	expect(attack.damage.nonCrit?.value).toBe(undefined);
+	expect(attack.damage.avgDmg.value).toBeCloseTo(3145.38);
+});
+
+it('computes secondary transformative reaction damage', () => {
+	const attack = new Attack({
+		reactionType: 2,
+		reaction: 6,
+		secondaryType: 3,
+		secondary: 1,
+		label: 'Aggravated Swirl',
+		statData: {
+			...statData,
+			characterLevel: '72',
+			em: '236',
+			reactionBonus: '0',
+			resistance: '10',
+			resistanceReduction: '20'
+		}
+	});
+
+	expect(attack.damage.crit?.value).toBe(undefined);
+	expect(attack.damage.nonCrit?.value).toBe(undefined);
+	expect(attack.damage.avgDmg.value).toBeCloseTo(3210.99);
 });

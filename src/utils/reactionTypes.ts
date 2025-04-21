@@ -4,11 +4,12 @@ import ReactionType from "../types/ReactionType";
 const reactionTypes = new Map<number, ReactionType>([
 	[0, {
 		name: 'No Reaction',
+		secondaryName: 'None',
 		canCrit: true,
 		equation: 'generalDamage',
 		groups: DamageGroup.General,
 		reactions: new Map([
-			[0, { name: 'No Reaction', color: '#ffffff', element: 'Varies' }]
+			[0, { name: 'No Reaction', secondaryName: 'None', color: '#ffffff', element: 'Varies' }]
 		]),
 		desc: 'No reaction damage is done at all.'
 	}],
@@ -29,6 +30,8 @@ const reactionTypes = new Map<number, ReactionType>([
 		name: 'Transformative',
 		canCrit: false,
 		equation: 'transformativeReaction',
+		secondaryAmplifyingEquation: 'amplifiedTransformativeReaction',
+		secondaryAdditiveEquation: 'addedToTransformativeReaction',
 		groups: DamageGroup.Reaction,
 		reactions: new Map([
 			[0, { name: 'Burgeon', multiplier: 3, color: '#ff9b00', element: 'Dendro' }],
@@ -38,8 +41,8 @@ const reactionTypes = new Map<number, ReactionType>([
 			[3, { name: 'Bloom', multiplier: 2, color: '#00ea53', element: 'Dendro' }],
 			[5, { name: 'Electro-Charged', multiplier: 2, color: '#e19bff', element: 'Electro' }],
 			[7, { name: 'Superconduct', multiplier: 1.5, color: '#b4b4ff', element: 'Cyro' }],
-			[6, { name: 'Swirl', multiplier: 0.6, color: '#66ffcc', element: 'Varies' }],
-			[8, { name: 'Burning', multiplier: 0.25, color: '#ff9b00', element: 'Pyro' }]
+			[6, { name: 'Swirl', multiplier: 0.6, color: '#66ffcc', element: 'Varies', canApply: true }],
+			[8, { name: 'Burning', multiplier: 0.25, color: '#ff9b00', element: 'Pyro', canApply: true }]
 		]),
 		desc: 'Transformative reactions purely deal reaction damage with their base damage calculated from the character level multiplier and the base reaction multiplier.'
 	}],

@@ -210,6 +210,16 @@ const stats: Stat[] = [
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
+		name: '2nd Rxn Bonus',
+		desc: 'All reaction damage bonuses added together besides the reaction bonus from EM for the secondary reaction, e.g. Crimson Witch 4-piece and Nilou\'s 4th ascension passive',
+		prop: 'secondaryReactionBonus',
+		default: 0,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
+		groups: DamageGroup.Reaction,
+		icon: <StatIcon base="damage" indicator="increase" />
+	},
+	{
 		name: 'CRIT Rate',
 		prop: 'critRate',
 		default: 5,

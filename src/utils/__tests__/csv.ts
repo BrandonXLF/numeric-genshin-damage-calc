@@ -6,15 +6,17 @@ const columnList = new ColumnList([]);
 
 columnList.addEmpty();
 columnList.columns[0].addAttack();
-columnList.columns[0].first.label = 'No-Reaction';
+columnList.columns[0].first.label = 'Normal + Reaction';
 
-// Set the modified flag
-columnList.columns[0].last.reaction = columnList.columns[0].last.reaction;
+columnList.columns[0].last.reactionType = 2;
+columnList.columns[0].last.reaction = 6;
+columnList.columns[0].last.secondaryType = 3;
+columnList.columns[0].last.secondary = 1;
 
 columnList.addEmpty();
-columnList.columns[1].first.label = 'Bloom';
-columnList.columns[1].first.reactionType = 2;
-columnList.columns[1].first.reaction = 3;
+columnList.columns[1].first.label = 'Melt';
+columnList.columns[1].first.reactionType = 1;
+columnList.columns[1].first.reaction = 0;
 
 function makeCSV(grid: string[][]) {
 	const maxLength = Math.max(...grid.map(row => row.length));
@@ -37,9 +39,9 @@ function toObjects(columns: Column[]) {
 
 it('exports correctly', () => {
 	const expected = [
-		['Label', 'No-Reaction', '', 'Bloom'],
+		['Label', 'Normal + Reaction', '', 'Melt'],
 		['Attack', '1 of 2', '2 of 2', '1 of 1'],
-		['Reaction', 'No Reaction (ID: 0_0)', 'No Reaction (ID: 0_0)', 'Bloom (ID: 2_3)'],
+		['Reaction', 'No Reaction (ID: 0_0)', 'Swirl (ID: 2_6) -> Aggravate (ID: 3_1)', 'Melt (Pyro) (ID: 1_0)'],
 		['', '', '', ''],
 		['Character', '', '', ''],
 		['Character Level (characterLevel)', '1', '1', '1'],
@@ -69,6 +71,7 @@ it('exports correctly', () => {
 		['Elemental Mastery (em)', '0', '0', '0'],
 		['DMG Bonus % (damageBonus)', '0', '0', '0'],
 		['Reaction Bonus % (reactionBonus)', '0', '0', '0'],
+		['2nd Rxn Bonus % (secondaryReactionBonus)', '0', '0', '0'],
 		['CRIT Rate % (critRate)', '5', '5', '5'],
 		['CRIT DMG % (critDamage)', '50', '50', '50'],
 		['', '', '', ''],
@@ -80,9 +83,9 @@ it('exports correctly', () => {
 		['RES Decrease % (resistanceReduction)', '0', '0', '0'],
 		['', '', '', ''],
 		['Damage', '', '', ''],
-		['CRIT Hit', '1350', '', '\u2014'],
-		['Non-CRIT Hit', '900', '', '\u2014'],
-		['Average DMG', '922.5', '', '30.9']
+		['CRIT Hit', '702.04', '', '1350'],
+		['Non-CRIT Hit', '477.04', '', '900'],
+		['Average DMG', '488.29', '', '922.5']
 	];
 
 	expect(csvExport(columnList.columns)).toBe(makeCSV(expected));

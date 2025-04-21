@@ -1,5 +1,4 @@
 import Damage from "../types/Damage";
-import ReactionType, { Reaction } from "../types/ReactionType";
 import EquationData, { EquationInfo } from "../types/EquationData";
 import VariableOutput, { EquationOutput } from "../types/VariableOutput";
 import RecordEntry, { RecordEntryType } from "../types/RecordEntry";
@@ -14,14 +13,21 @@ import Attack from "./Attack";
 import reactionTypes from "./reactionTypes";
 
 export default class DamageCalculator {
-	private reactionType?: ReactionType;
-	private reaction?: Reaction;
+	/**
+	 * Value keys to use for secondary reactions.
+	 */
+	private static readonly secondaryMappings: { [P in keyof ValueData]?: keyof ValueData } = {
+		baseMultiplier: 'secondaryMultiplier',
+		reactionBonus: 'secondaryReactionBonus'
+	};
+
 	private mainEquation?: keyof EquationData;
 	private flatDamage?: keyof EquationData | keyof ValueData;
 	private values?: ValueData;
+	private useSecondary?: boolean;
 	
 	/**
-	 * @see {@link https://library.keqingmains.com/combat-mechanics/damage/damage-formula KQM Damage Formula} for formula
+	 * @see {@link https://library.keqingmains.com/combat-mechanics/damage/damage-formula KQM Damage Formula} for formula.
 	 */
 	private equations: EquationData = {
 		atk: {
@@ -98,6 +104,26 @@ export default class DamageCalculator {
 			name: 'Transformative DMG',
 			expr: `trueTransformativeReaction * enemyResistanceMul`
 		},
+		amplifiedTransformativeReaction: {
+			name: 'Amplified DMG',
+			expr: `transformativeReaction * SECONDARY_amplifyingMul`
+		},
+		trueComponentizedTransformativeReaction: {
+			name: 'Raw Transformative DMG',
+			expr: 'INLINE_trueTransformativeReaction'
+		},
+		trueComponentizedAdditiveDamage: {
+			name: 'Raw Additive DMG',
+			expr: `INLINE_flatDamageReactionBonus`
+		},
+		trueAddedToTransformativeReaction: {
+			name: 'Outgoing DMG',
+			expr: 'trueComponentizedTransformativeReaction + SECONDARY_trueComponentizedAdditiveDamage'
+		},
+		addedToTransformativeReaction: {
+			name: 'Transformative DMG',
+			expr: `trueAddedToTransformativeReaction * enemyResistanceMul`
+		},
 		amplifyingEMBonus: {
 			name: 'EM Bonus',
 			expr: '(2.78 * em) / (1400 + em)'
@@ -112,14 +138,14 @@ export default class DamageCalculator {
 		},
 		flatDamageAdded: {
 			name: 'Additive DMG Bonus',
-			expr: 'flatDamage + talentDamageBonus + flatDamageReactionBonus'
+			expr: 'talentDamageBonus + flatDamage + flatDamageReactionBonus'
 		},
 		flatDamageReactionEMBonus: {
 			name: 'EM Bonus',
 			expr: '(5 * em) / (1200 + em)'
 		},
 		flatDamageReactionBonus: {
-			name: 'Reaction DMG',
+			name: 'Raw Reaction DMG',
 			expr: 'baseTransformativeDamage * (1 + flatDamageReactionEMBonus + reactionBonus)'
 		},
 		realCritRate: {
@@ -198,14 +224,34 @@ export default class DamageCalculator {
 	private variable(name: keyof ValueData | keyof EquationData): VariableOutput
 	private variable(name: string): VariableOutput | undefined
 	private variable(name: string) {
+		let unsetSecondary = false;
+
+		if (name.startsWith('SECONDARY_')) {
+			this.useSecondary = true;
+			unsetSecondary = true;
+			name = name.substring(10);
+		}
+
+		let output: VariableOutput | undefined;
+
 		if (name in this.values!)
-			return this.value(name as keyof ValueData);
+			output = this.value(name as keyof ValueData);
 		
 		if (name in this.equations)
-			return this.equation(name as keyof EquationData);
+			output = this.equation(name as keyof EquationData);
+
+		if (unsetSecondary) {
+			this.useSecondary = false;
+		}
+
+		return output;
 	}
 	
 	private value(name: keyof ValueData): VariableOutput {
+		if (this.useSecondary && name in DamageCalculator.secondaryMappings) {
+			name = DamageCalculator.secondaryMappings[name]!;
+		}
+
 		const valueInfo = this.values![name];
 		
 		return {
@@ -277,15 +323,22 @@ export default class DamageCalculator {
 	 * Main function. Calculate the damage for the current state of {@link attack}.
 	 */
 	calculateDamage(): Damage {
-		this.reactionType = reactionTypes.get(this.attack.reactionType)!;
-		this.reaction = this.reactionType.reactions.get(this.attack.reaction)!;
-		this.mainEquation = this.reactionType.equation;
-		this.flatDamage = this.reactionType.flatDamage ?? 'flatDamageBasic';
+		const reactionType = reactionTypes.get(this.attack.reactionType)!;
+		const reaction = reactionType.reactions.get(this.attack.reaction)!;
+		const secondaryType = reactionTypes.get(this.attack.secondaryType);
+		const secondary = secondaryType?.reactions.get(this.attack.secondary);
+
+		this.mainEquation = reactionType.equation;
+		this.flatDamage = reactionType.flatDamage ?? 'flatDamageBasic';
 
 		this.values = {
 			baseMultiplier: {
 				name: 'Reaction Multiplier',
-				value: this.reaction.multiplier ?? 1
+				value: reaction.multiplier ?? 1
+			},
+			secondaryMultiplier: {
+				name: 'Secondary Multiplier',
+				value: secondary?.multiplier ?? 1
 			},
 			transformativeLevelMultiplier: {
 				name: 'Level Multiplier',
@@ -303,15 +356,21 @@ export default class DamageCalculator {
 			};
 		});
 
-		if (this.reactionType.canCrit)
+		if (this.attack.secondaryType === 1 && reactionType.secondaryAmplifyingEquation) {
+			this.mainEquation = reactionType.secondaryAmplifyingEquation;
+		} else if (this.attack.secondaryType === 3 && reactionType.secondaryAdditiveEquation) {
+			this.mainEquation = reactionType.secondaryAdditiveEquation;
+		}
+
+		if (reactionType.canCrit)
 			return {
-				nonCrit: this.equation(this.reactionType.equation),
+				nonCrit: this.equation(this.mainEquation),
 				crit: this.equation('critHit'),
 				avgDmg: this.equation('avgDamage')
 			};
 		
 		return {
-			avgDmg: this.equation(this.reactionType.equation)
+			avgDmg: this.equation(this.mainEquation)
 		};
 	}
 }

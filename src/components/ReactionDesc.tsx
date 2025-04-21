@@ -11,8 +11,18 @@ function getElementColor(element: Reaction['element']) {
 }
 
 export default function ReactionDesc() {
+	const spreadingReactions = [...reactionTypes.get(2)!.reactions.values().filter(reaction => reaction.canApply)];
+
 	return <div className="reaction-desc">
-		<div>The reaction type of the attack. Different reactions have different properties and multipliers.</div>
+		<div>
+			The reaction type of the attack. Different reactions have different properties and multipliers.
+		</div>
+		<div>
+			{spreadingReactions.map((reaction, i, arr) => {
+				return <>{i == arr.length - 1 ? ' and ' : i > 0 && ', '}<span key={reaction.name} style={{ color: reaction.color }}>{reaction.name}</span></>;
+			})}{' '}
+			can trigger a further reaction when spread to another enemy. An additional input will be shown to calculate the additional damage from this secondary reaction.
+		</div>
 		{[...reactionTypes.entries().map(([id, damageType]) =>
 			<div key={id}>
 				<h2>{damageType.name}</h2>

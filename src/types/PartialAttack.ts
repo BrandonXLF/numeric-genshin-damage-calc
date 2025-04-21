@@ -3,6 +3,8 @@ import StatData from "./StatData";
 interface PartialAttack {
 	reactionType?: number;
 	reaction?: number;
+	secondaryType?: number;
+	secondary?: number;
 	label?: string;
 	statData?: Partial<Record<keyof StatData, string>>;
 	synced?: (keyof StatData)[];

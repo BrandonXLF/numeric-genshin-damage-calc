@@ -18,6 +18,8 @@ export default class Attack implements PartialAttack {
 
     private _reactionType: number;
     private _reaction: number;
+    private _secondaryType: number;
+    private _secondary: number;
     private _label: string;
     private _statData: StatData;
     private _synced: (keyof StatData)[];
@@ -30,6 +32,8 @@ export default class Attack implements PartialAttack {
     constructor(base?: PartialAttack, copyDataAndId = false) {
         this._reactionType = base?.reactionType ?? 0;
         this._reaction = base?.reaction ?? 0;
+        this._secondaryType = base?.secondaryType ?? 0;
+        this._secondary = base?.secondary ?? 0;
         this._label = base?.label ?? '';
         this._statData = copyDataAndId ? {...(base as Attack).statData} : {} as StatData;
         this._synced = base?.synced ? [...base.synced] : ['characterLevel'];
@@ -132,6 +136,30 @@ export default class Attack implements PartialAttack {
 		this.invalidateDmgCache = true;
     }
 
+    get hasSecondary() {
+        return this._secondaryType !== 0;
+    }
+
+    get secondaryType() {
+        return this._secondaryType;
+    }
+
+    set secondaryType(secondaryType: number) {
+        this._secondaryType = secondaryType;
+		this._unmodified = false;
+		this.invalidateDmgCache = true;
+    }
+
+    get secondary() {
+        return this._secondary;
+    }
+
+    set secondary(secondary: number) {
+        this._secondary = secondary;
+		this._unmodified = false;
+		this.invalidateDmgCache = true;
+    }
+
     get label() {
         return this._label;
     }
@@ -161,6 +189,8 @@ export default class Attack implements PartialAttack {
 		return {
 			reactionType: this.reactionType,
 			reaction: this.reaction,
+			secondaryType: this.hasSecondary ? this.secondaryType : undefined,
+			secondary: this.hasSecondary ? this.secondary : undefined,
 			label: this.label,
 			statData: this.statData,
 			synced: this.synced,

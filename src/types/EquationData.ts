@@ -2,7 +2,10 @@ export type EquationInfo = {
 	name: string;
 	/**
 	 * @remark
-	 * INLINE_ attempts to inline the following expression name
+	 * INLINE_x attempts to inline the expression named x
+	 * 
+	 * @remark
+	 * SECONDARY_x makes secondary reaction substitutions while processing x
 	 */
 	expr: string | (() => string);
 };
@@ -34,6 +37,11 @@ type EquationData = {
 	critBonus: EquationInfo;
 	flatDamageAdded: EquationInfo;
 	trueTransformativeReaction: EquationInfo;
+	amplifiedTransformativeReaction: EquationInfo;
+	trueComponentizedTransformativeReaction: EquationInfo;
+	trueComponentizedAdditiveDamage: EquationInfo;
+	trueAddedToTransformativeReaction: EquationInfo;
+	addedToTransformativeReaction: EquationInfo;
 };
 
 export default EquationData;

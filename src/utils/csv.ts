@@ -69,7 +69,16 @@ export function csvExport(columns: Column[]) {
 	rows.push(generateRow(
 		columns,
 		'Reaction',
-		atk => `${reactionTypes.get(atk.reactionType)!.reactions.get(atk.reaction)!.name} (ID: ${atk.reactionType}_${atk.reaction})`
+		atk => {
+			const base = `${reactionTypes.get(atk.reactionType)!.reactions.get(atk.reaction)!.name} (ID: ${atk.reactionType}_${atk.reaction})`;
+
+			if (!atk.hasSecondary) {
+				return base;
+			}
+
+			const secondary = `${reactionTypes.get(atk.secondaryType)!.reactions.get(atk.secondary)!.name} (ID: ${atk.secondaryType}_${atk.secondary})`;
+			return `${base} -> ${secondary}`;
+		}
 	));
 
 	statSections.forEach(statSection => {
@@ -141,7 +150,8 @@ export function csvImport(str: string) {
 			storedAttackGroups.push([]);
 		}
 
-		const reactionMatch = /\(ID: (\d+)\D(\d+)\)/.exec(object.Reaction);
+		const pattern = /\(ID: (\d+)\D(\d+)\)/g;
+		const reactionMatch = pattern.exec(object.Reaction);
 
 		if (!reactionMatch) {
 			throw new Error(`Failed to parse reaction ID from "${object.Reaction}".`);
@@ -149,6 +159,14 @@ export function csvImport(str: string) {
 
 		storedAttack.reactionType = parseInt(reactionMatch[1]);
 		storedAttack.reaction = parseInt(reactionMatch[2]);
+
+		const secondaryReactionMatch = pattern.exec(object.Reaction);
+
+		if (secondaryReactionMatch) {
+			storedAttack.secondaryType = parseInt(secondaryReactionMatch[1]);
+			storedAttack.secondary = parseInt(secondaryReactionMatch[2]);
+		}
+		
 		storedAttack.label = object.Label;
 		storedAttack.statData = Object.fromEntries(Object.entries(object).filter(([,val]) => val !== '-'));
 

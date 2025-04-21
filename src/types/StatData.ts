@@ -25,6 +25,7 @@ type StatData = {
 	em: string;
 	characterLevel: string;
 	reactionBonus: string;
+	secondaryReactionBonus: string;
 	critDamage: string;
 	critRate: string;
 	enemyLevel: string;
