@@ -101,9 +101,9 @@ export function csvExport(columns: Column[]) {
 			(_, atkIndex, column, _2) => {
 				if (atkIndex !== 0) return '';
 
-				const damage = column.attacks.reduce((prev, curr) => prev + (curr.damage[damageType.prop]?.value ?? NaN), 0);
+				const { damage, hadError, anyWithValue } = column.sumDamage(damageType.prop);
 
-				if (Number.isNaN(damage)) return '\u2014';
+				if (hadError || !anyWithValue) return '\u2014';
 				return displayDamage(damage);
 			}
 		));

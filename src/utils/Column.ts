@@ -1,4 +1,5 @@
 import ColumnCopyMode from "../types/ColumnCopyMode";
+import Damage from "../types/Damage";
 import PartialAttack from "../types/PartialAttack";
 import Attack from "./Attack";
 import IDGenerator from "./IDGenerator";
@@ -49,6 +50,34 @@ export default class Column {
         const atkIndex = this.attacks.findIndex(atk => atk.id === atkId);
         if (atkIndex === -1) return;
         this._activeAttackIdx = atkIndex;
+    }
+
+    sumDamage(type: keyof Damage) {
+        let damage = 0;
+        let hadError = false;
+        let anyWithValue = false;
+
+        for (let attack of this.attacks) {
+            let attackDamage = attack.damage[type]?.value;
+
+            if (attackDamage) {
+                anyWithValue = true;
+            } else {
+                attackDamage = attack.damage.avgDmg.value;
+            }
+    
+            if (Number.isNaN(attackDamage)) {
+                hadError = true;
+            }
+
+            damage += attackDamage;
+        }
+
+        return {
+            damage,
+            hadError,
+            anyWithValue
+        };
     }
 
     get activeIndex() {
