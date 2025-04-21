@@ -18,18 +18,22 @@ export default function ReactionDesc() {
 				<h2>{damageType.name}</h2>
 				<div>{damageType.desc}</div>
 				<table>
-					<tr>
-						<th>Name</th>
-						<th>Damage Type</th>
-						<th>Multiplier</th>
-					</tr>
-					{[...damageType.reactions.entries().map(([subID, damageSubType]) => 
-						<tr key={subID}>
-							<td style={{ color: damageSubType.color }}>{damageSubType.name}</td>
-							<td style={{ color: getElementColor(damageSubType.element) }}>{damageSubType.element}</td>
-							<td>{damageSubType.multiplier ?? 'N/A'}</td>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Damage Type</th>
+							<th>Multiplier</th>
 						</tr>
-					)]}
+					</thead>
+					<tbody>
+						{[...damageType.reactions.entries().map(([subID, damageSubType]) => 
+							<tr key={subID}>
+								<td style={{ color: damageSubType.color }}>{damageSubType.name}</td>
+								<td style={{ color: getElementColor(damageSubType.element) }}>{damageSubType.element}</td>
+								<td>{damageSubType.multiplier ?? 'N/A'}</td>
+							</tr>
+						)]}
+					</tbody>
 				</table>
 			</div>
 		)]}
