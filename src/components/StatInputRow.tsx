@@ -20,29 +20,29 @@ export default function StatInputRow(props: Readonly<{
 }>) {
 	let anyEnabled = false;
 
-	function onChange(colIndex: number, atkIndex: number, prop: keyof StatData, value?: string) {
-		const column = props.columns[colIndex];
+	function onChange(colId: number, atkId: number, prop: keyof StatData, value?: string) {
+		const column = props.columns.find(col => col.id === colId);
 
-		if (column.first.synced.includes(prop)) {
+		if (column?.first.synced.includes(prop)) {
 			props.dispatch({
 				type: 'modifyAttacks',
-				colId: column.id,
+				colId,
 				modifier: attacks => attacks.forEach(attack => attack.setStat(prop, value))
 			});
 		} else {
 			props.dispatch({
 				type: 'modifyAttack',
-				colId: column.id,
-				atkId: column.attacks[atkIndex].id,
+				colId,
+				atkId,
 				modifier: attack => attack.setStat(prop, value)
 			});
 		}
 	}
 
-	function setSynced(colIndex: number, prop: keyof StatData, synced: boolean, value?: string) {	
+	function setSynced(colId: number, prop: keyof StatData, synced: boolean, value?: string) {	
 		props.dispatch({
 			type: 'modifyAttacks',
-			colId: props.columns[colIndex].id,
+			colId,
 			modifier: attacks => {
 				if (synced) {
 					if (!attacks[0].synced.includes(prop))
@@ -57,9 +57,8 @@ export default function StatInputRow(props: Readonly<{
 		});
 	}
 	
-	let statInputs = props.columns.map((column, colIndex) => {
+	let statInputs = props.columns.map(column => {
 		const attack = column.active;
-		const atkIndex = column.activeIndex;
 		const synced = column.first.synced.includes(props.stat.prop);
 
 		let damageColumns = reactionTypes.get(attack.reactionType)!.groups;
@@ -78,13 +77,13 @@ export default function StatInputRow(props: Readonly<{
 				? <AttrStatInput
 					stat={props.stat}
 					attack={attack}
-					onChange={(prop, value) => onChange(colIndex, atkIndex, prop, value)}
+					onChange={(prop, value) => onChange(column.id, attack.id, prop, value)}
 				/>
 				: <StatInput
 					stat={props.stat}
 					value={attack.getStat(props.stat.prop) ?? ''}
 					disabled={!enabled}
-					onChange={value => onChange(colIndex, atkIndex, props.stat.prop, value)}
+					onChange={value => onChange(column.id, attack.id, props.stat.prop, value)}
 				/>
 			}
 			{column.attacks.length > 1 &&
@@ -97,7 +96,7 @@ export default function StatInputRow(props: Readonly<{
 						label={synced ? 'Unsync' : 'Sync'}
 						hideLabel
 						onClick={() => setSynced(
-							colIndex,
+							column.id,
 							props.stat.prop,
 							!synced,
 							attack.getStat(props.stat.prop)
