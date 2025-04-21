@@ -23,8 +23,8 @@ export default function CalculationPopup(props: Readonly<{
 		<PopupHeader title="Calculations" ref={ref} />
 		<div className="calc">
 			<span>Attack: </span>
-			<AttackList attacks={props.column.attacks} active={shown} setActive={setShown} />
+			<AttackList attacks={props.column.attacks} activeIndex={shown} setActive={(_, i) => setShown(i)} />
 		</div>
-		<EquationLine equation={props.column.attacks[shown].damage[props.prop]!} />
+		<EquationLine equation={props.column.attacks[shown].damage[props.prop] ?? props.column.attacks[shown].damage.avgDmg} />
 	</Popup>
 }

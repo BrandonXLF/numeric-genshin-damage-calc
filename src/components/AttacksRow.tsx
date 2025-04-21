@@ -17,7 +17,7 @@ export default function AttacksRow(props: Readonly<{
 		{props.columns.map(column => <div key={column.id} className="form-width column-attacks">
             <AttackList
                 attacks={column.attacks}
-                active={column.activeIndex}
+                activeIndex={column.activeIndex}
                 setActive={atkId => props.dispatch({
                     type: 'setActiveAttack',
                     colId: column.id,
