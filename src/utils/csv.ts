@@ -2,7 +2,6 @@ import { stringify } from "csv-stringify/browser/esm/sync";
 import Attack from "./Attack";
 import Stat, { StatType } from "../types/Stat";
 import Column from "./Column";
-import DamageCalculator from "./DamageCalculator";
 import damageTypes from "./damageTypes";
 import displayDamage from "./displayDamage";
 import stats from "./stats";

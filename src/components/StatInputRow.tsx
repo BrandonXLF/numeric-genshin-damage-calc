@@ -71,7 +71,7 @@ export default function StatInputRow(props: Readonly<{
 				attack.getStatAsNumber(getAttrStat(stat.prop, props.stat.attr!), stat.type)
 			);
 		
-		anyEnabled = anyEnabled || enabled;
+		anyEnabled ||= enabled;
 
 		return <div key={column.id} className="stat-input-row">
 			{'usesAttrs' in props.stat && enabled
@@ -103,7 +103,7 @@ export default function StatInputRow(props: Readonly<{
 							attack.getStat(props.stat.prop)
 						)}
 					/>
-					</div>
+				</div>
 			}
 		</div>;
 	});
