@@ -13,6 +13,7 @@ const statData: StatData = {
 	em: '100',
 	characterLevel: '90',
 	reactionBonus: '20',
+	secondaryReactionBonus: '10',
 	critDamage: '150',
 	critRate: '80',
 	enemyLevel: '100',
@@ -113,6 +114,7 @@ it('computes secondary transformative reaction damage', () => {
 			characterLevel: '72',
 			em: '236',
 			reactionBonus: '0',
+			secondaryReactionBonus: '0',
 			resistance: '10',
 			resistanceReduction: '35'
 		}
@@ -135,6 +137,7 @@ it('computes secondary transformative reaction damage', () => {
 			characterLevel: '72',
 			em: '236',
 			reactionBonus: '0',
+			secondaryReactionBonus: '0',
 			resistance: '10',
 			resistanceReduction: '20'
 		}
