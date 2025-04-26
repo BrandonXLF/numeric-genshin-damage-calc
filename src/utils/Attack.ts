@@ -7,6 +7,8 @@ import attributes, { getAttrStat } from "../utils/attributes";
 import Damage from "../types/Damage";
 import IDGenerator from "./IDGenerator";
 import PartialAttack from "../types/PartialAttack";
+import reactionTypes from "./reactionTypes";
+import DamageGroup from "../types/DamageGroups";
 
 export default class Attack implements PartialAttack {
 	readonly id: number;
@@ -180,6 +182,16 @@ export default class Attack implements PartialAttack {
 
     get unmodified() {
         return this._unmodified;
+    }
+
+    get groups() {
+        let out = reactionTypes.get(this.reactionType)!.baseGroups;
+
+        if (this.hasSecondary) {
+            out |= DamageGroup.SecondaryReaction;
+        }
+
+        return out;
     }
 
     /**

@@ -216,7 +216,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.CharacterStats,
-		groups: DamageGroup.Reaction,
+		groups: DamageGroup.SecondaryReaction,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{

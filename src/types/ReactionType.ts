@@ -20,7 +20,7 @@ type ReactionType = {
 	secondaryAmplifyingEquation?: keyof EquationData;
 	secondaryAdditiveEquation?: keyof EquationData;
 	flatDamage?: keyof EquationData | keyof ValueData;
-	groups: DamageGroup;
+	baseGroups: DamageGroup;
 	reactions: Map<number, Reaction>;
 	desc: string;
 };

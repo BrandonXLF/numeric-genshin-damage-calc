@@ -11,7 +11,6 @@ import SyncSVG from "../svgs/SyncSVG";
 import "../less/StatInputRow.less";
 import SVGButton from "./SVGButton";
 import { ColumnStateAction } from "../types/ColumnState";
-import reactionTypes from "../utils/reactionTypes";
 
 export default function StatInputRow(props: Readonly<{
 	stat: Stat,
@@ -60,13 +59,14 @@ export default function StatInputRow(props: Readonly<{
 	let statInputs = props.columns.map(column => {
 		const attack = column.active;
 		const synced = column.first.synced.includes(props.stat.prop);
+		const damageColumns = attack.groups;
 
-		let damageColumns = reactionTypes.get(attack.reactionType)!.groups;
-		let enabled = Boolean(props.stat.groups! & damageColumns);
+		let enabled = Boolean((props.stat.groups ?? 0) & damageColumns);
 		
+		// Required by group-enabled stat that uses current stat's attribute
 		if (!enabled && 'attr' in props.stat)
 			enabled = attrStats.some(stat =>
-				(stat.groups! & damageColumns) &&
+				((stat.groups ?? 0) & damageColumns) &&
 				attack.getStatAsNumber(getAttrStat(stat.prop, props.stat.attr!), stat.type)
 			);
 		
