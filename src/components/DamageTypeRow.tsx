@@ -32,6 +32,9 @@ export default function DamageTypeRow(props: Readonly<{
 							attack.reactionType,
 							attack.reaction
 						] = value.split(',').map(Number);
+
+						attack.secondaryType = 0;
+						attack.secondary = 0;
 					}
 				})}
 				options={
