@@ -15,6 +15,7 @@ export default function SecondaryReactionRow(props: Readonly<{
 
 	const dropdowns = props.columns.map(column => {
 		const reaction = reactionTypes.get(column.active.reactionType)?.reactions.get(column.active.reaction);
+		const secondary = reactionTypes.get(column.active.secondaryType)?.reactions.get(column.active.secondary);
 		const enabled = reaction?.canApply ?? false;
 
 		anyEnabled ||= enabled;
@@ -24,7 +25,7 @@ export default function SecondaryReactionRow(props: Readonly<{
 			class="damage-type"
 			disabled={!enabled}
 			value={`${column.active.secondaryType},${column.active.secondary}`}
-			style={{ color: reactionTypes.get(column.active.secondaryType)?.reactions.get(column.active.secondary)?.color ?? 'white' }} 
+			style={{ color: secondary?.color ?? 'white' }} 
 			onChange={value => props.dispatch({
 				type: 'modifyAttack',
 				colId: column.id,
