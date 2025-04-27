@@ -7,11 +7,15 @@ import AttackList from "./AttackList";
 import EquationLine from "./EquationLine";
 import PopupHeader from "./PopupHeader";
 import Column from "../utils/Column";
+import '../less/CalculationPopup.less';
+import DisplayedProp from "../types/DisplayedProp";
 import DamageData from "../types/DamageData";
+import displayDamage from "../utils/displayDamage";
 
 export default function CalculationPopup(props: Readonly<{
 	column: Column;
-	prop: keyof DamageData;
+	displayedProp: DisplayedProp<DamageData>;
+	value: number;
 	error?: boolean;
 }>) {
 	const ref = React.useRef<PopupActions>(null);
@@ -21,10 +25,13 @@ export default function CalculationPopup(props: Readonly<{
 		<SVGButton svg={<CalculatorSVG className={props.error ? 'neg' : ''} />} label="Show Calculations" hideLabel={true} mini={true} />
 	} ref={ref} modal onOpen={() => setShown(props.column.activeIndex)}>
 		<PopupHeader title="Calculations" ref={ref} />
-		<div className="calc">
+		<div className="row">
+			{props.displayedProp.name} {displayDamage(props.value)}
+		</div>
+		<div className="labelled-row">
 			<span>Attack: </span>
 			<AttackList attacks={props.column.attacks} activeIndex={shown} setActive={(_, i) => setShown(i)} />
 		</div>
-		<EquationLine equation={props.column.attacks[shown].damage.getWithDefault(props.prop)} />
+		<EquationLine equation={props.column.attacks[shown].damage.getWithDefault(props.displayedProp.prop)} />
 	</Popup>
 }

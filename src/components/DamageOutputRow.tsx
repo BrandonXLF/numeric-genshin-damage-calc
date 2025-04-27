@@ -27,7 +27,7 @@ export default function DamageOutputRow(props: Readonly<{
 		return <DamageOutput
 			key={column.id}
 			column={column}
-			prop={props.damageType.prop}
+			displayedProp={props.damageType}
 			value={damage}
 			error={hadError}
 			initial={i !== 0 ? initial : undefined}
