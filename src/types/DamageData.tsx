@@ -1,4 +1,4 @@
-import EquationOutput from "../utils/EquationOutput";
+import { EquationOutput } from "./VariableOutput";
 
 export default interface DamageData {
 	nonCrit?: EquationOutput;
