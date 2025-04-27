@@ -3,8 +3,9 @@ import RecordEntry from "./RecordEntry";
 export type EquationOutput = {
 	value: number;
 	label: RecordEntry[];
-	equation: RecordEntry[];
+	annotated: RecordEntry[];
 	children: Record<string, EquationOutput>;
+	fullRawExpr: string;
 }
 
 type VariableOutput = {

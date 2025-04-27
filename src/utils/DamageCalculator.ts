@@ -291,16 +291,21 @@ export default class DamageCalculator {
 	private equation(name: keyof EquationData): EquationOutput {
 		const equationInfo = this.equations[name];
 		const expr = this.expression(equationInfo);
-		const equation: RecordEntry[] = [];
+		const annotated: RecordEntry[] = [];
 		const children: EquationOutput['children'] = {};
 		
+		let fullRawExpr = '';
 		const mathExpr = expr.split(/([A-Za-z_]+|\d+)+/g).map(component => {
 			let res = this.processComponent(component);
 			
-			equation.push(...res.label);
+			annotated.push(...res.label);
 			
-			if ('equation' in res)
+			if ('annotated' in res) {
 				children[component] = res;
+				fullRawExpr += `(${res.fullRawExpr})`;
+			} else {
+				fullRawExpr += res.value;
+			}
 			
 			return res.value;
 		}).join('');
@@ -312,12 +317,12 @@ export default class DamageCalculator {
 			this.recordNumber(value)
 		];
 		
-		equation.unshift(
+		annotated.unshift(
 			...label,
 			this.record(' = ', RecordEntryType.Mathematical)
 		);
 		
-		return { label, value, equation, children };
+		return { label, value, annotated, children, fullRawExpr };
 	}
 	
 	/**

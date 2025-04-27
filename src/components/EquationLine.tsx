@@ -5,7 +5,7 @@ export default function EquationLine(props: Readonly<{
 	equation: EquationOutput
 }>) {
 	return <div className="calc">
-		{props.equation.equation.map((entry, i) =>
+		{props.equation.annotated.map((entry, i) =>
 			<span key={i} className={`calc-${entry.type}`}>{entry.value}</span>
 		)}
 		{Object.entries(props.equation.children).map(([key, row]) =>
