@@ -11,6 +11,7 @@ import attributes, { getAttrStat } from "./attributes";
 import MathComponent from "../types/MathComponent";
 import Attack from "./Attack";
 import reactionTypes from "./reactionTypes";
+import roundDecimals from "./roundDecimals";
 
 export default class DamageCalculator {
 	/**
@@ -216,7 +217,7 @@ export default class DamageCalculator {
 	
 	private recordNumber(value: number): RecordEntry {
 		return {
-			value: Math.round(value * 1e4) / 1e4,
+			value: roundDecimals(value, 4),
 			type: RecordEntryType.Value
 		};
 	}

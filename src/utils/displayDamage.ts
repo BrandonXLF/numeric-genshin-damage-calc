@@ -1,3 +1,5 @@
-export default function displayDamage(damage: number) {
-    return (Math.round(damage * 100) / 100).toString();
+import roundDecimals from "./roundDecimals";
+
+export default function displayDamage(damage: number): string {
+    return roundDecimals(damage, 2).toString();
 }

@@ -6,6 +6,7 @@ import elements from "./elements";
 import stats from "./stats";
 import PartialAttack from "../types/PartialAttack";
 import ColumnCopyMode from "../types/ColumnCopyMode";
+import roundDecimals from "./roundDecimals";
 
 export default class ColumnList {
 	constructor(public readonly columns: Column[]) {}
@@ -88,7 +89,7 @@ export default class ColumnList {
             if (numVal === undefined) return;
 
             if (stat.type === StatType.Percent) numVal *= 100;
-            numVal = Math.round(numVal * 100) / 100;
+            numVal = roundDecimals(numVal, 2);
 
             base.statData![stat.prop] = numVal.toString();
         });
