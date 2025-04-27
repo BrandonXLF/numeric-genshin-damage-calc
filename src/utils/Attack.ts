@@ -4,7 +4,7 @@ import StatData from "../types/StatData";
 import evaluateExpression from "../utils/evalulateExpression";
 import stats from "../utils/stats";
 import attributes, { getAttrStat } from "../utils/attributes";
-import Damage from "../types/Damage";
+import Damage from "./Damage";
 import IDGenerator from "./IDGenerator";
 import PartialAttack from "../types/PartialAttack";
 import reactionTypes from "./reactionTypes";

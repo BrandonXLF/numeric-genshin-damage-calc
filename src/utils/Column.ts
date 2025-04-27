@@ -1,5 +1,5 @@
 import ColumnCopyMode from "../types/ColumnCopyMode";
-import Damage from "../types/Damage";
+import DamageData from "../types/DamageData";
 import PartialAttack from "../types/PartialAttack";
 import Attack from "./Attack";
 import IDGenerator from "./IDGenerator";
@@ -52,7 +52,7 @@ export default class Column {
         this._activeAttackIdx = atkIndex;
     }
 
-    sumDamage(type: keyof Damage) {
+    sumDamage(type: keyof DamageData) {
         let damage = 0;
         let hadError = false;
         let anyWithValue = false;

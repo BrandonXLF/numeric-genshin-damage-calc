@@ -1,7 +1,7 @@
-import Damage from "../types/Damage";
 import DisplayedProp from "../types/DisplayedProp";
+import DamageData from "../types/DamageData";
 
-const damageTypes: DisplayedProp<Damage>[] = [
+const damageTypes: DisplayedProp<DamageData>[] = [
 	{
 		name: "CRIT Hit",
 		prop: "crit"

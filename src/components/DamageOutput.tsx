@@ -1,13 +1,13 @@
 import CalculationPopup from "./CalculationPopup";
 import DifferenceOutput from "./DifferenceOutput";
-import Damage from "../types/Damage";
 import '../less/DamageOutput.less';
 import displayDamage from "../utils/displayDamage";
 import Column from "../utils/Column";
+import DamageData from "../types/DamageData";
 
 export default function DamageOutput(props: Readonly<{
 	column: Column;
-	prop: keyof Damage;
+	prop: keyof DamageData;
 	value:  number;
 	error?: boolean;
 	initial?: number;

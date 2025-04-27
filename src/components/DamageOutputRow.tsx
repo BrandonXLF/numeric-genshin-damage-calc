@@ -1,11 +1,11 @@
-import Damage from "../types/Damage";
 import DisplayedProp from "../types/DisplayedProp";
 import Column from "../utils/Column";
 import DamageOutput from "./DamageOutput";
 import RowLabel from "./RowLabel";
+import DamageData from "../types/DamageData";
 
 export default function DamageOutputRow(props: Readonly<{
-	damageType: DisplayedProp<Damage>;
+	damageType: DisplayedProp<DamageData>;
 	columns: Column[];
 }>) {
 	let initial: number | undefined;

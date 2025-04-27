@@ -1,4 +1,4 @@
-import Damage from "../types/Damage";
+import Damage from "./Damage";
 import EquationData, { EquationInfo } from "../types/EquationData";
 import VariableOutput, { EquationOutput } from "../types/VariableOutput";
 import RecordEntry, { RecordEntryType } from "../types/RecordEntry";
@@ -364,14 +364,8 @@ export default class DamageCalculator {
 		}
 
 		if (reactionType.canCrit)
-			return {
-				nonCrit: this.equation(this.mainEquation),
-				crit: this.equation('critHit'),
-				avgDmg: this.equation('avgDamage')
-			};
+			return new Damage(this.equation('avgDamage'), this.equation('critHit'), this.equation(this.mainEquation));
 		
-		return {
-			avgDmg: this.equation(this.mainEquation)
-		};
+		return new Damage(this.equation(this.mainEquation));
 	}
 }
