@@ -37,7 +37,7 @@ export default function CalculationPopup(props: Readonly<{
 		<PopupHeader title="Calculations" ref={ref} />
 		<div className={`calc-popup-row top-row ${showExpr ? 'expanded' : ''}`}>
 			<div>
-				{props.displayedProp.name} {displayDamage(props.value)}{showExpr && <>
+				{props.displayedProp.name}: {displayDamage(props.value)}{showExpr && <>
 					{' = '}
 					<AttacksExpr attacks={props.column.attacks} prop={props.displayedProp.prop} />
 				</>}
