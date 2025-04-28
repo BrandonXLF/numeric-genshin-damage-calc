@@ -60,7 +60,7 @@ export default class Column {
         for (let attack of this.attacks) {
             let attackDamage = attack.damage[type]?.value;
 
-            if (attackDamage) {
+            if (attackDamage !== undefined) {
                 anyWithValue = true;
             } else {
                 attackDamage = attack.damage.avgDmg.value;
