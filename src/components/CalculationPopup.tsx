@@ -13,6 +13,19 @@ import DamageData from "../types/DamageData";
 import displayDamage from "../utils/displayDamage";
 import AttacksExpr from "./AttacksExpr";
 
+function loadShowExpr() {
+	return !!localStorage.getItem('GIDC-expr');
+}
+
+function saveShowExpr(showExpr: boolean) {
+	if (!showExpr) {
+		localStorage.removeItem('GIDC-expr');
+		return;
+	}
+
+	localStorage.setItem('GIDC-expr', '1');
+}
+
 export default function CalculationPopup(props: Readonly<{
 	column: Column;
 	displayedProp: DisplayedProp<DamageData>;
@@ -21,19 +34,18 @@ export default function CalculationPopup(props: Readonly<{
 }>) {
 	const ref = React.useRef<PopupActions>(null);
 	const [shown, setShown] = React.useState(props.column.activeIndex);
-	const [showExpr, setShowExpr] = React.useState(!!localStorage.getItem('GIDC-expr'));
+	const [showExpr, setShowExpr] = React.useState(loadShowExpr);
 
-	useEffect(() => {
-		if (showExpr) {
-			localStorage.setItem('GIDC-expr', '1');
-		} else {
-			localStorage.removeItem('GIDC-expr');
-		}
-	}, [showExpr]);
+	useEffect(() => saveShowExpr(showExpr), [showExpr]);
+
+	const handleOpen = () => {
+		setShown(props.column.activeIndex);
+		setShowExpr(loadShowExpr());
+	};
 
 	return <Popup trigger={
 		<SVGButton svg={<CalculatorSVG className={props.error ? 'neg' : ''} />} label="Show Calculations" hideLabel={true} mini={true} />
-	} ref={ref} modal onOpen={() => setShown(props.column.activeIndex)} className="calc-popup">
+	} ref={ref} modal onOpen={handleOpen} className="calc-popup">
 		<PopupHeader title="Calculations" ref={ref} />
 		<div className={`calc-popup-row top-row ${showExpr ? 'expanded' : ''}`}>
 			<div>
