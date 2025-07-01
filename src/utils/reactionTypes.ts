@@ -1,10 +1,14 @@
 import DamageGroup from "../types/DamageGroups";
-import ReactionType from "../types/ReactionType";
+import ReactionType, { EMBonusType, RxnMode } from "../types/ReactionType";
 
 const reactionTypes = new Map<number, ReactionType>([
 	[0, {
 		name: 'No Reaction',
 		secondaryName: 'None',
+		baseDamage: 'talent',
+		rxnMode: RxnMode.NONE,
+		emBonus: EMBonusType.NONE,
+		isTransformative: false,
 		canCrit: true,
 		baseGroups: DamageGroup.General,
 		reactions: new Map([
@@ -14,9 +18,11 @@ const reactionTypes = new Map<number, ReactionType>([
 	}],
 	[1, {
 		name: 'Amplifying',
+		baseDamage: 'talent',
+		rxnMode: RxnMode.MULTIPLICATIVE,
+		emBonus: EMBonusType.AMPLIFYING,
+		isTransformative: false,
 		canCrit: true,
-		rxMode: 'amplifying',
-		inlineEMBonus: 'amplifyingEMBonus',
 		baseGroups: DamageGroup.Reaction | DamageGroup.General,
 		reactions: new Map([
 			[0, { name: 'Melt (Pyro)', multiplier: 2, color: '#ffcc66', element: 'Pyro' }],
@@ -28,11 +34,11 @@ const reactionTypes = new Map<number, ReactionType>([
 	}],
 	[2, {
 		name: 'Transformative',
-		canCrit: false,
 		baseDamage: 'transformativeLevelMultiplier',
-		rxMode: 'amplifying',
+		rxnMode: RxnMode.MULTIPLICATIVE,
+		emBonus: EMBonusType.TRANSFORMATIVE,
 		isTransformative: true,
-		inlineEMBonus: 'transformativeEMBonus',
+		canCrit: false,
 		baseGroups: DamageGroup.Reaction,
 		reactions: new Map([
 			[0, { name: 'Burgeon', multiplier: 3, color: '#ff9b00', element: 'Dendro' }],
@@ -49,15 +55,18 @@ const reactionTypes = new Map<number, ReactionType>([
 	}],
 	[3, {
 		name: 'Additive',
+		baseDamage: 'talent',
+		rxnMode: RxnMode.ADDITIVE,
+		emBonus: EMBonusType.ADDITIVE,
+		isTransformative: false,
 		canCrit: true,
-		rxMode: 'additive',
 		baseGroups: DamageGroup.General | DamageGroup.Reaction,
 		reactions: new Map([
 			[0, { name: 'Spread', multiplier: 1.25, color: '#00ea53', element: 'Dendro' }],
 			[1, { name: 'Aggravate', multiplier: 1.15, color: '#e19bff', element: 'Electro' }]
 		]),
 		desc: 'Additive reactions add additional damage to the damage being done based on the base reaction multiplier, the EM multiplier, and Reaction Bonus.'
-	}]
+	}],
 ]);
 
 export default reactionTypes;

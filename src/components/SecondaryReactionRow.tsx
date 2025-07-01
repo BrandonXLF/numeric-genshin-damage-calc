@@ -39,11 +39,11 @@ export default function SecondaryReactionRow(props: Readonly<{
 			})}
 			options={
 				typePairs
-					.filter(([id]) => id !== 2)
+					.filter(([, type]) => !type.isTransformative)
 					.map(([id, damageType]) => ({
 						label: damageType.secondaryName ?? damageType.name,
 						options: [...damageType.reactions.entries()]
-							.filter(([_, damageSubType]) =>
+							.filter(([, damageSubType]) =>
 								damageSubType?.element === reaction?.element || damageSubType?.element === 'Varies' || reaction?.element === 'Varies'
 							)
 							.map(([subID, damageSubType]) => ({

@@ -16,22 +16,20 @@ type EquationData = {
 	def: EquationInfo;
 	hp: EquationInfo;
 	
-	// Base damage
+	// Final base damage
 	baseDamage: EquationInfo;
 	flatDamageBasic: EquationInfo;
 	finalBaseDamage: EquationInfo;
 	
-	// EM Bonuses
-	transformativeEMBonus: EquationInfo;
-	amplifyingEMBonus: EquationInfo;
-	flatDamageReactionEMBonus: EquationInfo;
-	
-	// Amplifying reactions
+	// Reaction
+	emBonus: EquationInfo;
 	amplifyingMul: EquationInfo;
+
+	// Amplified
 	amplifiedDamage: EquationInfo;
 	secondaryAmplifiedDamage: EquationInfo;
 	
-	// Additive reactions
+	// Additive
 	flatDamageReactionBonus: EquationInfo;
 	additiveDamage: EquationInfo;
 	secondaryAdditiveDamage: EquationInfo;
