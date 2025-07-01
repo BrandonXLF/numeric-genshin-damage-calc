@@ -27,13 +27,13 @@ const stats: Stat[] = [
 		icon: <StatIcon base="percent" />
 	},
 	{
-		name: 'Talent Multiplier',
-		desc: 'Multiplier that applies to the talent multipliers, increased by Xingqui\'s C4 and Yoimiya\'s skill for example',
+		name: 'Base Multiplier',
+		desc: 'Multiplier that applies to the base/talent multipliers, increased by Xingqui\'s C4, Yoimiya\'s skill, and Ineffa\'s passive for example',
 		prop: 'baseDamageMultiplier',
 		default: 100,
 		type: StatType.Percent,
 		section: StatSection.CharacterTalent,
-		groups: DamageGroup.General,
+		groups: DamageGroup.General | DamageGroup.Reaction,
 		icon: <StatIcon base="percent" indicator="percent" />
 	},
 	{

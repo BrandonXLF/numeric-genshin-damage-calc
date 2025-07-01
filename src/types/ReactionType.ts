@@ -16,10 +16,10 @@ type ReactionType = {
 	name: string;
 	secondaryName?: string;
 	canCrit: boolean;
-	equation: keyof EquationData;
-	secondaryAmplifyingEquation?: keyof EquationData;
-	secondaryAdditiveEquation?: keyof EquationData;
-	flatDamage?: keyof EquationData | keyof ValueData;
+	baseDamage?: keyof EquationData | keyof ValueData;
+	rxMode?: 'amplifying' | 'additive';
+	isTransformative?: boolean;
+	inlineEMBonus?: keyof EquationData;
 	baseGroups: DamageGroup;
 	reactions: Map<number, Reaction>;
 	desc: string;

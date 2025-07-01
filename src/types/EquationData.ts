@@ -11,37 +11,47 @@ export type EquationInfo = {
 };
 
 type EquationData = {
+	// Stats
 	atk: EquationInfo;
 	def: EquationInfo;
 	hp: EquationInfo;
+	
+	// Base damage
 	baseDamage: EquationInfo;
 	flatDamageBasic: EquationInfo;
-	enemyResistance: EquationInfo;
-	enemyResistanceMul: EquationInfo;
+	finalBaseDamage: EquationInfo;
+	
+	// EM Bonuses
+	transformativeEMBonus: EquationInfo;
+	amplifyingEMBonus: EquationInfo;
+	flatDamageReactionEMBonus: EquationInfo;
+	
+	// Amplifying reactions
+	amplifyingMul: EquationInfo;
+	amplifiedDamage: EquationInfo;
+	secondaryAmplifiedDamage: EquationInfo;
+	
+	// Additive reactions
+	flatDamageReactionBonus: EquationInfo;
+	additiveDamage: EquationInfo;
+	secondaryAdditiveDamage: EquationInfo;
+	
+	// Damage bonus
+	bonusDamage: EquationInfo;
+	
+	// Enemy factors
 	enemyDefenseFactor: EquationInfo;
 	characterDefenseFactor: EquationInfo;
 	enemyDefenseMul: EquationInfo;
+	enemyResistance: EquationInfo;
+	enemyResistanceMul: EquationInfo;
 	generalDamage: EquationInfo;
-	transformativeEMBonus: EquationInfo;
-	baseTransformativeDamage: EquationInfo;
-	transformativeReaction: EquationInfo;
-	amplifyingEMBonus: EquationInfo;
-	amplifyingMul: EquationInfo;
-	amplifyingReaction: EquationInfo;
+	
+	// CRIT
 	realCritRate: EquationInfo;
+	critBonus: EquationInfo;
 	critHit: EquationInfo;
 	avgDamage: EquationInfo;
-	flatDamageReactionEMBonus: EquationInfo;
-	trueDamage: EquationInfo;
-	flatDamageReactionBonus: EquationInfo;
-	critBonus: EquationInfo;
-	flatDamageAdded: EquationInfo;
-	trueTransformativeReaction: EquationInfo;
-	amplifiedTransformativeReaction: EquationInfo;
-	trueComponentizedTransformativeReaction: EquationInfo;
-	trueComponentizedAdditiveDamage: EquationInfo;
-	trueAddedToTransformativeReaction: EquationInfo;
-	addedToTransformativeReaction: EquationInfo;
 };
 
 export default EquationData;

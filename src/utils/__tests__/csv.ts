@@ -51,7 +51,7 @@ it('exports correctly', () => {
 		['Talent DMG DEF % (talentDEF)', '-', '-', '-'],
 		['Talent DMG HP % (talentHP)', '-', '-', '-'],
 		['Talent DMG EM % (talentEM)', '-', '-', '-'],
-		['Talent Multiplier % (baseDamageMultiplier)', '100', '100', '100'],
+		['Base Multiplier % (baseDamageMultiplier)', '100', '100', '100'],
 		['Talent DMG Bonus ATK % (talentDamageBonus)', '0', '0', '0'],
 		['Talent DMG Bonus DEF % (talentDamageBonusDEF)', '-', '-', '-'],
 		['Talent DMG Bonus HP % (talentDamageBonusHP)', '-', '-', '-'],

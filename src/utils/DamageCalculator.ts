@@ -12,6 +12,7 @@ import MathComponent from "../types/MathComponent";
 import Attack from "./Attack";
 import reactionTypes from "./reactionTypes";
 import roundDecimals from "./roundDecimals";
+import ReactionType from "../types/ReactionType";
 
 export default class DamageCalculator {
 	/**
@@ -22,15 +23,23 @@ export default class DamageCalculator {
 		reactionBonus: 'secondaryReactionBonus'
 	};
 
-	private mainEquation?: keyof EquationData;
-	private flatDamage?: keyof EquationData | keyof ValueData;
 	private values?: ValueData;
 	private useSecondary?: boolean;
+	private baseDamage?: string;
+	private rxDamageTypes?: (keyof EquationData)[];
+	private isTransformative?: boolean;
+	private inlineEMBonus?: string;
+	private secondaryEMBonus?: string;
+
+	getNextRxDmg(): keyof EquationData | undefined{
+		return this.rxDamageTypes?.pop();
+	}
 	
 	/**
 	 * @see {@link https://library.keqingmains.com/combat-mechanics/damage/damage-formula KQM Damage Formula} for formula.
 	 */
 	private equations: EquationData = {
+		// Stats
 		atk: {
 			name: 'ATK',
 			expr: '(baseTalentScale * (1 + additionalBonusTalentScale)) + bonusTalentScale'
@@ -43,17 +52,79 @@ export default class DamageCalculator {
 			name: 'HP',
 			expr: '(baseHP * (1 + additionalBonusHP)) + bonusHP'
 		},
+
+		// Final base damage
 		baseDamage: {
-			name: 'Talent DMG',
-			expr: 'INLINE_talent * baseDamageMultiplier'
+			name: 'Base DMG',
+			expr: () => `${this.baseDamage ?? 'talent'} * baseDamageMultiplier`
 		},
 		flatDamageBasic: {
 			name: 'Additive DMG Bonus',
 			expr: 'talentDamageBonus + flatDamage'
 		},
-		trueDamage: {
+		finalBaseDamage: {
+			name: 'Final Base DMG',
+			expr: 'baseDamage + flatDamageBasic'
+		},
+
+		// Amplified
+		transformativeEMBonus: {
+			name: 'EM Bonus',
+			expr: '(16 * em) / (2000 + em)'
+		},
+		amplifyingEMBonus: {
+			name: 'EM Bonus',
+			expr: '(2.78 * em) / (1400 + em)'
+		},
+		amplifyingMul: {
+			name: 'Reaction Multiplier',
+			expr: () => `baseMultiplier * (1 + ${this.useSecondary ? this.secondaryEMBonus : this.inlineEMBonus} + reactionBonus)`
+		},
+		amplifiedDamage: {
+			name: 'Reaction DMG',
+			expr: () => `${this.getNextRxDmg()} * amplifyingMul`
+		},
+		secondaryAmplifiedDamage: {
+			name: 'Secondary Reaction DMG',
+			expr: () => `${this.getNextRxDmg()} * SECONDARY_amplifyingMul`
+		},
+
+		// Additive
+		flatDamageReactionEMBonus: {
+			name: 'EM Bonus',
+			expr: '(5 * em) / (1200 + em)'
+		},
+		flatDamageReactionBonus: {
+			name: 'Additive Reaction DMG',
+			expr: 'transformativeLevelMultiplier * baseMultiplier * (1 + flatDamageReactionEMBonus + reactionBonus)'
+		},
+		additiveDamage: {
+			name: 'Reaction DMG',
+			expr: () => `${this.getNextRxDmg()} + flatDamageReactionBonus`
+		},
+		secondaryAdditiveDamage: {
+			name: 'Secondary Reaction DMG',
+			expr: () => `${this.getNextRxDmg()} + SECONDARY_flatDamageReactionBonus`
+		},
+
+		// Damage bonus
+		bonusDamage: {
 			name: 'Outgoing DMG',
-			expr: () => `(baseDamage + ${this.flatDamage}) * (1 + damageBonus)`
+			expr: () => `${this.getNextRxDmg()} * (1 + damageBonus)`
+		},
+
+		// Enemy factors
+		enemyDefenseFactor: {
+			name: 'Enemy DEF Enemy Factor',
+			expr: '(enemyLevel + 100) * (1 - defenseDecrease) * (1 - defenseIgnore)'
+		},
+		characterDefenseFactor: {
+			name: 'Enemy DEF Char Factor',
+			expr: 'characterLevel + 100'
+		},
+		enemyDefenseMul: {
+			name: 'Enemy DEF Multiplier',
+			expr: 'characterDefenseFactor / (characterDefenseFactor + enemyDefenseFactor)'
 		},
 		enemyResistance: {
 			name: 'Enemy RES',
@@ -73,82 +144,12 @@ export default class DamageCalculator {
 				return '1 / (1 + (4 * enemyResistance))';
 			}
 		},
-		enemyDefenseFactor: {
-			name: 'Enemy DEF Enemy Factor',
-			expr: '(enemyLevel + 100) * (1 - defenseDecrease) * (1 - defenseIgnore)'
-		},
-		characterDefenseFactor: {
-			name: 'Enemy DEF Char Factor',
-			expr: 'characterLevel + 100'
-		},
-		enemyDefenseMul: {
-			name: 'Enemy DEF Multiplier',
-			expr: 'characterDefenseFactor / (characterDefenseFactor + enemyDefenseFactor)'
-		},
 		generalDamage: {
 			name: 'General DMG',
-			expr: 'trueDamage * enemyDefenseMul * enemyResistanceMul'
+			expr: () => `${this.isTransformative ? this.getNextRxDmg() : 'bonusDamage * enemyDefenseMul'} * enemyResistanceMul`
 		},
-		transformativeEMBonus: {
-			name: 'EM Bonus',
-			expr: '(16 * em) / (2000 + em)'
-		},
-		baseTransformativeDamage: {
-			name: 'Base Reaction DMG',
-			expr: `baseMultiplier * transformativeLevelMultiplier`
-		},
-		trueTransformativeReaction: {
-			name: 'Outgoing DMG',
-			expr: `baseTransformativeDamage * (1 + transformativeEMBonus + reactionBonus)`
-		},
-		transformativeReaction: {
-			name: 'Transformative DMG',
-			expr: `trueTransformativeReaction * enemyResistanceMul`
-		},
-		amplifiedTransformativeReaction: {
-			name: 'Amplified DMG',
-			expr: `transformativeReaction * SECONDARY_amplifyingMul`
-		},
-		trueComponentizedTransformativeReaction: {
-			name: 'Raw Transformative DMG',
-			expr: 'INLINE_trueTransformativeReaction'
-		},
-		trueComponentizedAdditiveDamage: {
-			name: 'Raw Additive DMG',
-			expr: `INLINE_flatDamageReactionBonus`
-		},
-		trueAddedToTransformativeReaction: {
-			name: 'Outgoing DMG',
-			expr: 'trueComponentizedTransformativeReaction + SECONDARY_trueComponentizedAdditiveDamage'
-		},
-		addedToTransformativeReaction: {
-			name: 'Transformative DMG',
-			expr: `trueAddedToTransformativeReaction * enemyResistanceMul`
-		},
-		amplifyingEMBonus: {
-			name: 'EM Bonus',
-			expr: '(2.78 * em) / (1400 + em)'
-		},
-		amplifyingMul: {
-			name: 'Reaction Multiplier',
-			expr: `baseMultiplier * (1 + amplifyingEMBonus + reactionBonus)`
-		},
-		amplifyingReaction: {
-			name: 'Amplified DMG',
-			expr: 'generalDamage * amplifyingMul'
-		},
-		flatDamageAdded: {
-			name: 'Additive DMG Bonus',
-			expr: 'talentDamageBonus + flatDamage + flatDamageReactionBonus'
-		},
-		flatDamageReactionEMBonus: {
-			name: 'EM Bonus',
-			expr: '(5 * em) / (1200 + em)'
-		},
-		flatDamageReactionBonus: {
-			name: 'Raw Reaction DMG',
-			expr: 'baseTransformativeDamage * (1 + flatDamageReactionEMBonus + reactionBonus)'
-		},
+
+		// CRIT
 		realCritRate: {
 			name: 'Actual CRIT Rate',
 			expr: 'max(0, min(critRate, 1))'
@@ -159,11 +160,11 @@ export default class DamageCalculator {
 		},
 		critHit: {
 			name: 'CRIT Hit',
-			expr: () => `${this.mainEquation} * (1 + critDamage)`
+			expr: () => `generalDamage * (1 + critDamage)`
 		},
 		avgDamage: {
 			name: 'Average DMG',
-			expr: () => `${this.mainEquation} * critBonus`
+			expr: () => `generalDamage * critBonus`
 		}
 	};
 	
@@ -325,6 +326,26 @@ export default class DamageCalculator {
 		return { label, value, annotated, children, fullRawExpr };
 	}
 	
+	private topEquation(reactionType: ReactionType, name: keyof EquationData = 'generalDamage'): EquationOutput {
+		this.rxDamageTypes = [
+			reactionType.isTransformative ? 'baseDamage' : 'finalBaseDamage'
+		];
+
+		if (reactionType.rxMode === 'amplifying')
+			this.rxDamageTypes.push('amplifiedDamage');
+
+		if (this.attack.secondaryType === 1)
+			this.rxDamageTypes.push('secondaryAmplifiedDamage');
+
+		if (reactionType.rxMode === 'additive')
+			this.rxDamageTypes.push('additiveDamage');
+
+		if (this.attack.secondaryType === 3)
+			this.rxDamageTypes.push('secondaryAdditiveDamage');
+	
+		return this.equation(name);
+	}
+	
 	/**
 	 * Main function. Calculate the damage for the current state of {@link attack}.
 	 */
@@ -334,8 +355,10 @@ export default class DamageCalculator {
 		const secondaryType = reactionTypes.get(this.attack.secondaryType);
 		const secondary = secondaryType?.reactions.get(this.attack.secondary);
 
-		this.mainEquation = reactionType.equation;
-		this.flatDamage = reactionType.flatDamage ?? 'flatDamageBasic';
+		this.baseDamage = reactionType.baseDamage;
+		this.isTransformative = reactionType.isTransformative;
+		this.inlineEMBonus = reactionType.inlineEMBonus;
+		this.secondaryEMBonus = secondaryType?.inlineEMBonus;
 
 		this.values = {
 			baseMultiplier: {
@@ -361,16 +384,14 @@ export default class DamageCalculator {
 				value: this.attack.getStatAsNumber(stat.prop, stat.type)
 			};
 		});
-
-		if (this.attack.secondaryType === 1 && reactionType.secondaryAmplifyingEquation) {
-			this.mainEquation = reactionType.secondaryAmplifyingEquation;
-		} else if (this.attack.secondaryType === 3 && reactionType.secondaryAdditiveEquation) {
-			this.mainEquation = reactionType.secondaryAdditiveEquation;
-		}
-
+	
 		if (reactionType.canCrit)
-			return new Damage(this.equation('avgDamage'), this.equation('critHit'), this.equation(this.mainEquation));
-		
-		return new Damage(this.equation(this.mainEquation));
+			return new Damage(
+				this.topEquation(reactionType, 'avgDamage'),
+				this.topEquation(reactionType, 'critHit'),
+				this.topEquation(reactionType, 'generalDamage')
+			);
+
+		return new Damage(this.topEquation(reactionType, 'generalDamage'));
 	}
 }

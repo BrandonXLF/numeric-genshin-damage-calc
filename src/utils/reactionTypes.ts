@@ -6,7 +6,6 @@ const reactionTypes = new Map<number, ReactionType>([
 		name: 'No Reaction',
 		secondaryName: 'None',
 		canCrit: true,
-		equation: 'generalDamage',
 		baseGroups: DamageGroup.General,
 		reactions: new Map([
 			[0, { name: 'No Reaction', secondaryName: 'None', color: '#ffffff', element: 'Varies' }]
@@ -16,7 +15,8 @@ const reactionTypes = new Map<number, ReactionType>([
 	[1, {
 		name: 'Amplifying',
 		canCrit: true,
-		equation: 'amplifyingReaction',
+		rxMode: 'amplifying',
+		inlineEMBonus: 'amplifyingEMBonus',
 		baseGroups: DamageGroup.Reaction | DamageGroup.General,
 		reactions: new Map([
 			[0, { name: 'Melt (Pyro)', multiplier: 2, color: '#ffcc66', element: 'Pyro' }],
@@ -29,9 +29,10 @@ const reactionTypes = new Map<number, ReactionType>([
 	[2, {
 		name: 'Transformative',
 		canCrit: false,
-		equation: 'transformativeReaction',
-		secondaryAmplifyingEquation: 'amplifiedTransformativeReaction',
-		secondaryAdditiveEquation: 'addedToTransformativeReaction',
+		baseDamage: 'transformativeLevelMultiplier',
+		rxMode: 'amplifying',
+		isTransformative: true,
+		inlineEMBonus: 'transformativeEMBonus',
 		baseGroups: DamageGroup.Reaction,
 		reactions: new Map([
 			[0, { name: 'Burgeon', multiplier: 3, color: '#ff9b00', element: 'Dendro' }],
@@ -49,8 +50,7 @@ const reactionTypes = new Map<number, ReactionType>([
 	[3, {
 		name: 'Additive',
 		canCrit: true,
-		equation: 'generalDamage',
-		flatDamage: 'flatDamageAdded',
+		rxMode: 'additive',
 		baseGroups: DamageGroup.General | DamageGroup.Reaction,
 		reactions: new Map([
 			[0, { name: 'Spread', multiplier: 1.25, color: '#00ea53', element: 'Dendro' }],

@@ -60,7 +60,7 @@ export default function SecondaryReactionRow(props: Readonly<{
 	if (!anyEnabled) return null;
 
 	return <>
-		<RowLabel label="Secondary Reaction" desc="When reactions apply an element to adjacent entities, those applications can trigger reactions. The base damage is the damage of the original reaction." wide />
+		<RowLabel label="Secondary Reaction" desc="When reactions apply an element to adjacent entities, those applications can trigger reactions. The base damage is the damage of the original reaction. For triggered transformative reactions, add a separate attack instead." wide />
 		{dropdowns}
 	</>;
 }
