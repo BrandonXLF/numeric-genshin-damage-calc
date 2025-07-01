@@ -1,4 +1,4 @@
-enum ColumnCopyMode {
+const enum ColumnCopyMode {
     CopyNone,
     CopyAttacks,
     CopyDataAndId

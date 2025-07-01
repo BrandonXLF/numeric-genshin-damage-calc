@@ -4,7 +4,7 @@ type StatSectionDefinition = {
 	value: StatSection;
 };
 
-export enum StatSection {
+export const enum StatSection {
 	Character,
 	CharacterTalent,
 	CharacterStats,

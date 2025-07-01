@@ -28,7 +28,7 @@ type Stat = DisplayedProp<StatData> & (MapInfo | {}) & {
 	icon: React.ReactNode;
 };
 
-export enum StatType {
+export const enum StatType {
 	Number,
 	Percent
 }
