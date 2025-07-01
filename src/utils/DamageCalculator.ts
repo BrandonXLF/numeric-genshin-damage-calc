@@ -78,7 +78,7 @@ export default class DamageCalculator {
 		},
 		amplifyingMul: {
 			name: 'Reaction Multiplier',
-			expr: () => `baseMultiplier * (1 + emBonus + reactionBonus)`
+			expr: 'baseMultiplier * (1 + emBonus + reactionBonus)'
 		},
 
 		// Amplified
@@ -158,11 +158,11 @@ export default class DamageCalculator {
 		},
 		critHit: {
 			name: 'CRIT Hit',
-			expr: () => `generalDamage * (1 + critDamage)`
+			expr: 'generalDamage * (1 + critDamage)'
 		},
 		avgDamage: {
 			name: 'Average DMG',
-			expr: () => `generalDamage * critBonus`
+			expr: 'generalDamage * critBonus'
 		}
 	};
 	
