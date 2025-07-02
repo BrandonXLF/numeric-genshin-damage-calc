@@ -2,10 +2,11 @@ import { Reaction } from "../types/ReactionType";
 import { elementColors } from "../utils/elements";
 import reactionTypes from "../utils/reactionTypes";
 import '../less/ReactionDesc.less';
+import { Fragment } from "react/jsx-runtime";
 
 function getElementColor(element: Reaction['element']) {
 	if (element === 'Varies')
-		return 'White;'
+		return '#ffffff';
 
 	return elementColors[element];
 }
@@ -18,9 +19,12 @@ export default function ReactionDesc() {
 			The reaction type of the attack. Different reactions have different properties and multipliers.
 		</div>
 		<div>
-			{spreadingReactions.map((reaction, i, arr) => {
-				return <>{i == arr.length - 1 ? ' and ' : i > 0 && ', '}<span key={reaction.name} style={{ color: reaction.color }}>{reaction.name}</span></>;
-			})}{' '}
+			{spreadingReactions.map((reaction, i, arr) =>
+				<Fragment key={reaction.name}>
+					{i == arr.length - 1 ? ' and ' : i > 0 && ', '}
+					<span style={{ color: reaction.color }}>{reaction.name}</span>
+				</Fragment>
+			)}{' '}
 			can trigger a further reaction when spread to another enemy. An additional input will be shown to calculate the additional damage from this secondary reaction.
 		</div>
 		{[...reactionTypes.entries().map(([id, damageType]) =>

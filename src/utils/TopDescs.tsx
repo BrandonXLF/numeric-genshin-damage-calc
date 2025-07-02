@@ -12,7 +12,7 @@ export const topDescs = new Map<string, ReactNode>([
 	],
 	[
 		'Reaction',
-		<ReactionDesc />
+		<ReactionDesc key="reaction" />
 	],
 	[
 		'Secondary Reaction',

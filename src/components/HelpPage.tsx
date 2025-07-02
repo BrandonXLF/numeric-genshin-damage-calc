@@ -12,7 +12,7 @@ export default function HelpPage() {
 		<h2>Form Information and Help</h2>
 		<Link to="/">&larr; Back to Calculator</Link>
 		<h3>Column Options</h3>
-		<dl style={{ display: 'grid', gridTemplateColumns: 'max-content 1fr', gap: '1em' }}>
+		<dl>
 			{[...topDescs.entries()].map(([name, desc]) =>
 				<Fragment key={name}>
 					<dt>{name}</dt>
@@ -21,7 +21,7 @@ export default function HelpPage() {
 			)}
 		</dl>
 		<h3>Stat Information</h3>
-		<dl style={{ display: 'grid', gridTemplateColumns: 'max-content 1fr', gap: '1em' }}>
+		<dl>
 			{stats.map(stat =>
 				<Fragment key={stat.name}>
 					<dt>{stat.name}</dt>
