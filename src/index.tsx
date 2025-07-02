@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App';
+import { BrowserRouter } from "react-router";
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
@@ -8,6 +9,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
 	<React.StrictMode>
-		<App />
+		<BrowserRouter basename={import.meta.env.BASE_URL ?? ''}>
+			<App />
+		</BrowserRouter>
 	</React.StrictMode>
 );

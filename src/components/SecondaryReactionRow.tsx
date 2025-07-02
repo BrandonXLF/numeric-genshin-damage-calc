@@ -5,6 +5,7 @@ import FormInput from "./FormInput";
 import '../less/DamageTypeRow.less';
 import { ColumnStateAction } from "../types/ColumnState";
 import reactionTypes from "../utils/reactionTypes";
+import { topDescs } from "../utils/TopDescs";
 
 export default function SecondaryReactionRow(props: Readonly<{
 	columns: Column[];
@@ -60,7 +61,7 @@ export default function SecondaryReactionRow(props: Readonly<{
 	if (!anyEnabled) return null;
 
 	return <>
-		<RowLabel label="Secondary Reaction" desc="When reactions apply an element to adjacent entities, those applications can trigger reactions. The base damage is the damage of the original reaction. For triggered transformative reactions, add a separate attack instead." wide />
+		<RowLabel label="Secondary Reaction" desc={topDescs.get('Secondary Reaction')} wide />
 		{dropdowns}
 	</>;
 }

@@ -7,13 +7,14 @@ import '../less/FormInput.less';
 import '../less/AttacksRow.less';
 import RowLabel from "./RowLabel";
 import { ColumnStateAction } from "../types/ColumnState";
+import { topDescs } from "../utils/TopDescs";
 
 export default function AttacksRow(props: Readonly<{
 	columns: Column[],
 	dispatch: React.Dispatch<ColumnStateAction>;
 }>) {
 	return <>
-        <RowLabel label="Attack" desc="Individual damage instances that contribute to the final calculated damage" />
+        <RowLabel label="Attack" desc={topDescs.get('Attack')} />
 		{props.columns.map(column => <div key={column.id} className="form-width column-attacks">
             <AttackList
                 attacks={column.attacks}

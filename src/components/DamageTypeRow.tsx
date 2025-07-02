@@ -4,15 +4,15 @@ import RowLabel from "./RowLabel";
 import FormInput from "./FormInput";
 import '../less/DamageTypeRow.less';
 import { ColumnStateAction } from "../types/ColumnState";
-import ReactionDesc from "./ReactionDesc";
 import reactionTypes from "../utils/reactionTypes";
+import { topDescs } from "../utils/TopDescs";
 
 export default function DamageTypeRow(props: Readonly<{
 	columns: Column[];
 	dispatch: React.Dispatch<ColumnStateAction>;
 }>) {
 	return <>
-		<RowLabel label="Reaction" desc={<ReactionDesc />} wide />
+		<RowLabel label="Reaction" desc={topDescs.get('Reaction')} wide />
 		{props.columns.map(column => {
 			const reaction = reactionTypes.get(column.active.reactionType)?.reactions.get(column.active.reaction);
 
