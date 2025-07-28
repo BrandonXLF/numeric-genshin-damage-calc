@@ -10,7 +10,7 @@ const stats: Stat[] = [
 		default: 1,
 		type: StatType.Number,
 		section: StatSection.Character,
-		groups: DamageGroup.General | DamageGroup.Reaction,
+		groups: DamageGroup.Level | DamageGroup.BonusAndDef,
 		icon: <StatIcon base="character" />,
 		map: 'char',
 		mapNumber: 4001
@@ -23,7 +23,7 @@ const stats: Stat[] = [
 		default: 100,
 		type: StatType.Percent,
 		section: StatSection.CharacterTalent,
-		groups: DamageGroup.General,
+		groups: DamageGroup.Talent,
 		icon: <StatIcon base="percent" />
 	},
 	{
@@ -33,7 +33,7 @@ const stats: Stat[] = [
 		default: 100,
 		type: StatType.Percent,
 		section: StatSection.CharacterTalent,
-		groups: DamageGroup.General | DamageGroup.Reaction,
+		groups: DamageGroup.All,
 		icon: <StatIcon base="percent" indicator="percent" />
 	},
 	{
@@ -44,7 +44,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.CharacterTalent,
-		groups: DamageGroup.General,
+		groups: DamageGroup.Talent,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
@@ -54,7 +54,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Number,
 		section: StatSection.CharacterTalent,
-		groups: DamageGroup.General,
+		groups: DamageGroup.Talent,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
@@ -173,7 +173,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Number,
 		section: StatSection.CharacterStats,
-		groups: DamageGroup.Reaction,
+		groups: DamageGroup.Reaction | DamageGroup.SecondaryReaction,
 		icon: <StatIcon base="em" />,
 		map: 'fight',
 		mapNumber: 28
@@ -185,7 +185,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.CharacterStats,
-		groups: DamageGroup.General,
+		groups: DamageGroup.BonusAndDef,
 		icon: <StatIcon base="damage" indicator="increase" />,
 		map: 'fight',
 		mapNumber: {
@@ -225,7 +225,7 @@ const stats: Stat[] = [
 		default: 5,
 		type: StatType.Percent,
 		section: StatSection.CharacterStats,
-		groups: DamageGroup.General,
+		groups: DamageGroup.Crit,
 		icon: <StatIcon base="critRate" />,
 		map: 'fight',
 		mapNumber: 20
@@ -236,7 +236,7 @@ const stats: Stat[] = [
 		default: 50,
 		type: StatType.Percent,
 		section: StatSection.CharacterStats,
-		groups: DamageGroup.General,
+		groups: DamageGroup.Crit,
 		icon: <StatIcon base="critDmg" />,
 		map: 'fight',
 		mapNumber: 22
@@ -247,7 +247,7 @@ const stats: Stat[] = [
 		default: 1,
 		type: StatType.Number,
 		section: StatSection.Enemy,
-		groups: DamageGroup.General,
+		groups: DamageGroup.BonusAndDef,
 		icon: <StatIcon base="enemy" />
 	},
 	{
@@ -257,7 +257,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.Enemy,
-		groups: DamageGroup.General,
+		groups: DamageGroup.BonusAndDef,
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	},
 	{
@@ -267,7 +267,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.Enemy,
-		groups: DamageGroup.General,
+		groups: DamageGroup.BonusAndDef,
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	},
 	{
@@ -277,7 +277,7 @@ const stats: Stat[] = [
 		default: 10,
 		type: StatType.Percent,
 		section: StatSection.Enemy,
-		groups: DamageGroup.General | DamageGroup.Reaction,
+		groups: DamageGroup.All,
 		icon: <StatIcon base="shield" mask="enemySmall" />
 	},
 	{
@@ -287,7 +287,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.Enemy,
-		groups:  DamageGroup.General | DamageGroup.Reaction,
+		groups:  DamageGroup.All,
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />,
 		map: 'fight',
 		mapNumber: {

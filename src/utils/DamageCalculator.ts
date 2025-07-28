@@ -12,7 +12,7 @@ import MathComponent from "../types/MathComponent";
 import Attack from "./Attack";
 import reactionTypes from "./reactionTypes";
 import roundDecimals from "./roundDecimals";
-import ReactionType, { EMBonusType, RxnMode } from "../types/ReactionType";
+import ReactionType, { BaseDamage, EMBonusType, RxnMode } from "../types/ReactionType";
 
 export default class DamageCalculator {
 	/**
@@ -23,11 +23,17 @@ export default class DamageCalculator {
 		reactionBonus: 'secondaryReactionBonus'
 	};
 
+	private static readonly baseDamageKeys: Record<BaseDamage, keyof EquationData | keyof ValueData> = {
+		[BaseDamage.Talent]: 'talent',
+		[BaseDamage.Level]: 'transformativeLevelMultiplier'
+	};
+
 	private static readonly emBonusEquations: Record<EMBonusType, string> = {
-		[EMBonusType.NONE]: '0',
-		[EMBonusType.AMPLIFYING]: '(2.78 * em) / (1400 + em)',
-		[EMBonusType.ADDITIVE]: '(5 * em) / (1200 + em)',
-		[EMBonusType.TRANSFORMATIVE]: '(16 * em) / (2000 + em)'
+		[EMBonusType.None]: '0',
+		[EMBonusType.Amplifying]: '(2.78 * em) / (1400 + em)',
+		[EMBonusType.Additive]: '(5 * em) / (1200 + em)',
+		[EMBonusType.Transformative]: '(16 * em) / (2000 + em)',
+		[EMBonusType.Lunar]: '(6 * em) / (2000 + em)'
 	};
 
 	private values?: ValueData;
@@ -57,7 +63,7 @@ export default class DamageCalculator {
 		// Final base damage
 		baseDamage: {
 			name: 'Base DMG',
-			expr: () => `${this.reactionType!.baseDamage} * baseDamageMultiplier`
+			expr: () => `${DamageCalculator.baseDamageKeys[this.reactionType!.baseDamage]} * baseDamageMultiplier`
 		},
 		flatDamageBasic: {
 			name: 'Additive DMG Bonus',
@@ -72,7 +78,7 @@ export default class DamageCalculator {
 		emBonus: {
 			name: 'EM Bonus',
 			expr: () => {
-				const emBonusType = (this.useSecondary ? this.secondaryType : this.reactionType)?.emBonus ?? EMBonusType.NONE;
+				const emBonusType = (this.useSecondary ? this.secondaryType : this.reactionType)?.emBonus ?? EMBonusType.None;
 				return DamageCalculator.emBonusEquations[emBonusType];
 			}
 		},
@@ -94,7 +100,10 @@ export default class DamageCalculator {
 		// Additive
 		flatDamageReactionBonus: {
 			name: 'Additive Reaction DMG',
-			expr: 'transformativeLevelMultiplier * amplifyingMul'
+			expr: () => {
+				const baseDamage = (this.useSecondary ? this.secondaryType : this.reactionType)!.additiveBaseDamage!;
+				return `${DamageCalculator.baseDamageKeys[baseDamage]} * amplifyingMul`;
+			}
 		},
 		additiveDamage: {
 			name: 'Reaction DMG',
@@ -333,16 +342,16 @@ export default class DamageCalculator {
 			this.reactionType!.isTransformative ? 'baseDamage' : 'finalBaseDamage'
 		];
 
-		if (this.reactionType!.rxnMode === RxnMode.MULTIPLICATIVE)
+		if (this.reactionType!.rxnMode === RxnMode.Multiplicative)
 			this.rxnDamageTypes.push('amplifiedDamage');
 
-		if (this.secondaryType?.rxnMode === RxnMode.MULTIPLICATIVE && !this.secondaryType.isTransformative)
+		if (this.secondaryType?.rxnMode === RxnMode.Multiplicative && !this.secondaryType.isTransformative)
 			this.rxnDamageTypes.push('secondaryAmplifiedDamage');
 
-		if (this.reactionType!.rxnMode === RxnMode.ADDITIVE)
+		if (this.reactionType!.rxnMode === RxnMode.Additive)
 			this.rxnDamageTypes.push('additiveDamage');
 
-		if (this.secondaryType?.rxnMode === RxnMode.ADDITIVE && !this.secondaryType.isTransformative)
+		if (this.secondaryType?.rxnMode === RxnMode.Additive && !this.secondaryType.isTransformative)
 			this.rxnDamageTypes.push('secondaryAdditiveDamage');
 	
 		return this.equation(name);

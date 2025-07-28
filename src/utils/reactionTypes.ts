@@ -1,16 +1,14 @@
-import DamageGroup from "../types/DamageGroups";
-import ReactionType, { EMBonusType, RxnMode } from "../types/ReactionType";
+import ReactionType, { BaseDamage, EMBonusType, RxnMode } from "../types/ReactionType";
 
 const reactionTypes = new Map<number, ReactionType>([
 	[0, {
 		name: 'No Reaction',
 		secondaryName: 'None',
-		baseDamage: 'talent',
-		rxnMode: RxnMode.NONE,
-		emBonus: EMBonusType.NONE,
+		baseDamage: BaseDamage.Talent,
+		rxnMode: RxnMode.None,
+		emBonus: EMBonusType.None,
 		isTransformative: false,
 		canCrit: true,
-		baseGroups: DamageGroup.General,
 		reactions: new Map([
 			[0, { name: 'No Reaction', secondaryName: 'None', color: '#ffffff', element: 'Varies' }]
 		]),
@@ -18,12 +16,11 @@ const reactionTypes = new Map<number, ReactionType>([
 	}],
 	[1, {
 		name: 'Amplifying',
-		baseDamage: 'talent',
-		rxnMode: RxnMode.MULTIPLICATIVE,
-		emBonus: EMBonusType.AMPLIFYING,
+		baseDamage: BaseDamage.Talent,
+		rxnMode: RxnMode.Multiplicative,
+		emBonus: EMBonusType.Amplifying,
 		isTransformative: false,
 		canCrit: true,
-		baseGroups: DamageGroup.Reaction | DamageGroup.General,
 		reactions: new Map([
 			[0, { name: 'Melt (Pyro)', multiplier: 2, color: '#ffcc66', element: 'Pyro' }],
 			[3, { name: 'Vaporize (Hydro)', multiplier: 2, color: '#33ccff', element: 'Hydro' }],
@@ -34,12 +31,11 @@ const reactionTypes = new Map<number, ReactionType>([
 	}],
 	[2, {
 		name: 'Transformative',
-		baseDamage: 'transformativeLevelMultiplier',
-		rxnMode: RxnMode.MULTIPLICATIVE,
-		emBonus: EMBonusType.TRANSFORMATIVE,
+		baseDamage: BaseDamage.Level,
+		rxnMode: RxnMode.Multiplicative,
+		emBonus: EMBonusType.Transformative,
 		isTransformative: true,
 		canCrit: false,
-		baseGroups: DamageGroup.Reaction,
 		reactions: new Map([
 			[0, { name: 'Burgeon', multiplier: 3, color: '#ff9b00', element: 'Dendro' }],
 			[1, { name: 'Hyperbloom', multiplier: 3, color: '#e19bff', element: 'Dendro' }],
@@ -51,22 +47,46 @@ const reactionTypes = new Map<number, ReactionType>([
 			[6, { name: 'Swirl', multiplier: 0.6, color: '#66ffcc', element: 'Varies', canApply: true }],
 			[8, { name: 'Burning', multiplier: 0.25, color: '#ff9b00', element: 'Pyro', canApply: true }]
 		]),
-		desc: 'Transformative reactions purely deal reaction damage with their base damage calculated from the character level multiplier and the base reaction multiplier.'
+		desc: 'Transformative reactions purely deal reaction damage with their base damage calculated from the character level multiplier and the base reaction multiplier. They ignore damage bonus, enemy DEF, and cannot crit.'
 	}],
 	[3, {
 		name: 'Additive',
-		baseDamage: 'talent',
-		rxnMode: RxnMode.ADDITIVE,
-		emBonus: EMBonusType.ADDITIVE,
+		baseDamage: BaseDamage.Talent,
+		additiveBaseDamage: BaseDamage.Level,
+		rxnMode: RxnMode.Additive,
+		emBonus: EMBonusType.Additive,
 		isTransformative: false,
 		canCrit: true,
-		baseGroups: DamageGroup.General | DamageGroup.Reaction,
 		reactions: new Map([
 			[0, { name: 'Spread', multiplier: 1.25, color: '#00ea53', element: 'Dendro' }],
 			[1, { name: 'Aggravate', multiplier: 1.15, color: '#e19bff', element: 'Electro' }]
 		]),
 		desc: 'Additive reactions add additional damage to the damage being done based on the base reaction multiplier, the EM multiplier, and Reaction Bonus.'
 	}],
+	[4, {
+		name: 'Lunar',
+		baseDamage: BaseDamage.Level,
+		rxnMode: RxnMode.Multiplicative,
+		emBonus: EMBonusType.Lunar,
+		isTransformative: true,
+		canCrit: true,
+		reactions: new Map([
+			[0, { name: 'Lunar-Charged', multiplier: 1.8, color: '#e6dcfd', element: 'Electro' }]
+		]),
+		desc: 'Special transformative reactions that can crit. Enabled by certain Nod-Krai characters.'
+	}],
+	[5, {
+		name: 'Direct Lunar',
+		baseDamage: BaseDamage.Talent,
+		rxnMode: RxnMode.Multiplicative,
+		emBonus: EMBonusType.Lunar,
+		isTransformative: true,
+		canCrit: true,
+		reactions: new Map([
+			[0, { name: 'Lunar-Charged (Direct)', multiplier: 3, color: '#e6dcfd', element: 'Electro' }]
+		]),
+		desc: 'Special transformative reactions that can crit and that have their base damage calculated from a character\'s talent. Enabled by certain Nod-Krai characters.'
+	}]
 ]);
 
 export default reactionTypes;

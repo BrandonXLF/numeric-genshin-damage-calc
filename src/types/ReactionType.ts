@@ -1,20 +1,23 @@
 import elements from "../utils/elements";
-import DamageGroup from "./DamageGroups";
-import EquationData from "./EquationData";
-import ValueData from "./ValueData";
 
-export const enum EMBonusType {
-	NONE,
-	AMPLIFYING,
-	ADDITIVE,
-	TRANSFORMATIVE
+export const enum BaseDamage {
+	Talent = 1,
+	Level
 };
 
 export const enum RxnMode {
-	NONE,
-	MULTIPLICATIVE,
-	ADDITIVE
-}
+	None,
+	Multiplicative,
+	Additive
+};
+
+export const enum EMBonusType {
+	None,
+	Amplifying,
+	Additive,
+	Transformative,
+	Lunar
+};
 
 export type Reaction = {
 	name: string;
@@ -29,9 +32,13 @@ type ReactionType = {
 	name: string;
 	secondaryName?: string;
 	/**
-	 * Formula for base damage. If not provided, talent damage will be used.
+	 * Base formula type for base damage.
 	 */
-	baseDamage: keyof EquationData | keyof ValueData;
+	baseDamage: BaseDamage;
+	/**
+	 * Base formula type for additive damage.
+	 */
+	additiveBaseDamage?: BaseDamage;
 	/**
 	 * Where reaction damage is added.
 	 */
@@ -48,9 +55,14 @@ type ReactionType = {
 	 * True if the damage can crit.
 	 */
 	canCrit: boolean;
-	baseGroups: DamageGroup;
 	reactions: Map<number, Reaction>;
 	desc: string;
-};
+} & ({
+	rxnMode: RxnMode.Additive;
+	additiveBaseDamage: BaseDamage;
+} | {
+	rxnMode: Exclude<RxnMode, RxnMode.Additive>;
+	additiveBaseDamage?: never;
+});
 
 export default ReactionType;

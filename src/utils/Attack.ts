@@ -9,6 +9,7 @@ import IDGenerator from "./IDGenerator";
 import PartialAttack from "../types/PartialAttack";
 import reactionTypes from "./reactionTypes";
 import DamageGroup from "../types/DamageGroups";
+import { BaseDamage, RxnMode } from "../types/ReactionType";
 
 export default class Attack implements PartialAttack {
 	readonly id: number;
@@ -184,11 +185,40 @@ export default class Attack implements PartialAttack {
         return this._unmodified;
     }
 
+    private getBaseGroup(reactionType: BaseDamage): DamageGroup {
+        switch (reactionType) {
+            case BaseDamage.Talent:
+                return DamageGroup.Talent;
+            case BaseDamage.Level:
+                return DamageGroup.Level;
+        }
+    }
+
     get groups() {
-        let out = reactionTypes.get(this.reactionType)!.baseGroups;
+        const reactionType = reactionTypes.get(this.reactionType)!;
+        let out = this.getBaseGroup(reactionType.baseDamage);
+
+        if (reactionType.rxnMode !== RxnMode.None) {
+            out |= DamageGroup.Reaction;
+        }
+
+        if (!reactionType.isTransformative) {
+            out |= DamageGroup.BonusAndDef;
+        }
+
+        if (reactionType.canCrit) {
+            out |= DamageGroup.Crit;
+        }
 
         if (this.hasSecondary) {
-            out |= DamageGroup.SecondaryReaction;
+            const secondaryType = reactionTypes.get(this.secondaryType)!;
+            if (secondaryType.rxnMode === RxnMode.Additive) {
+                out |= this.getBaseGroup(secondaryType.additiveBaseDamage);
+            }
+
+            if (secondaryType.rxnMode !== RxnMode.None) {
+                out |= DamageGroup.SecondaryReaction;
+            }
         }
 
         return out;
