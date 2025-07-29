@@ -151,9 +151,24 @@ export default class DamageCalculator {
 				return '1 / (1 + (4 * enemyResistance))';
 			}
 		},
+		travelPenalty: {
+			name: 'Air Time Penalty',
+			expr: () => {
+				const airTime = this.variable('bowAimedTravelTime').value;
+
+				if (airTime <= 0.7)
+					return '0';
+
+				return 'min(0.9, floor((bowAimedTravelTime - 0.7) * 20) / 10)';
+			}
+		},
+		travelMultiplier: {
+			name: 'Air Time Multiplier',
+			expr: '1 - travelPenalty'
+		},
 		generalDamage: {
 			name: 'General DMG',
-			expr: () => `${this.reactionType!.isTransformative ? this.getNextRxDmg() : 'bonusDamage * enemyDefenseMul'} * enemyResistanceMul`
+			expr: () => `${this.reactionType!.isTransformative ? this.getNextRxDmg() : 'bonusDamage * enemyDefenseMul'} * enemyResistanceMul${this.variable('bowAimedTravelTime').value > 0 ? ' * travelMultiplier' : ''}`
 		},
 
 		// CRIT

@@ -300,6 +300,16 @@ const stats: Stat[] = [
 			Geo: 55,
 			Cyro: 56
 		}
+	},
+	{
+		name: 'Bow CA Air Time',
+		desc: 'For bow charge attacks, after 0.7 seconds of traveling, every additional 0.05 seconds decreases damage by 10% until 90%',
+		prop: 'bowAimedTravelTime',
+		default: 0,
+		type: StatType.Seconds,
+		section: StatSection.Enemy,
+		groups: DamageGroup.Talent,
+		icon: <StatIcon base="time" />,
 	}
 ];
 

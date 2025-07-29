@@ -43,6 +43,8 @@ type EquationData = {
 	enemyDefenseMul: EquationInfo;
 	enemyResistance: EquationInfo;
 	enemyResistanceMul: EquationInfo;
+	travelPenalty: EquationInfo;
+	travelMultiplier: EquationInfo;
 	generalDamage: EquationInfo;
 	
 	// CRIT

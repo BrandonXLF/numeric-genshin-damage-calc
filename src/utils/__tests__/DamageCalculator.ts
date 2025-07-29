@@ -20,7 +20,8 @@ const statData: StatData = {
 	defenseIgnore: '5',
 	defenseDecrease: '5',
 	resistanceReduction: '20',
-	resistance: '10'
+	resistance: '10',
+	bowAimedTravelTime: '0'
 };
 
 it('computers non-reaction damage', () => {
@@ -149,4 +150,51 @@ it('computes secondary transformative reaction damage', () => {
 	expect(attack.damage.crit?.value).toBe(undefined);
 	expect(attack.damage.nonCrit?.value).toBe(undefined);
 	expect(attack.damage.avgDmg.value).toBeCloseTo(3210.99);
+});
+
+it('accounts for bow charged attack damage drop-off', () => {
+	const multipliers = {
+		0: 1,
+		0.5: 1,
+		0.7: 1,
+		0.7499: 1,
+		0.75: 0.9,
+		0.76: 0.9,
+		0.79: 0.9,
+		0.8: 0.8,
+		0.85: 0.7,
+		0.9: 0.6,
+		0.95: 0.5,
+		1: 0.4,
+		1.05: 0.3,
+		1.1: 0.2,
+		1.1499: 0.2,
+		1.15: 0.1,
+		1.2: 0.1,
+		2: 0.1,
+		1000: 0.1
+	};
+	
+	const attackInfo = {
+		reactionType: 0,
+		reaction: 0,
+		label: 'Non-Reaction',
+		statData
+	};
+
+	const baseAttack = new Attack(attackInfo);
+
+	for (const [travelTime, multiplier] of Object.entries(multipliers)) {
+		const attack = new Attack({
+			...attackInfo,
+			statData: {
+				...baseAttack.statData,
+				bowAimedTravelTime: travelTime
+			}
+		});
+
+		expect(attack.damage.crit?.value).toBeCloseTo(baseAttack.damage.crit?.value! * multiplier);
+		expect(attack.damage.nonCrit?.value).toBeCloseTo(baseAttack.damage.nonCrit?.value! * multiplier);
+		expect(attack.damage.avgDmg.value).toBeCloseTo(baseAttack.damage.avgDmg.value * multiplier);
+	}
 });

@@ -81,6 +81,7 @@ it('exports correctly', () => {
 		['DEF Ignore % (defenseIgnore)', '0', '0', '0'],
 		['Base RES % (resistance)', '10', '10', '10'],
 		['RES Decrease % (resistanceReduction)', '0', '0', '0'],
+		['Bow CA Air Time (bowAimedTravelTime)', '0', '0', '0'],
 		['', '', '', ''],
 		['Damage', '', '', ''],
 		['CRIT Hit', '702.04', '', '1350'],

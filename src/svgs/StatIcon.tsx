@@ -40,6 +40,10 @@ const bases = {
 	critDmg: (props?: SVGProps<SVGPathElement>) => <path
 		{...props}
 		d="m 0 16 l 4 -8.87 l -1.75 -5.45 l 6.04 2.33 l 7.71 -4 l -4 8.29 l 1.75 5.45 l -5.45 -1.75 l -8.29 4"
+	/>,
+	time: (props?: SVGProps<SVGPathElement>) => <path
+		{...props}
+		d="m 12 1.072 a 8 8 0 1 1 -12 6.928 l 0.004 -0.2592 a 8 8 0 0 1 11.996 -6.6688 m -4 2.128 a 0.8 0.8 0 0 0 -0.8 0.8 v 4 a 0.8 0.8 0 0 0 0.8 0.8 h 2.8 a 0.8 0.8 0 0 0 0 -1.6 h -2 v -3.2 a 0.8 0.8 0 0 0 -0.7064 -0.7944 z"
 	/>
 };
 

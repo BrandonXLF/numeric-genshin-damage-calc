@@ -30,7 +30,8 @@ type Stat = DisplayedProp<StatData> & (MapInfo | {}) & {
 
 export const enum StatType {
 	Number,
-	Percent
+	Percent,
+	Seconds
 }
 
 export default Stat;

@@ -33,6 +33,7 @@ type StatData = {
 	defenseDecrease: string;
 	resistanceReduction: string;
 	resistance: string;
+	bowAimedTravelTime: string;
 };
 
 export default StatData;
