@@ -8,7 +8,7 @@ const reactionTypes = new Map<number, ReactionType>([
 		rxnMode: RxnMode.None,
 		emBonus: EMBonusType.None,
 		isTransformative: false,
-		canCrit: true,
+		transformativeCrit: false,
 		reactions: new Map([
 			[0, { name: 'No Reaction', secondaryName: 'None', color: '#ffffff', element: 'Varies' }]
 		]),
@@ -20,7 +20,7 @@ const reactionTypes = new Map<number, ReactionType>([
 		rxnMode: RxnMode.Multiplicative,
 		emBonus: EMBonusType.Amplifying,
 		isTransformative: false,
-		canCrit: true,
+		transformativeCrit: false,
 		reactions: new Map([
 			[0, { name: 'Melt (Pyro)', multiplier: 2, color: '#ffcc66', element: 'Pyro' }],
 			[3, { name: 'Vaporize (Hydro)', multiplier: 2, color: '#33ccff', element: 'Hydro' }],
@@ -35,7 +35,7 @@ const reactionTypes = new Map<number, ReactionType>([
 		rxnMode: RxnMode.Multiplicative,
 		emBonus: EMBonusType.Transformative,
 		isTransformative: true,
-		canCrit: false,
+		transformativeCrit: true,
 		reactions: new Map([
 			[0, { name: 'Burgeon', multiplier: 3, color: '#ff9b00', element: 'Dendro' }],
 			[1, { name: 'Hyperbloom', multiplier: 3, color: '#e19bff', element: 'Dendro' }],
@@ -47,7 +47,7 @@ const reactionTypes = new Map<number, ReactionType>([
 			[6, { name: 'Swirl', multiplier: 0.6, color: '#66ffcc', element: 'Varies', canApply: true }],
 			[8, { name: 'Burning', multiplier: 0.25, color: '#ff9b00', element: 'Pyro', canApply: true }]
 		]),
-		desc: 'Transformative reactions purely deal reaction damage with their base damage calculated from the character level multiplier and the base reaction multiplier. They ignore damage bonus, enemy DEF, and cannot crit.'
+		desc: 'Transformative reactions purely deal reaction damage with their base damage calculated from the character level multiplier and the base reaction multiplier. They ignore damage bonus and enemy DEF. They can only crit if explictly enabled by a talent such as Nahida\'s C2.'
 	}],
 	[3, {
 		name: 'Additive',
@@ -56,7 +56,7 @@ const reactionTypes = new Map<number, ReactionType>([
 		rxnMode: RxnMode.Additive,
 		emBonus: EMBonusType.Additive,
 		isTransformative: false,
-		canCrit: true,
+		transformativeCrit: false,
 		reactions: new Map([
 			[0, { name: 'Spread', multiplier: 1.25, color: '#00ea53', element: 'Dendro' }],
 			[1, { name: 'Aggravate', multiplier: 1.15, color: '#e19bff', element: 'Electro' }]
@@ -69,7 +69,7 @@ const reactionTypes = new Map<number, ReactionType>([
 		rxnMode: RxnMode.Multiplicative,
 		emBonus: EMBonusType.Lunar,
 		isTransformative: true,
-		canCrit: true,
+		transformativeCrit: false,
 		reactions: new Map([
 			[0, { name: 'Lunar-Charged', multiplier: 1.8, color: '#e6dcfd', element: 'Electro' }]
 		]),
@@ -81,7 +81,7 @@ const reactionTypes = new Map<number, ReactionType>([
 		rxnMode: RxnMode.Multiplicative,
 		emBonus: EMBonusType.Lunar,
 		isTransformative: true,
-		canCrit: true,
+		transformativeCrit: false,
 		reactions: new Map([
 			[0, { name: 'Lunar-Charged (Direct)', multiplier: 3, color: '#e6dcfd', element: 'Electro' }]
 		]),

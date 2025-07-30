@@ -206,7 +206,9 @@ export default class Attack implements PartialAttack {
             out |= DamageGroup.BonusAndDef;
         }
 
-        if (reactionType.canCrit) {
+        if (reactionType.transformativeCrit) {
+            out |= DamageGroup.TransformativeCrit;
+        } else {
             out |= DamageGroup.Crit;
         }
 

@@ -16,6 +16,8 @@ const statData: StatData = {
 	secondaryReactionBonus: '10',
 	critDamage: '150',
 	critRate: '80',
+	critDamageTransformative: '0',
+	critRateTransformative: '0',
 	enemyLevel: '100',
 	defenseIgnore: '5',
 	defenseDecrease: '5',
@@ -69,6 +71,29 @@ it('computers transformative reaction damage', () => {
 	expect(attack.damage.crit?.value).toBe(undefined);
 	expect(attack.damage.nonCrit?.value).toBe(undefined);
 	expect(attack.damage.avgDmg.value).toBeCloseTo(23342.57);
+});
+
+it('computers critical transformative reaction damage', () => {
+	const attack = new Attack({
+		reactionType: 2,
+		reaction: 3,
+		label: 'Bloom',
+		statData: {
+			...statData,
+			baseDamageMultiplier: '100',
+			characterLevel: '90',
+			em: '1000',
+			reactionBonus: '100',
+			resistance: '10',
+			resistanceReduction: '30',
+			critRateTransformative: '50',
+			critDamageTransformative: '100'
+		}
+	});
+
+	expect(attack.damage.crit?.value).toBeCloseTo(23342.57 * 2);
+	expect(attack.damage.nonCrit?.value).toBeCloseTo(23342.57);
+	expect(attack.damage.avgDmg.value).toBeCloseTo(23342.57 * 1.5);
 });
 
 it('computers additive reaction damage', () => {

@@ -28,6 +28,8 @@ type StatData = {
 	secondaryReactionBonus: string;
 	critDamage: string;
 	critRate: string;
+	critDamageTransformative: string;
+	critRateTransformative: string;
 	enemyLevel: string;
 	defenseIgnore: string;
 	defenseDecrease: string;

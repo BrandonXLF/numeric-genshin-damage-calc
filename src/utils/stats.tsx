@@ -242,6 +242,26 @@ const stats: Stat[] = [
 		mapNumber: 22
 	},
 	{
+		name: 'Rxn CRIT Rate',
+		desc: 'Special crit rate for transformative reactions given by talents, e.g. Nahida\'s C2',
+		prop: 'critRateTransformative',
+		default: 0,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
+		groups: DamageGroup.TransformativeCrit,
+		icon: <StatIcon base="critRate" />
+	},
+	{
+		name: 'Rxn CRIT DMG',
+		desc: 'Special crit damage for transformative reactions given by talents, e.g. Nahida\'s C2',
+		prop: 'critDamageTransformative',
+		default: 0,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
+		groups: DamageGroup.TransformativeCrit,
+		icon: <StatIcon base="critDmg" />
+	},
+	{
 		name: 'Enemy Level',
 		prop: 'enemyLevel',
 		default: 1,

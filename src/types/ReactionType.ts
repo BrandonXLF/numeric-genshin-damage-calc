@@ -52,9 +52,9 @@ type ReactionType = {
 	 */
 	isTransformative: boolean;
 	/**
-	 * True if the damage can crit.
+	 * True if the damage uses transformative crit rate/damage.
 	 */
-	canCrit: boolean;
+	transformativeCrit?: boolean;
 	reactions: Map<number, Reaction>;
 	desc: string;
 } & ({

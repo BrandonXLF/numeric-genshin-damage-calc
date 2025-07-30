@@ -5,7 +5,8 @@ const enum DamageGroup {
 	SecondaryReaction = 1 << 3,
 	BonusAndDef = 1 << 4,
 	Crit = 1 << 5,
-	All = Talent | Level | Reaction | SecondaryReaction | BonusAndDef | Crit,
+	TransformativeCrit = 1 << 6,
+	All = Talent | Level | Reaction | SecondaryReaction | BonusAndDef | Crit | TransformativeCrit,
 }
 
 export default DamageGroup;

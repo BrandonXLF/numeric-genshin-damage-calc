@@ -78,7 +78,7 @@ export default class DamageCalculator {
 		emBonus: {
 			name: 'EM Bonus',
 			expr: () => {
-				const emBonusType = (this.useSecondary ? this.secondaryType : this.reactionType)?.emBonus ?? EMBonusType.None;
+				const emBonusType = this.currentReactionType?.emBonus ?? EMBonusType.None;
 				return DamageCalculator.emBonusEquations[emBonusType];
 			}
 		},
@@ -101,7 +101,7 @@ export default class DamageCalculator {
 		flatDamageReactionBonus: {
 			name: 'Additive Reaction DMG',
 			expr: () => {
-				const baseDamage = (this.useSecondary ? this.secondaryType : this.reactionType)!.additiveBaseDamage!;
+				const baseDamage = this.currentReactionType!.additiveBaseDamage!;
 				return `${DamageCalculator.baseDamageKeys[baseDamage]} * amplifyingMul`;
 			}
 		},
@@ -174,15 +174,15 @@ export default class DamageCalculator {
 		// CRIT
 		realCritRate: {
 			name: 'Actual CRIT Rate',
-			expr: 'max(0, min(critRate, 1))'
+			expr: 'max(0, min(CRIT_critRate, 1))'
 		},
 		critBonus: {
 			name: 'Crit Multiplier',
-			expr: '1 + (realCritRate * critDamage)'
+			expr: '1 + (realCritRate * CRIT_critDamage)'
 		},
 		critHit: {
 			name: 'CRIT Hit',
-			expr: 'generalDamage * (1 + critDamage)'
+			expr: 'generalDamage * (1 + CRIT_critDamage)'
 		},
 		avgDamage: {
 			name: 'Average DMG',
@@ -191,6 +191,10 @@ export default class DamageCalculator {
 	};
 	
 	constructor(private readonly attack: Attack) {}
+
+	private get currentReactionType(): ReactionType | undefined {
+		return this.useSecondary ? this.secondaryType : this.reactionType;
+	}
 
 	private getNextRxDmg(): keyof EquationData | undefined{
 		return this.rxnDamageTypes?.pop();
@@ -258,6 +262,12 @@ export default class DamageCalculator {
 			this.useSecondary = true;
 			unsetSecondary = true;
 			name = name.substring(10);
+		} else if (name.startsWith('CRIT_')) {
+			name = name.substring(5);
+
+			if (this.currentReactionType!.transformativeCrit) {
+				name = name + 'Transformative';
+			}
 		}
 
 		let output: VariableOutput | undefined;
@@ -371,6 +381,13 @@ export default class DamageCalculator {
 	
 		return this.equation(name);
 	}
+
+	private showCrit() {
+		return !this.reactionType!.transformativeCrit || (
+				this.attack.getStatAsNumber('critRateTransformative', StatType.Percent) > 0 ||
+				this.attack.getStatAsNumber('critDamageTransformative', StatType.Percent) > 0
+			);
+	}
 	
 	/**
 	 * Main function. Calculate the damage for the current state of {@link attack}.
@@ -407,7 +424,7 @@ export default class DamageCalculator {
 			};
 		});
 	
-		if (this.reactionType.canCrit)
+		if (this.showCrit())
 			return new Damage(
 				this.topEquation('avgDamage'),
 				this.topEquation('critHit'),
