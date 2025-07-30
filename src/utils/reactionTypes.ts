@@ -29,26 +29,6 @@ const reactionTypes = new Map<number, ReactionType>([
 		]),
 		desc: 'Ampliying reactions multiply the damage being done by a value calculated from the base reaction multiplier, the EM multiplier, and Reaction Bonus.'
 	}],
-	[2, {
-		name: 'Transformative',
-		baseDamage: BaseDamage.Level,
-		rxnMode: RxnMode.Multiplicative,
-		emBonus: EMBonusType.Transformative,
-		isTransformative: true,
-		transformativeCrit: true,
-		reactions: new Map([
-			[0, { name: 'Burgeon', multiplier: 3, color: '#ff9b00', element: 'Dendro' }],
-			[1, { name: 'Hyperbloom', multiplier: 3, color: '#e19bff', element: 'Dendro' }],
-			[4, { name: 'Shatter', multiplier: 3, color: '#ffffff', element: 'Physical' }],
-			[2, { name: 'Overloaded', multiplier: 2.75, color: '#ff809b', element: 'Pyro' }],
-			[3, { name: 'Bloom', multiplier: 2, color: '#00ea53', element: 'Dendro' }],
-			[5, { name: 'Electro-Charged', multiplier: 2, color: '#e19bff', element: 'Electro' }],
-			[7, { name: 'Superconduct', multiplier: 1.5, color: '#b4b4ff', element: 'Cyro' }],
-			[6, { name: 'Swirl', multiplier: 0.6, color: '#66ffcc', element: 'Varies', canApply: true }],
-			[8, { name: 'Burning', multiplier: 0.25, color: '#ff9b00', element: 'Pyro', canApply: true }]
-		]),
-		desc: 'Transformative reactions purely deal reaction damage with their base damage calculated from the character level multiplier and the base reaction multiplier. They ignore damage bonus and enemy DEF. They can only crit if explictly enabled by a talent such as Nahida\'s C2.'
-	}],
 	[3, {
 		name: 'Additive',
 		baseDamage: BaseDamage.Talent,
@@ -86,7 +66,27 @@ const reactionTypes = new Map<number, ReactionType>([
 			[0, { name: 'Lunar-Charged (Direct)', multiplier: 3, color: '#e6dcfd', element: 'Electro' }]
 		]),
 		desc: 'Special transformative reactions that can crit and that have their base damage calculated directly from a character\'s talent. Enabled by certain Nod-Krai characters.'
-	}]
+	}],
+	[2, {
+		name: 'Transformative',
+		baseDamage: BaseDamage.Level,
+		rxnMode: RxnMode.Multiplicative,
+		emBonus: EMBonusType.Transformative,
+		isTransformative: true,
+		transformativeCrit: true,
+		reactions: new Map([
+			[0, { name: 'Burgeon', multiplier: 3, color: '#ff9b00', element: 'Dendro' }],
+			[1, { name: 'Hyperbloom', multiplier: 3, color: '#e19bff', element: 'Dendro' }],
+			[4, { name: 'Shatter', multiplier: 3, color: '#ffffff', element: 'Physical' }],
+			[2, { name: 'Overloaded', multiplier: 2.75, color: '#ff809b', element: 'Pyro' }],
+			[3, { name: 'Bloom', multiplier: 2, color: '#00ea53', element: 'Dendro' }],
+			[5, { name: 'Electro-Charged', multiplier: 2, color: '#e19bff', element: 'Electro' }],
+			[7, { name: 'Superconduct', multiplier: 1.5, color: '#b4b4ff', element: 'Cyro' }],
+			[6, { name: 'Swirl', multiplier: 0.6, color: '#66ffcc', element: 'Varies', canApply: true }],
+			[8, { name: 'Burning', multiplier: 0.25, color: '#ff9b00', element: 'Pyro', canApply: true }]
+		]),
+		desc: 'Transformative reactions purely deal reaction damage with their base damage calculated from the character level multiplier and the base reaction multiplier. They ignore damage bonus and enemy DEF. They can only crit if explictly enabled by a talent such as Nahida\'s C2.'
+	}],
 ]);
 
 export default reactionTypes;
