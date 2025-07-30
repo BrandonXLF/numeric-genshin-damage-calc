@@ -37,24 +37,24 @@ const stats: Stat[] = [
 		icon: <StatIcon base="percent" indicator="percent" />
 	},
 	{
-		name: 'Talent DMG Bonus',
-		desc: 'Damage increases that are added to the talent damage by other talents, e.g. Zhongli\'s A4, and Kokomi\'s burst',
+		name: 'Extra Talent DMG',
+		desc: 'Flat damage increases that are added to base damage by other talents, e.g. Zhongli\'s A4, and Kokomi\'s burst',
 		prop: 'talentDamageBonus',
 		usesAttrs: true,
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.CharacterTalent,
-		groups: DamageGroup.Talent,
+		groups: DamageGroup.All,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
 		name: 'Flat DMG Bonus',
-		desc: 'Flat damage increases that are added to the talent damage, e.g. Yunjin\'s skill',
+		desc: 'Flat damage increases that are added to base damage by other characters, e.g. Yunjin\'s skill',
 		prop: 'flatDamage',
 		default: 0,
 		type: StatType.Number,
 		section: StatSection.CharacterTalent,
-		groups: DamageGroup.Talent,
+		groups: DamageGroup.All,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
