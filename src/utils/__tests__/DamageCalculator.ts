@@ -59,8 +59,6 @@ it('computers transformative reaction damage', () => {
 		label: 'Bloom',
 		statData: {
 			...statData,
-			talentDamageBonus: '0',
-			flatDamage: '0',
 			baseDamageMultiplier: '100',
 			characterLevel: '90',
 			em: '1000',
@@ -82,8 +80,6 @@ it('computers critical transformative reaction damage', () => {
 		label: 'Bloom',
 		statData: {
 			...statData,
-			talentDamageBonus: '0',
-			flatDamage: '0',
 			baseDamageMultiplier: '100',
 			characterLevel: '90',
 			em: '1000',
@@ -142,8 +138,6 @@ it('computes secondary transformative reaction damage', () => {
 		label: 'Vaporized (Pyro) Swirl',
 		statData: {
 			...statData,
-			talentDamageBonus: '0',
-			flatDamage: '0',
 			baseDamageMultiplier: '100',
 			characterLevel: '72',
 			em: '236',
@@ -168,8 +162,6 @@ it('computes secondary transformative reaction damage', () => {
 		label: 'Aggravated Swirl',
 		statData: {
 			...statData,
-			talentDamageBonus: '0',
-			flatDamage: '0',
 			baseDamageMultiplier: '100',
 			characterLevel: '72',
 			em: '236',

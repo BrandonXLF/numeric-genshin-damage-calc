@@ -363,7 +363,9 @@ export default class DamageCalculator {
 	}
 
 	private topEquation(name: keyof EquationData = 'generalDamage'): EquationOutput {
-		this.rxnDamageTypes = ['finalBaseDamage'];
+		this.rxnDamageTypes = [
+			this.reactionType!.isTransformative ? 'baseDamage' : 'finalBaseDamage'
+		];
 
 		if (this.reactionType!.rxnMode === RxnMode.Multiplicative)
 			this.rxnDamageTypes.push('amplifiedDamage');

@@ -44,7 +44,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.CharacterTalent,
-		groups: DamageGroup.All,
+		groups: DamageGroup.Talent,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
@@ -54,7 +54,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Number,
 		section: StatSection.CharacterTalent,
-		groups: DamageGroup.All,
+		groups: DamageGroup.Talent,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
