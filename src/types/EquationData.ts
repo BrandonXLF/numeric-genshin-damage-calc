@@ -23,6 +23,7 @@ type EquationData = {
 	
 	// Reaction
 	emBonus: EquationInfo;
+	reactionBonusMultiplier: EquationInfo;
 	amplifyingMul: EquationInfo;
 
 	// Amplified

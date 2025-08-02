@@ -82,9 +82,13 @@ export default class DamageCalculator {
 				return DamageCalculator.emBonusEquations[emBonusType];
 			}
 		},
+		reactionBonusMultiplier: {
+			name: 'Bonus Multiplier',
+			expr: '1 + emBonus + reactionBonus',
+		},
 		amplifyingMul: {
 			name: 'Reaction Multiplier',
-			expr: 'baseMultiplier * (1 + emBonus + reactionBonus)'
+			expr: () => `baseMultiplier * reactionBonusMultiplier`
 		},
 
 		// Amplified
