@@ -39,8 +39,8 @@ export default class DamageCalculator {
 	private values?: ValueData;
 	private useSecondary?: boolean;
 	private rxnDamageTypes?: (keyof EquationData)[];
-	private reactionType?: ReactionType;
-	private secondaryType?: ReactionType;
+	private reactionType!: ReactionType;
+	private secondaryType!: ReactionType;
 
 	/**
 	 * @see {@link https://library.keqingmains.com/combat-mechanics/damage/damage-formula KQM Damage Formula} for formula.
@@ -63,7 +63,7 @@ export default class DamageCalculator {
 		// Final base damage
 		baseDamage: {
 			name: 'Base DMG',
-			expr: () => `${DamageCalculator.baseDamageKeys[this.reactionType!.baseDamage]} * baseDamageMultiplier`
+			expr: () => `${DamageCalculator.baseDamageKeys[this.reactionType.baseDamage]} * baseDamageMultiplier`
 		},
 		flatDamageBasic: {
 			name: 'Additive DMG Bonus',
@@ -78,7 +78,7 @@ export default class DamageCalculator {
 		emBonus: {
 			name: 'EM Bonus',
 			expr: () => {
-				const emBonusType = this.currentReactionType?.emBonus ?? EMBonusType.None;
+				const emBonusType = this.currentReactionType.emBonus ?? EMBonusType.None;
 				return DamageCalculator.emBonusEquations[emBonusType];
 			}
 		},
@@ -101,7 +101,7 @@ export default class DamageCalculator {
 		flatDamageReactionBonus: {
 			name: 'Additive Reaction DMG',
 			expr: () => {
-				const baseDamage = this.currentReactionType!.additiveBaseDamage!;
+				const baseDamage = this.currentReactionType.additiveBaseDamage!;
 				return `${DamageCalculator.baseDamageKeys[baseDamage]} * amplifyingMul`;
 			}
 		},
@@ -168,7 +168,7 @@ export default class DamageCalculator {
 		},
 		generalDamage: {
 			name: 'General DMG',
-			expr: () => `${this.reactionType!.isTransformative ? this.getNextRxDmg() : 'bonusDamage * enemyDefenseMul'} * enemyResistanceMul${this.variable('bowAimedTravelTime').value > 0 ? ' * travelMultiplier' : ''}`
+			expr: () => `${this.reactionType.isTransformative ? this.getNextRxDmg() : 'bonusDamage * enemyDefenseMul'} * enemyResistanceMul${this.variable('bowAimedTravelTime').value > 0 ? ' * travelMultiplier' : ''}`
 		},
 
 		// CRIT
@@ -192,11 +192,11 @@ export default class DamageCalculator {
 	
 	constructor(private readonly attack: Attack) {}
 
-	private get currentReactionType(): ReactionType | undefined {
+	private get currentReactionType(): ReactionType {
 		return this.useSecondary ? this.secondaryType : this.reactionType;
 	}
 
-	private getNextRxDmg(): keyof EquationData | undefined{
+	private getNextRxDmg(): keyof EquationData | undefined {
 		return this.rxnDamageTypes?.pop();
 	}
 
@@ -265,7 +265,7 @@ export default class DamageCalculator {
 		} else if (name.startsWith('CRIT_')) {
 			name = name.substring(5);
 
-			if (this.currentReactionType!.transformativeCrit) {
+			if (this.currentReactionType.transformativeCrit) {
 				name = name + 'Transformative';
 			}
 		}
@@ -364,26 +364,26 @@ export default class DamageCalculator {
 
 	private topEquation(name: keyof EquationData = 'generalDamage'): EquationOutput {
 		this.rxnDamageTypes = [
-			this.reactionType!.isTransformative ? 'baseDamage' : 'finalBaseDamage'
+			this.reactionType.isTransformative ? 'baseDamage' : 'finalBaseDamage'
 		];
 
-		if (this.reactionType!.rxnMode === RxnMode.Multiplicative)
+		if (this.reactionType.rxnMode === RxnMode.Multiplicative)
 			this.rxnDamageTypes.push('amplifiedDamage');
 
-		if (this.secondaryType?.rxnMode === RxnMode.Multiplicative && !this.secondaryType.isTransformative)
+		if (this.secondaryType.rxnMode === RxnMode.Multiplicative && !this.secondaryType.isTransformative)
 			this.rxnDamageTypes.push('secondaryAmplifiedDamage');
 
-		if (this.reactionType!.rxnMode === RxnMode.Additive)
+		if (this.reactionType.rxnMode === RxnMode.Additive)
 			this.rxnDamageTypes.push('additiveDamage');
 
-		if (this.secondaryType?.rxnMode === RxnMode.Additive && !this.secondaryType.isTransformative)
+		if (this.secondaryType.rxnMode === RxnMode.Additive && !this.secondaryType.isTransformative)
 			this.rxnDamageTypes.push('secondaryAdditiveDamage');
 	
 		return this.equation(name);
 	}
 
 	private showCrit() {
-		return !this.reactionType!.transformativeCrit || (
+		return !this.reactionType.transformativeCrit || (
 				this.attack.getStatAsNumber('critRateTransformative', StatType.Percent) > 0 ||
 				this.attack.getStatAsNumber('critDamageTransformative', StatType.Percent) > 0
 			);
@@ -396,8 +396,8 @@ export default class DamageCalculator {
 		this.reactionType = reactionTypes.get(this.attack.reactionType)!;
 		const reaction = this.reactionType.reactions.get(this.attack.reaction)!;
 		
-		this.secondaryType = reactionTypes.get(this.attack.secondaryType);
-		const secondary = this.secondaryType?.reactions.get(this.attack.secondary);
+		this.secondaryType = reactionTypes.get(this.attack.secondaryType)!;
+		const secondary = this.secondaryType.reactions.get(this.attack.secondary);
 
 		this.values = {
 			baseMultiplier: {
