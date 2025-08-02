@@ -185,8 +185,8 @@ export default class Attack implements PartialAttack {
         return this._unmodified;
     }
 
-    private getBaseGroup(reactionType: BaseDamage): DamageGroup {
-        switch (reactionType) {
+    private getBaseGroup(baseDamage: BaseDamage): DamageGroup {
+        switch (baseDamage) {
             case BaseDamage.Talent:
                 return DamageGroup.Talent;
             case BaseDamage.Level:
@@ -197,6 +197,10 @@ export default class Attack implements PartialAttack {
     get groups() {
         const reactionType = reactionTypes.get(this.reactionType)!;
         let out = this.getBaseGroup(reactionType.baseDamage);
+
+        if (reactionType.rxnMode === RxnMode.Additive) {
+            out |= this.getBaseGroup(reactionType.additiveBaseDamage);
+        }
 
         if (reactionType.rxnMode !== RxnMode.None) {
             out |= DamageGroup.Reaction;
@@ -214,6 +218,8 @@ export default class Attack implements PartialAttack {
 
         if (this.hasSecondary) {
             const secondaryType = reactionTypes.get(this.secondaryType)!;
+
+            // Only the reaction part of the damage is considered
             if (secondaryType.rxnMode === RxnMode.Additive) {
                 out |= this.getBaseGroup(secondaryType.additiveBaseDamage);
             }
