@@ -9,6 +9,7 @@ const statData: StatData = {
 	talentDamageBonus: '100',
 	baseDamageMultiplier: '150',
 	flatDamage: '500',
+	extraRxnDMG: '0',
 	damageBonus: '46.6',
 	em: '100',
 	characterLevel: '90',
@@ -175,6 +176,55 @@ it('computes secondary transformative reaction damage', () => {
 	expect(attack.damage.crit?.value).toBe(undefined);
 	expect(attack.damage.nonCrit?.value).toBe(undefined);
 	expect(attack.damage.avgDmg.value).toBeCloseTo(3210.99);
+});
+
+it('computes lunar reaction damage', () => {
+	const attack = new Attack({
+		reactionType: 4,
+		reaction: 0,
+		label: 'Lunar-Charged',
+		statData: {
+			...statData,
+			characterLevel: '80',
+			baseDamageMultiplier: '114',
+			em: '471',
+			reactionBonus: '40',
+			critRate: '71.5',
+			critDamage: '152.3',
+			resistance: '10',
+			resistanceReduction: '0'
+		}
+	});
+
+	expect(attack.damage.crit?.value).toBeCloseTo(12770.03);
+	expect(attack.damage.nonCrit?.value).toBeCloseTo(5061.45);
+	expect(attack.damage.avgDmg.value).toBeCloseTo(10573.08);
+});
+
+it('computes direct lunar reaction damage', () => {
+	const attack = new Attack({
+		reactionType: 5,
+		reaction: 0,
+		label: 'Direct Lunar-Charged',
+		statData: {
+			...statData,
+			baseTalentScale: '2066',
+			additionalBonusTalentScale: '0',
+			bonusTalentScale: '0',
+			talent: '65',
+			baseDamageMultiplier: '114',
+			em: '471',
+			reactionBonus: '40',
+			critRate: '71.5',
+			critDamage: '152.3',
+			resistance: '10',
+			resistanceReduction: '0'
+		}
+	});
+
+	expect(attack.damage.crit?.value).toBeCloseTo(26527.1);
+	expect(attack.damage.nonCrit?.value).toBeCloseTo(10514.11);
+	expect(attack.damage.avgDmg.value).toBeCloseTo(21963.39);
 });
 
 it('accounts for bow charged attack damage drop-off', () => {
