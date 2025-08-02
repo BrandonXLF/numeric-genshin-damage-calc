@@ -101,6 +101,12 @@ export default class DamageCalculator {
 			expr: () => `${this.getNextRxDmg()} * SECONDARY_amplifyingMul`
 		},
 
+		// Extra transformative damage
+		extraTransformativeDamage: {
+			name: 'Final Reaction DMG',
+			expr: () => `${this.getNextRxDmg()} + extraRxnDMG`
+		},
+
 		// Additive
 		flatDamageReactionBonus: {
 			name: 'Additive Reaction DMG',
@@ -376,6 +382,9 @@ export default class DamageCalculator {
 
 		if (this.secondaryType.rxnMode === RxnMode.Multiplicative && !this.secondaryType.isTransformative)
 			this.rxnDamageTypes.push('secondaryAmplifiedDamage');
+
+		if (this.reactionType.isTransformative)
+			this.rxnDamageTypes.push('extraTransformativeDamage');
 
 		if (this.reactionType.rxnMode === RxnMode.Additive)
 			this.rxnDamageTypes.push('additiveDamage');

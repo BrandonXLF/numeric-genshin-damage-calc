@@ -8,7 +8,7 @@ const statSections: StatSectionDefinition[] = [
 	{
 		name: 'Base',
 		sub: true,
-		value: StatSection.CharacterTalent
+		value: StatSection.CharacterBase
 	},
 	{
 		name: 'Stats',

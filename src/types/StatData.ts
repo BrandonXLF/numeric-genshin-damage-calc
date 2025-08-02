@@ -21,6 +21,7 @@ type StatData = {
 	talentDamageBonusEM?: string;
 	baseDamageMultiplier: string;
 	flatDamage: string;
+	extraRxnDMG: string;
 	damageBonus: string;
 	em: string;
 	characterLevel: string;

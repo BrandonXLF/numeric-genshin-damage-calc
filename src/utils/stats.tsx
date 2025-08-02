@@ -10,7 +10,7 @@ const stats: Stat[] = [
 		default: 1,
 		type: StatType.Number,
 		section: StatSection.Character,
-		groups: DamageGroup.Level | DamageGroup.BonusAndDef,
+		groups: DamageGroup.Level | DamageGroup.NonTransformative,
 		icon: <StatIcon base="character" />,
 		map: 'char',
 		mapNumber: 4001
@@ -22,29 +22,29 @@ const stats: Stat[] = [
 		usesAttrs: true,
 		default: 100,
 		type: StatType.Percent,
-		section: StatSection.CharacterTalent,
+		section: StatSection.CharacterBase,
 		groups: DamageGroup.Talent,
 		icon: <StatIcon base="percent" />
 	},
 	{
 		name: 'Base Multiplier',
-		desc: 'Multiplier that applies to the base/talent multipliers, increased by Xingqui\'s C4, Yoimiya\'s skill, and Ineffa\'s passive for example',
+		desc: 'Multiplier that is applied directly to the base/talent multiplier, increased by Xingqui\'s C4, Yoimiya\'s skill, and Ineffa\'s passive',
 		prop: 'baseDamageMultiplier',
 		default: 100,
 		type: StatType.Percent,
-		section: StatSection.CharacterTalent,
+		section: StatSection.CharacterBase,
 		groups: DamageGroup.All,
 		icon: <StatIcon base="percent" indicator="percent" />
 	},
 	{
 		name: 'Extra Talent DMG',
-		desc: 'Flat damage increases that are added to base damage by other talents, e.g. Zhongli\'s A4, and Kokomi\'s burst',
+		desc: 'Flat damage increases that are added to base damage by other talents, e.g. Zhongli\'s A4 and Kokomi\'s burst',
 		prop: 'talentDamageBonus',
 		usesAttrs: true,
 		default: 0,
 		type: StatType.Percent,
-		section: StatSection.CharacterTalent,
-		groups: DamageGroup.Talent,
+		section: StatSection.CharacterBase,
+		groups: DamageGroup.NonTransformative,
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
@@ -53,9 +53,19 @@ const stats: Stat[] = [
 		prop: 'flatDamage',
 		default: 0,
 		type: StatType.Number,
-		section: StatSection.CharacterTalent,
-		groups: DamageGroup.Talent,
+		section: StatSection.CharacterBase,
+		groups: DamageGroup.NonTransformative,
 		icon: <StatIcon base="damage" indicator="increase" />
+	},
+	{
+		name: 'Extra Rxn DMG',
+		desc: 'Extra reaction damage that is applied to the damage after the EM bonus and reaction DMG bonus.',
+		prop: 'extraRxnDMG',
+		default: 0,
+		type: StatType.Number,
+		section: StatSection.CharacterBase,
+		groups: DamageGroup.Transformative,
+		icon: <StatIcon base="damage" indicator="increase" />,
 	},
 	{
 		name: 'Base ATK',
@@ -185,7 +195,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.CharacterStats,
-		groups: DamageGroup.BonusAndDef,
+		groups: DamageGroup.NonTransformative,
 		icon: <StatIcon base="damage" indicator="increase" />,
 		map: 'fight',
 		mapNumber: {
@@ -200,7 +210,7 @@ const stats: Stat[] = [
 		}
 	},
 	{
-		name: 'Reaction Bonus',
+		name: 'Rxn DMG Bonus',
 		desc: 'All reaction damage bonuses added together besides the reaction bonus from EM, e.g. Crimson Witch 4-piece and Nilou\'s 4th ascension passive',
 		prop: 'reactionBonus',
 		default: 0,
@@ -267,7 +277,7 @@ const stats: Stat[] = [
 		default: 1,
 		type: StatType.Number,
 		section: StatSection.Enemy,
-		groups: DamageGroup.BonusAndDef,
+		groups: DamageGroup.NonTransformative,
 		icon: <StatIcon base="enemy" />
 	},
 	{
@@ -277,7 +287,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.Enemy,
-		groups: DamageGroup.BonusAndDef,
+		groups: DamageGroup.NonTransformative,
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	},
 	{
@@ -287,7 +297,7 @@ const stats: Stat[] = [
 		default: 0,
 		type: StatType.Percent,
 		section: StatSection.Enemy,
-		groups: DamageGroup.BonusAndDef,
+		groups: DamageGroup.NonTransformative,
 		icon: <StatIcon base="shield" mask="enemySmall" indicator="decrease" />
 	},
 	{

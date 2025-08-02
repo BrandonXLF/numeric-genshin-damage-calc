@@ -6,7 +6,7 @@ type StatSectionDefinition = {
 
 export const enum StatSection {
 	Character,
-	CharacterTalent,
+	CharacterBase,
 	CharacterStats,
 	Enemy
 };

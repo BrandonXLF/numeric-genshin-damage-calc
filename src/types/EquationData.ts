@@ -29,7 +29,10 @@ type EquationData = {
 	// Amplified
 	amplifiedDamage: EquationInfo;
 	secondaryAmplifiedDamage: EquationInfo;
-	
+
+	// Extra transformative damage
+	extraTransformativeDamage: EquationInfo;
+
 	// Additive
 	flatDamageReactionBonus: EquationInfo;
 	additiveDamage: EquationInfo;
