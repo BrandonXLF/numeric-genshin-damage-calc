@@ -406,11 +406,11 @@ export default class DamageCalculator {
 	 * Main function. Calculate the damage for the current state of {@link attack}.
 	 */
 	calculateDamage(): Damage {
-		this.reactionType = reactionTypes.get(this.attack.reactionType)!;
-		const reaction = this.reactionType.reactions.get(this.attack.reaction)!;
+		this.reactionType = reactionTypes.get(this.attack.reactionType) ?? reactionTypes.get(0)!;
+		const reaction = this.reactionType.reactions.get(this.attack.reaction) ?? this.reactionType.reactions.get(0)!;
 		
-		this.secondaryType = reactionTypes.get(this.attack.secondaryType)!;
-		const secondary = this.secondaryType.reactions.get(this.attack.secondary);
+		this.secondaryType = reactionTypes.get(this.attack.secondaryType) ?? reactionTypes.get(0)!;
+		const secondary = this.secondaryType.reactions.get(this.attack.secondary) ?? this.secondaryType.reactions.get(0)!;
 
 		this.values = {
 			baseMultiplier: {
@@ -419,7 +419,7 @@ export default class DamageCalculator {
 			},
 			secondaryMultiplier: {
 				name: 'Secondary Multiplier',
-				value: secondary?.multiplier ?? 1
+				value: secondary.multiplier ?? 1
 			},
 			transformativeLevelMultiplier: {
 				name: 'Level Multiplier',
