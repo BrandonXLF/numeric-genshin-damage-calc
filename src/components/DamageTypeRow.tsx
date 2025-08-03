@@ -5,7 +5,7 @@ import FormInput from "./FormInput";
 import '../less/DamageTypeRow.less';
 import { ColumnStateAction } from "../types/ColumnState";
 import reactionTypes from "../utils/reactionTypes";
-import { topDescs } from "../utils/TopDescs";
+import { topDescs } from "../utils/topDescs";
 
 export default function DamageTypeRow(props: Readonly<{
 	columns: Column[];

@@ -3,7 +3,7 @@ import Column from "../utils/Column";
 import FormInput from "./FormInput";
 import RowLabel from "./RowLabel";
 import { ColumnStateAction } from "../types/ColumnState";
-import { topDescs } from "../utils/TopDescs";
+import { topDescs } from "../utils/topDescs";
 
 export default function LabelRow(props: Readonly<{
 	columns: Column[];

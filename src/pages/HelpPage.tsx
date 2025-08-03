@@ -4,7 +4,7 @@ import "../less/popup.less";
 import stats from "../utils/stats";
 import { Link } from "react-router";
 import { Fragment } from "react/jsx-runtime";
-import { topDescs } from "../utils/TopDescs";
+import { topDescs } from "../utils/topDescs";
 import '../less/HelpPage.less';
 import Page from "../components/Page";
 import damageTypes from "../utils/damageTypes";

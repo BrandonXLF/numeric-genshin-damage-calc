@@ -7,7 +7,7 @@ import '../less/FormInput.less';
 import '../less/AttacksRow.less';
 import RowLabel from "./RowLabel";
 import { ColumnStateAction } from "../types/ColumnState";
-import { topDescs } from "../utils/TopDescs";
+import { topDescs } from "../utils/topDescs";
 
 export default function AttacksRow(props: Readonly<{
 	columns: Column[],
