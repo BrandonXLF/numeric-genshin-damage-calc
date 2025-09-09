@@ -63,7 +63,8 @@ const reactionTypes = new Map<number, ReactionType>([
 		isTransformative: true,
 		transformativeCrit: false,
 		reactions: new Map([
-			[0, { name: 'Lunar-Charged (Direct)', multiplier: 3, color: '#e6dcfd', element: 'Electro' }]
+			[0, { name: 'Lunar-Charged (Direct)', multiplier: 3, color: '#e6dcfd', element: 'Electro' }],
+			[1, { name: 'Lunar-Bloom', multiplier: 1, color: '#c8ffe6', element: 'Dendro' }]
 		]),
 		desc: 'Special transformative reactions that can crit and that have their base damage calculated directly from a character\'s talent. Enabled by certain Nod-Krai characters.'
 	}],
