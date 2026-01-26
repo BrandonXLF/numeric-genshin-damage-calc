@@ -11,6 +11,7 @@ const statData: StatData = {
 	flatDamage: '500',
 	extraRxnDMG: '0',
 	damageBonus: '46.6',
+	elevation: '0',
 	em: '100',
 	characterLevel: '90',
 	reactionBonus: '20',

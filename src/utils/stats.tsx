@@ -230,6 +230,16 @@ const stats: Stat[] = [
 		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
+		name: 'Elevation',
+		desc: 'Special DMG boost that directly multiplies damage, e.g. from Columbina\'s constellations',
+		prop: 'elevation',
+		default: 0,
+		type: StatType.Percent,
+		section: StatSection.CharacterStats,
+		groups: DamageGroup.Transformative,
+		icon: <StatIcon base="damage" indicator="increase" />
+	},
+	{
 		name: 'CRIT Rate',
 		prop: 'critRate',
 		default: 5,

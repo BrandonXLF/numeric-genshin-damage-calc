@@ -38,7 +38,7 @@ type EquationData = {
 	additiveDamage: EquationInfo;
 	secondaryAdditiveDamage: EquationInfo;
 	
-	// Damage bonus
+	// Damage bonus / elevated
 	bonusDamage: EquationInfo;
 	
 	// Enemy factors

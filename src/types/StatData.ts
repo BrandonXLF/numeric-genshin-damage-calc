@@ -23,6 +23,7 @@ type StatData = {
 	flatDamage: string;
 	extraRxnDMG: string;
 	damageBonus: string;
+	elevation: string;
 	em: string;
 	characterLevel: string;
 	reactionBonus: string;

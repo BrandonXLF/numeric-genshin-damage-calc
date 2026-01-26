@@ -124,10 +124,10 @@ export default class DamageCalculator {
 			expr: () => `${this.getNextRxDmg()} + SECONDARY_flatDamageReactionBonus`
 		},
 
-		// Damage bonus
+		// Damage bonus / elevated
 		bonusDamage: {
 			name: 'Outgoing DMG',
-			expr: () => `${this.getNextRxDmg()} * (1 + damageBonus)`
+			expr: () => `${this.getNextRxDmg()} * (1 + ${this.reactionType.isTransformative ? 'elevation' : 'damageBonus'})`
 		},
 
 		// Enemy factors
@@ -178,7 +178,7 @@ export default class DamageCalculator {
 		},
 		generalDamage: {
 			name: 'General DMG',
-			expr: () => `${this.reactionType.isTransformative ? this.getNextRxDmg() : 'bonusDamage * enemyDefenseMul'} * enemyResistanceMul${this.variable('bowAimedTravelTime').value > 0 ? ' * travelMultiplier' : ''}`
+			expr: () => `bonusDamage${this.reactionType.isTransformative ? '' : ' * enemyDefenseMul'} * enemyResistanceMul${this.variable('bowAimedTravelTime').value > 0 ? ' * travelMultiplier' : ''}`
 		},
 
 		// CRIT

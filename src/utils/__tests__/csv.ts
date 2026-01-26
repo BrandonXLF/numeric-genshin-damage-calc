@@ -73,6 +73,7 @@ it('exports correctly', () => {
 		['DMG Bonus % (damageBonus)', '0', '0', '0'],
 		['Rxn DMG Bonus % (reactionBonus)', '0', '0', '0'],
 		['2nd Rxn Bonus % (secondaryReactionBonus)', '0', '0', '0'],
+		['Elevation % (elevation)', '0', '0', '0'],
 		['CRIT Rate % (critRate)', '5', '5', '5'],
 		['CRIT DMG % (critDamage)', '50', '50', '50'],
 		['Rxn CRIT Rate % (critRateTransformative)', '0', '0', '0'],
