@@ -19,8 +19,8 @@ export default class EnkaImporter {
 			EnkaImporter.nameResourcesPromise = (async () => {
 				try {
 					return Promise.all([
-						(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/characters.json')).json(),
-						(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json')).json()
+						(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/gi/avatars.json')).json(),
+						(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/gi/locs.json')).json()
 					]);
 				} catch {
 					return [{}, {en: {}}];
@@ -63,7 +63,7 @@ export default class EnkaImporter {
 
 	private static showIcon(path?: string) {
 		if (!path) return <StatIcon base="character" />;
-		return <img src={`https://enka.network/ui/${path}.png`} alt="" />;
+		return <img src={`https://enka.network/${path}`} alt="" />;
 	}
 	
 	static async getNonCharacterProfilePhoto(id: number) {
