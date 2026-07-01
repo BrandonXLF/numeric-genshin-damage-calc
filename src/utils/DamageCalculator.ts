@@ -83,7 +83,7 @@ export default class DamageCalculator {
 			}
 		},
 		reactionBonusMultiplier: {
-			name: 'Bonus Multiplier',
+			name: 'Bonus Rxn Multiplier',
 			expr: '1 + emBonus + reactionBonus',
 		},
 		amplifyingMul: {
@@ -414,7 +414,7 @@ export default class DamageCalculator {
 
 		this.values = {
 			baseMultiplier: {
-				name: 'Base Multiplier',
+				name: 'Base Rxn Multiplier',
 				value: reaction.multiplier ?? 1
 			},
 			secondaryMultiplier: {
