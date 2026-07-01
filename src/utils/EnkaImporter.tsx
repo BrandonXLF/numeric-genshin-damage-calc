@@ -15,18 +15,16 @@ export default class EnkaImporter {
 	]> | undefined;
 	
 	private static getNameResources() {
-		if (!EnkaImporter.nameResourcesPromise) {
-			EnkaImporter.nameResourcesPromise = (async () => {
-				try {
-					return Promise.all([
-						(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/gi/avatars.json')).json(),
-						(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/gi/locs.json')).json()
-					]);
-				} catch {
-					return [{}, {en: {}}];
-				}
-			})();
-		}
+		EnkaImporter.nameResourcesPromise ??= (async () => {
+			try {
+				return Promise.all([
+					(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/gi/avatars.json')).json(),
+					(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/gi/locs.json')).json()
+				]);
+			} catch {
+				return [{}, {en: {}}];
+			}
+		})();
 	
 		return EnkaImporter.nameResourcesPromise;
 	}
@@ -34,22 +32,20 @@ export default class EnkaImporter {
 	private static profilePhotoPromise: Promise<Record<number, string | undefined>> | undefined;
 
 	private static getProfilePhotos() {
-		if (!EnkaImporter.profilePhotoPromise) {
-			EnkaImporter.profilePhotoPromise = (async () => {
-				try {
-					let photoArray = await (await fetch('https://glcdn.githack.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/ProfilePictureExcelConfigData.json')).json()
-					let photoMap: Record<number, string | undefined> = {};
-		
-					for (let profilePhoto of photoArray) {
-						photoMap[profilePhoto.id] = profilePhoto.iconPath;
-					}
-
-					return photoMap;
-				} catch {
-					return {};
+		EnkaImporter.profilePhotoPromise ??= (async () => {
+			try {
+				let photoArray = await (await fetch('https://glcdn.githack.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/ProfilePictureExcelConfigData.json')).json()
+				let photoMap: Record<number, string | undefined> = {};
+	
+				for (let profilePhoto of photoArray) {
+					photoMap[profilePhoto.id] = profilePhoto.iconPath;
 				}
-			})();
-		}
+
+				return photoMap;
+			} catch {
+				return {};
+			}
+		})();
 
 		return EnkaImporter.profilePhotoPromise;
 	}
