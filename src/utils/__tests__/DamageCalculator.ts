@@ -230,6 +230,62 @@ it('computes direct lunar reaction damage', () => {
 	expect(attack.damage.avgDmg.value).toBeCloseTo(21963.39);
 });
 
+it('computes direct stellar reaction damage', () => {
+	const attack = new Attack({
+		reactionType: 6,
+		reaction: 0,
+		label: 'Stellar-Charged',
+		statData: {
+			...statData,
+			baseTalentScale: '1016',
+			additionalBonusTalentScale: '0',
+			bonusTalentScale: '1921',
+			talent: '34.56',
+			baseDamageMultiplier: '100',
+			baseReactionBonus: '14',
+			stellarElementalHits: '2',
+			em: '265',
+			reactionBonus: '40',
+			critRate: '100',
+			critDamage: '205.2',
+			resistance: '10',
+			resistanceReduction: '0'
+		}
+	});
+
+	expect(attack.damage.crit?.value).toBeCloseTo(10021.46);
+	expect(attack.damage.nonCrit?.value).toBeCloseTo(3283.57);
+	expect(attack.damage.avgDmg.value).toBeCloseTo(10021.46);
+});
+
+
+it('computes multiplied direct stellar reaction damage', () => {
+	const attack = new Attack({
+		reactionType: 6,
+		reaction: 0,
+		label: 'Stellar-Charged',
+		statData: {
+			...statData,
+			baseTalentScale: '1016',
+			additionalBonusTalentScale: '0',
+			bonusTalentScale: '1921',
+			talent: '34.56',
+			baseDamageMultiplier: '400',
+			baseReactionBonus: '14',
+			em: '265',
+			reactionBonus: '40 + 16 * 3',
+			critRate: '100',
+			critDamage: '205.2',
+			resistance: '10',
+			resistanceReduction: '0'
+		}
+	});
+
+	expect(attack.damage.crit?.value).toBeCloseTo(32826.42);
+	expect(attack.damage.nonCrit?.value).toBeCloseTo(10755.71);
+	expect(attack.damage.avgDmg.value).toBeCloseTo(32826.42);
+});
+
 it('accounts for bow charged attack damage drop-off', () => {
 	const multipliers = {
 		0: 1,

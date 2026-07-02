@@ -19,6 +19,7 @@ type StatData = {
 	talentDamageBonusDEF?: string;
 	talentDamageBonusHP?: string;
 	talentDamageBonusEM?: string;
+	stellarElementalHits?: string;
 	baseDamageMultiplier: string;
 	baseReactionBonus?: string;
 	flatDamage: string;

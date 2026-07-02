@@ -218,6 +218,10 @@ export default class Attack implements PartialAttack {
             out |= DamageGroup.Crit;
         }
 
+        if (reactionType.stellarHit) {
+            out |= DamageGroup.StellarHit;
+        }
+
         if (this.hasSecondary) {
             const secondaryType = reactionTypes.get(this.secondaryType)!;
 

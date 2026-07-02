@@ -415,24 +415,26 @@ export default class DamageCalculator {
 	calculateDamage(): Damage {
 		this.reactionType = reactionTypes.get(this.attack.reactionType) ?? reactionTypes.get(0)!;
 		const reaction = this.reactionType.reactions.get(this.attack.reaction) ?? this.reactionType.reactions.get(0)!;
+		const baseMultiplier = typeof reaction.multiplier === 'function' ? reaction.multiplier(this.attack) : reaction.multiplier ?? 1;
 		
 		this.secondaryType = reactionTypes.get(this.attack.secondaryType) ?? reactionTypes.get(0)!;
 		const secondary = this.secondaryType.reactions.get(this.attack.secondary) ?? this.secondaryType.reactions.get(0)!;
+		const secondaryMultiplier = typeof secondary.multiplier === 'function' ? secondary.multiplier(this.attack) : secondary.multiplier ?? 1;
 
 		this.values = {
 			baseMultiplier: {
-				name: 'Base Rxn Multiplier',
-				value: reaction.multiplier ?? 1
+				name: 'Base Rxn Coefficient',
+				value: baseMultiplier
 			},
 			secondaryMultiplier: {
 				name: 'Secondary Multiplier',
-				value: secondary.multiplier ?? 1
+				value: secondaryMultiplier
 			},
 			transformativeLevelMultiplier: {
 				name: 'Level Multiplier',
-				value: transformativeLevelMultipliers[this.attack.getStatAsNumber('characterLevel', StatType.Number)] ?? NaN
+				value: transformativeLevelMultipliers[this.attack.getStatAsNumber('characterLevel', StatType.Number)] ?? Number.NaN
 			}
-		} as ValueData;
+		} satisfies Partial<ValueData> as ValueData;
 
 		stats.forEach(stat => {
 			if ('usesAttrs' in stat)

@@ -44,7 +44,7 @@ export default function ReactionDesc() {
 							<tr key={subID}>
 								<td style={{ color: damageSubType.color }}>{damageSubType.name}</td>
 								<td style={{ color: getElementColor(damageSubType.element) }}>{damageSubType.element}</td>
-								<td>{damageSubType.multiplier ?? 'N/A'}</td>
+								<td>{typeof damageSubType.multiplier === 'function' ? 'Varies' : damageSubType.multiplier ?? 'N/A'}</td>
 							</tr>
 						)]}
 					</tbody>

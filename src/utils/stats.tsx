@@ -37,6 +37,16 @@ const stats: Stat[] = [
 		icon: <StatIcon base="percent" indicator="percent" />
 	},
 	{
+		name: 'Elemental Hits',
+		desc: 'The number of elements hits that contribute to the Stellar buff for this attack',
+		prop: 'stellarElementalHits',
+		default: 0,
+		type: StatType.Number,
+		section: StatSection.CharacterBase,
+		groups: DamageGroup.StellarHit,
+		icon: <StatIcon base="damage" indicator="increase" />
+	},
+	{
 		name: 'Base DMG Bonus',
 		desc: 'DMG bonus that directly increases the base damage of the reaction, e.g. Ineffa\'s passive and Sandrone\'s Light of Rationalisme',
 		prop: 'baseReactionBonus',

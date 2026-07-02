@@ -1,3 +1,4 @@
+import Attack from "../utils/Attack";
 import elements from "../utils/elements";
 
 export const enum BaseDamage {
@@ -22,7 +23,7 @@ export const enum EMBonusType {
 export type Reaction = {
 	name: string;
 	secondaryName?: string;
-	multiplier?: number;
+	multiplier?: number | ((attack: Attack) => number);
 	color: string;
 	element: typeof elements[number] | 'Varies';
 	canApply?: boolean;
@@ -55,6 +56,10 @@ type ReactionType = {
 	 * True if the damage uses transformative crit rate/damage.
 	 */
 	transformativeCrit?: boolean;
+	/**
+	 * True if the damage uses stellar hits in its calculation.
+	 */
+	stellarHit?: boolean;
 	reactions: Map<number, Reaction>;
 	desc: string;
 } & ({

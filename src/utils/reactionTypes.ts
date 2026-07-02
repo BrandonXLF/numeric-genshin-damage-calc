@@ -1,4 +1,5 @@
 import ReactionType, { BaseDamage, EMBonusType, RxnMode } from "../types/ReactionType";
+import { StatType } from "../types/Stat";
 
 const reactionTypes = new Map<number, ReactionType>([
 	[0, {
@@ -69,6 +70,23 @@ const reactionTypes = new Map<number, ReactionType>([
 			[1, { name: 'Lunar-Bloom', multiplier: 1, color: '#c8ffe6', element: 'Dendro' }]
 		]),
 		desc: 'Special transformative reactions that can crit and that have their base damage calculated directly from a character\'s talent. Enabled by certain Nod-Krai characters.'
+	}],
+	[6, {
+		name: 'Direct Stellar',
+		baseDamage: BaseDamage.Talent,
+		rxnMode: RxnMode.Multiplicative,
+		emBonus: EMBonusType.Lunar,
+		isTransformative: true,
+		transformativeCrit: false,
+		stellarHit: true,
+		reactions: new Map([
+			[0, { name: 'Stellar-Conduct', multiplier: (attack) => {
+				const hits = attack.getStatAsNumber('stellarElementalHits', StatType.Number);
+				if (hits === 0) return 1;
+				return Math.min(1.4 + hits * 0.05, 1.9);
+			}, color: '#c2c8ff', element: 'Varies' }]
+		]),
+		desc: 'Special transformative reactions that can crit and that have their base damage calculated directly from a character\'s talent. Enabled when a character with a Stellar Linchpin is present.'
 	}],
 	[2, {
 		name: 'Transformative',
