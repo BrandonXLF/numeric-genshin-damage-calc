@@ -91,7 +91,7 @@ export default class DamageCalculator {
 			expr: () => `baseMultiplier * reactionBonusMultiplier`
 		},
 
-		// Amplified
+		// Amplified (+ transformative)
 		amplifiedDamage: {
 			name: 'Reaction DMG',
 			expr: () => `${this.getNextRxDmg()} * amplifyingMul`
@@ -101,7 +101,11 @@ export default class DamageCalculator {
 			expr: () => `${this.getNextRxDmg()} * SECONDARY_amplifyingMul`
 		},
 
-		// Extra transformative damage
+		// Transformative
+		transformativeBoostedBase: {
+			name: 'Boosted Base DMG',
+			expr: () => `${this.getNextRxDmg()} * (1 + baseReactionBonus)`
+		},
 		extraTransformativeDamage: {
 			name: 'Final Reaction DMG',
 			expr: () => `${this.getNextRxDmg()} + extraRxnDMG`
@@ -376,6 +380,9 @@ export default class DamageCalculator {
 		this.rxnDamageTypes = [
 			this.reactionType.isTransformative ? 'baseDamage' : 'finalBaseDamage'
 		];
+
+		if (this.reactionType.isTransformative)
+			this.rxnDamageTypes.push('transformativeBoostedBase');
 
 		if (this.reactionType.rxnMode === RxnMode.Multiplicative)
 			this.rxnDamageTypes.push('amplifiedDamage');

@@ -26,11 +26,12 @@ type EquationData = {
 	reactionBonusMultiplier: EquationInfo;
 	amplifyingMul: EquationInfo;
 
-	// Amplified
+	// Amplified (+ transformative)
 	amplifiedDamage: EquationInfo;
 	secondaryAmplifiedDamage: EquationInfo;
 
-	// Extra transformative damage
+	// Transformative
+	transformativeBoostedBase: EquationInfo;
 	extraTransformativeDamage: EquationInfo;
 
 	// Additive

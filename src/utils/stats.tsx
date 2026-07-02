@@ -27,14 +27,24 @@ const stats: Stat[] = [
 		icon: <StatIcon base="percent" />
 	},
 	{
-		name: 'Base Multiplier',
-		desc: 'Multiplier that is applied directly to the base/talent multiplier, increased by Xingqui\'s C4, Yoimiya\'s skill, and Ineffa\'s passive',
+		name: 'Orig. DMG Mult.',
+		desc: 'Multiplier that is applied directly to the base/talent multiplier, e.g. Xingqui\'s C4, Yoimiya\'s skill, and Sandrone\'s 1st ascension passive',
 		prop: 'baseDamageMultiplier',
 		default: 100,
 		type: StatType.Percent,
 		section: StatSection.CharacterBase,
 		groups: DamageGroup.All,
 		icon: <StatIcon base="percent" indicator="percent" />
+	},
+	{
+		name: 'Base DMG Bonus',
+		desc: 'DMG bonus that directly increases the base damage of the reaction, e.g. Ineffa\'s passive and Sandrone\'s Light of Rationalisme',
+		prop: 'baseReactionBonus',
+		default: 0,
+		type: StatType.Percent,
+		section: StatSection.CharacterBase,
+		groups: DamageGroup.Transformative,
+		icon: <StatIcon base="damage" indicator="increase" />
 	},
 	{
 		name: 'Extra Talent DMG',
@@ -45,7 +55,7 @@ const stats: Stat[] = [
 		type: StatType.Percent,
 		section: StatSection.CharacterBase,
 		groups: DamageGroup.NonTransformative,
-		icon: <StatIcon base="damage" indicator="increase" />
+		icon: <StatIcon base="damage" indicator="plus" />
 	},
 	{
 		name: 'Flat DMG Bonus',
@@ -55,7 +65,7 @@ const stats: Stat[] = [
 		type: StatType.Number,
 		section: StatSection.CharacterBase,
 		groups: DamageGroup.NonTransformative,
-		icon: <StatIcon base="damage" indicator="increase" />
+		icon: <StatIcon base="damage" indicator="plus" />
 	},
 	{
 		name: 'Extra Rxn DMG',
@@ -65,7 +75,7 @@ const stats: Stat[] = [
 		type: StatType.Number,
 		section: StatSection.CharacterBase,
 		groups: DamageGroup.Transformative,
-		icon: <StatIcon base="damage" indicator="increase" />,
+		icon: <StatIcon base="damage" indicator="plus" />,
 	},
 	{
 		name: 'Base ATK',
