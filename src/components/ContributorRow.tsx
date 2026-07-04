@@ -29,14 +29,15 @@ export default function ContributorRow(props: Readonly<{
 				colId: column.id,
 				atkId: column.active.id,
 				modifier: attack => {
-					attack.contributorNum = parseInt(value) || undefined;
+					attack.contributorNum = Number(value);
 				}
 			})}
 			options={[
 				{ name: "1st", value: "1" },
 				{ name: "2nd", value: "2" },
 				{ name: "3rd", value: "3" },
-				{ name: "4th", value: "4" }
+				{ name: "4th", value: "4" },
+				{ name: "Use for All", value: "-1" },
 			]}
 		/>
 	});

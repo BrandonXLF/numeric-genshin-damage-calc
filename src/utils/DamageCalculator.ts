@@ -241,6 +241,8 @@ export default class DamageCalculator {
 			case 3:
 			case 4:
 				return 0.05;
+			case -1:
+				return 1;
 			default:
 				return 0;
 		}

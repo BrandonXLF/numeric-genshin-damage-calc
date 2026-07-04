@@ -8,7 +8,7 @@ export const topDescs = new Map<string, ReactNode>([
 	],
 	[
 		'Attack Number',
-		'Individual damage instances that contribute to the final calculated damage. Can be used for Lunar-Reactions.'
+		'Individual damage instances that contribute to the final calculated damage. Can be used for Lunar Reactions.'
 	],
 	[
 		'Reaction',
