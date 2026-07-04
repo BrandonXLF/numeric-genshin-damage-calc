@@ -203,6 +203,31 @@ it('computes lunar reaction damage', () => {
 	expect(attack.damage.avgDmg.value).toBeCloseTo(10573.08);
 });
 
+it('computes contributor lunar reaction damage', () => {
+	const attack = new Attack({
+		reactionType: 4,
+		reaction: 0,
+		label: 'Lunar-Charged',
+		contributorNum: 2,
+		statData: {
+			...statData,
+			characterLevel: '80',
+			baseDamageMultiplier: '100',
+			baseReactionBonus: '14',
+			em: '471',
+			reactionBonus: '40',
+			critRate: '71.5',
+			critDamage: '152.3',
+			resistance: '10',
+			resistanceReduction: '0'
+		}
+	});
+
+	expect(attack.damage.crit?.value).toBeCloseTo(12770.03 / 2);
+	expect(attack.damage.nonCrit?.value).toBeCloseTo(5061.45 / 2);
+	expect(attack.damage.avgDmg.value).toBeCloseTo(10573.08 / 2);
+});
+
 it('computes direct lunar reaction damage', () => {
 	const attack = new Attack({
 		reactionType: 5,

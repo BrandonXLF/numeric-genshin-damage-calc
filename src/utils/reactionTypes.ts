@@ -51,9 +51,10 @@ const reactionTypes = new Map<number, ReactionType>([
 		emBonus: EMBonusType.Lunar,
 		isTransformative: true,
 		transformativeCrit: false,
+		multiContributor: true,
 		reactions: new Map([
-			[0, { name: 'Lunar-Charged', multiplier: 1.8, color: '#e6dcfd', element: 'Electro' }],
-			[1, { name: 'Lunar-Crystalize', multiplier: 0.96, color: '#f6e9bc', element: 'Geo' }]
+			[0, { name: 'Lunar-Charged', multiplier: 3, color: '#e6dcfd', element: 'Electro' }],
+			[1, { name: 'Lunar-Crystalize', multiplier: 1.6, color: '#f6e9bc', element: 'Geo' }]
 		]),
 		desc: 'Special transformative reactions that can crit. Enabled by certain Nod-Krai characters.'
 	}],

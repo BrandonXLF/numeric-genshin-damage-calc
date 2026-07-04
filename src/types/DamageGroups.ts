@@ -8,8 +8,9 @@ const enum DamageGroup {
 	NonTransformative = 1 << 5,
 	Crit = 1 << 6,
 	TransformativeCrit = 1 << 7,
-	StellarHit = 1 << 8,
-	All = (1 << 9) - 1,
+	MultiContributor = 1 << 8,
+	StellarHit = 1 << 9,
+	All = (1 << 10) - 1,
 }
 
 export default DamageGroup;

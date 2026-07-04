@@ -35,6 +35,12 @@ export default function DamageTypeRow(props: Readonly<{
 
 						attack.secondaryType = 0;
 						attack.secondary = 0;
+
+						const newReactionType = reactionTypes.get(attack.reactionType);
+
+						if (!newReactionType?.multiContributor) {
+							attack.contributorNum = undefined;
+						}
 					}
 				})}
 				options={

@@ -57,6 +57,10 @@ type ReactionType = {
 	 */
 	transformativeCrit?: boolean;
 	/**
+	 * True if the damage uses multiple contributors to its damage calculation.
+	 */
+	multiContributor?: boolean;
+	/**
 	 * True if the damage uses stellar hits in its calculation.
 	 */
 	stellarHit?: boolean;

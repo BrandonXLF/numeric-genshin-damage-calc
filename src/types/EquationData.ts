@@ -50,13 +50,20 @@ type EquationData = {
 	enemyResistanceMul: EquationInfo;
 	travelPenalty: EquationInfo;
 	travelMultiplier: EquationInfo;
-	generalDamage: EquationInfo;
 	
 	// CRIT
 	realCritRate: EquationInfo;
 	critBonus: EquationInfo;
+
+	// Final
+	generalDamage: EquationInfo;
 	critHit: EquationInfo;
 	avgDamage: EquationInfo;
+
+	// Contributed final
+	contributed_generalDamage: EquationInfo;
+	contributed_critHit: EquationInfo;
+	contributed_avgDamage: EquationInfo;
 };
 
 export default EquationData;

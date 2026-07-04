@@ -13,6 +13,7 @@ import damageTypes from "../utils/damageTypes";
 import columnListReducer from "../utils/columnListReducer";
 import ColumnStorage from "../utils/ColumnStorage";
 import SecondaryReactionRow from "./SecondaryReactionRow";
+import ContributorRow from "./ContributorRow";
 
 export default function CalculatorForm() {
 	let [columnState, dispatchColumnState] = useReducer(columnListReducer, undefined, () => ColumnStorage.load());
@@ -30,8 +31,9 @@ export default function CalculatorForm() {
 				<RemoveColumnRow columns={columns} dispatch={dispatchColumnState} />
 				<LabelRow columns={columns} dispatch={dispatchColumnState} />
 				<AttacksRow columns={columns} dispatch={dispatchColumnState} />
-				<DamageTypeRow columns={columns} dispatch={dispatchColumnState}  />
-				<SecondaryReactionRow columns={columns} dispatch={dispatchColumnState}  />
+				<DamageTypeRow columns={columns} dispatch={dispatchColumnState} />
+				<SecondaryReactionRow columns={columns} dispatch={dispatchColumnState} />
+				<ContributorRow columns={columns} dispatch={dispatchColumnState} />
 				{statSections.map(statSection =>
 					<CalculatorSection key={statSection.value} section={statSection} headerSpan={columns.length + 1} columns={columns} dispatch={dispatchColumnState} />
 				)}

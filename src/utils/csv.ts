@@ -81,6 +81,12 @@ export function csvExport(columns: Column[]) {
 		}
 	));
 
+	rows.push(generateRow(
+		columns,
+		'Contributor',
+		atk => `${atk.contributorNum ?? ''}`
+	));
+
 	statSections.forEach(statSection => {
 		addSectionTitle(statSection.name);
 
@@ -166,6 +172,8 @@ export function csvImport(str: string) {
 			storedAttack.secondaryType = parseInt(secondaryReactionMatch[1]);
 			storedAttack.secondary = parseInt(secondaryReactionMatch[2]);
 		}
+
+		storedAttack.contributorNum = parseInt(object.Contributor) || undefined;
 		
 		storedAttack.label = object.Label;
 		storedAttack.statData = Object.fromEntries(Object.entries(object).filter(([,val]) => val !== '-'));

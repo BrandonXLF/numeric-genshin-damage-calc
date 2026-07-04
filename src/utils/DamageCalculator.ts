@@ -180,10 +180,6 @@ export default class DamageCalculator {
 			name: 'Air Time Multiplier',
 			expr: '1 - travelPenalty'
 		},
-		generalDamage: {
-			name: 'General DMG',
-			expr: () => `bonusDamage${this.reactionType.isTransformative ? '' : ' * enemyDefenseMul'} * enemyResistanceMul${this.variable('bowAimedTravelTime').value > 0 ? ' * travelMultiplier' : ''}`
-		},
 
 		// CRIT
 		realCritRate: {
@@ -194,6 +190,12 @@ export default class DamageCalculator {
 			name: 'Crit Multiplier',
 			expr: '1 + (realCritRate * CRIT_critDamage)'
 		},
+
+		// Final
+		generalDamage: {
+			name: 'General DMG',
+			expr: () => `bonusDamage${this.reactionType.isTransformative ? '' : ' * enemyDefenseMul'} * enemyResistanceMul${this.variable('bowAimedTravelTime').value > 0 ? ' * travelMultiplier' : ''}`
+		},
 		critHit: {
 			name: 'CRIT Hit',
 			expr: 'generalDamage * (1 + CRIT_critDamage)'
@@ -201,7 +203,21 @@ export default class DamageCalculator {
 		avgDamage: {
 			name: 'Average DMG',
 			expr: 'generalDamage * critBonus'
-		}
+		},
+
+		// Contributed final
+		contributed_generalDamage: {
+			name: 'Contributed DMG',
+			expr: () => `${this.getContributorFraction()} * generalDamage`
+		},
+		contributed_critHit: {
+			name: 'Contributed DMG',
+			expr: () => `${this.getContributorFraction()} * critHit`
+		},
+		contributed_avgDamage: {
+			name: 'Contributed DMG',
+			expr: () => `${this.getContributorFraction()} * avgDamage`
+		},
 	};
 	
 	constructor(private readonly attack: Attack) {}
@@ -212,6 +228,22 @@ export default class DamageCalculator {
 
 	private getNextRxDmg(): keyof EquationData | undefined {
 		return this.rxnDamageTypes?.pop();
+	}
+
+	private getContributorFraction(): number {
+		const contributorNum = this.attack.contributorNum ?? 1;
+
+		switch (contributorNum) {
+			case 1:
+				return 0.6;
+			case 2:
+				return 0.3;
+			case 3:
+			case 4:
+				return 0.05;
+			default:
+				return 0;
+		}
 	}
 
 	private populateAttrStat(stat: Stat) {
@@ -376,7 +408,7 @@ export default class DamageCalculator {
 		return { label, value, annotated, children, fullRawExpr };
 	}
 
-	private topEquation(name: keyof EquationData = 'generalDamage'): EquationOutput {
+	private topEquation(name: 'avgDamage' | 'critHit' | 'generalDamage' = 'generalDamage'): EquationOutput {
 		this.rxnDamageTypes = [
 			this.reactionType.isTransformative ? 'baseDamage' : 'finalBaseDamage'
 		];
@@ -399,14 +431,14 @@ export default class DamageCalculator {
 		if (this.secondaryType.rxnMode === RxnMode.Additive && !this.secondaryType.isTransformative)
 			this.rxnDamageTypes.push('secondaryAdditiveDamage');
 	
-		return this.equation(name);
+		return this.equation(this.reactionType.multiContributor ? `contributed_${name}` : name);
 	}
 
 	private showCrit() {
 		return !this.reactionType.transformativeCrit || (
-				this.attack.getStatAsNumber('critRateTransformative', StatType.Percent) > 0 ||
-				this.attack.getStatAsNumber('critDamageTransformative', StatType.Percent) > 0
-			);
+			this.attack.getStatAsNumber('critRateTransformative', StatType.Percent) > 0 ||
+			this.attack.getStatAsNumber('critDamageTransformative', StatType.Percent) > 0
+		);
 	}
 	
 	/**

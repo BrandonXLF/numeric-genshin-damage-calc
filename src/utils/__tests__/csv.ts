@@ -7,6 +7,7 @@ const columnList = new ColumnList([]);
 columnList.addEmpty();
 columnList.columns[0].addAttack();
 columnList.columns[0].first.label = 'Normal + Reaction';
+columnList.columns[0].first.contributorNum = 2;
 
 columnList.columns[0].last.reactionType = 2;
 columnList.columns[0].last.reaction = 6;
@@ -42,6 +43,7 @@ it('exports correctly', () => {
 		['Label', 'Normal + Reaction', '', 'Melt'],
 		['Attack', '1 of 2', '2 of 2', '1 of 1'],
 		['Reaction', 'No Reaction (ID: 0_0)', 'Swirl (ID: 2_6) -> Aggravate (ID: 3_1)', 'Melt (Pyro) (ID: 1_0)'],
+		['Contributor', '2', '', ''],
 		['', '', '', ''],
 		['Character', '', '', ''],
 		['Character Level (characterLevel)', '1', '1', '1'],

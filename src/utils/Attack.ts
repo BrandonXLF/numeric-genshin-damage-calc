@@ -23,6 +23,7 @@ export default class Attack implements PartialAttack {
     private _reaction: number;
     private _secondaryType: number;
     private _secondary: number;
+    private _contributorNum?: number;
     private _label: string;
     private _statData: StatData;
     private _synced: (keyof StatData)[];
@@ -37,9 +38,10 @@ export default class Attack implements PartialAttack {
         this._reaction = base?.reaction ?? 0;
         this._secondaryType = base?.secondaryType ?? 0;
         this._secondary = base?.secondary ?? 0;
+        this._contributorNum = base?.contributorNum;
         this._label = base?.label ?? '';
         this._statData = copyDataAndId ? {...(base as Attack).statData} : {} as StatData;
-        this._synced = base?.synced ? [...base.synced] : ['characterLevel'];
+        this._synced = base?.synced ? [...base.synced] : [];
         this._unmodified = base === undefined ? true : (base.unmodified ?? false);
         
         this.id = copyDataAndId ? (base as Attack).id : IDGenerator.generate();
@@ -163,6 +165,16 @@ export default class Attack implements PartialAttack {
 		this.invalidateDmgCache = true;
     }
 
+    get contributorNum(): number | undefined {
+        return this._contributorNum;
+    }
+
+    set contributorNum(contributorNum: number | undefined) {
+        this._contributorNum = contributorNum;
+        this._unmodified = false;
+        this.invalidateDmgCache = true;
+    }
+
     get label() {
         return this._label;
     }
@@ -218,6 +230,10 @@ export default class Attack implements PartialAttack {
             out |= DamageGroup.Crit;
         }
 
+        if (reactionType.multiContributor) {
+            out |= DamageGroup.MultiContributor;
+        }
+
         if (reactionType.stellarHit) {
             out |= DamageGroup.StellarHit;
         }
@@ -247,6 +263,7 @@ export default class Attack implements PartialAttack {
 			reaction: this.reaction,
 			secondaryType: this.hasSecondary ? this.secondaryType : undefined,
 			secondary: this.hasSecondary ? this.secondary : undefined,
+            contributorNum: this.contributorNum,
 			label: this.label,
 			statData: this.statData,
 			synced: this.synced,

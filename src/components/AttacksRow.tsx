@@ -14,7 +14,7 @@ export default function AttacksRow(props: Readonly<{
 	dispatch: React.Dispatch<ColumnStateAction>;
 }>) {
 	return <>
-        <RowLabel label="Attack" desc={topDescs.get('Attack')} />
+        <RowLabel label="Attack Number" desc={topDescs.get('Attack Number')} />
 		{props.columns.map(column => <div key={column.id} className="form-width column-attacks">
             <AttackList
                 attacks={column.attacks}
