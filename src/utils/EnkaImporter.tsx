@@ -17,7 +17,7 @@ export default class EnkaImporter {
 	private static getNameResources() {
 		EnkaImporter.nameResourcesPromise ??= (async () => {
 			try {
-				return Promise.all([
+				return await Promise.all([
 					(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/gi/avatars.json')).json(),
 					(await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/gi/locs.json')).json()
 				]);
@@ -29,19 +29,12 @@ export default class EnkaImporter {
 		return EnkaImporter.nameResourcesPromise;
 	}
 	
-	private static profilePhotoPromise: Promise<Record<number, string | undefined>> | undefined;
+	private static profilePhotoPromise: Promise<Record<number, { IconPath: string } | undefined>> | undefined;
 
 	private static getProfilePhotos() {
 		EnkaImporter.profilePhotoPromise ??= (async () => {
 			try {
-				let photoArray = await (await fetch('https://glcdn.githack.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/ProfilePictureExcelConfigData.json')).json()
-				let photoMap: Record<number, string | undefined> = {};
-	
-				for (let profilePhoto of photoArray) {
-					photoMap[profilePhoto.id] = profilePhoto.iconPath;
-				}
-
-				return photoMap;
+				return await (await fetch('https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/gi/pfps.json')).json();
 			} catch {
 				return {};
 			}
@@ -59,12 +52,12 @@ export default class EnkaImporter {
 
 	private static showIcon(path?: string) {
 		if (!path) return <StatIcon base="character" />;
-		return <img src={`https://enka.network/${path}`} alt="" />;
+		return <img src={`https://enka.network${path}`} alt="" />;
 	}
 	
 	static async getNonCharacterProfilePhoto(id: number) {
 		const profilePhotos = await EnkaImporter.getProfilePhotos();
-		return EnkaImporter.showIcon(profilePhotos[id]);
+		return EnkaImporter.showIcon(profilePhotos[id]?.IconPath);
 	}
 	
 	static async getCharacterIcon(avatarId: number) {
